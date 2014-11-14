@@ -180,6 +180,7 @@
             <exclude>**/*.iml</exclude>
             <exclude>**/*.tdd</exclude>
             <exclude>**/*.project</exclude>
+            <exclude>**/TAGS</exclude> <!-- Emacs etags tags file -->
             <exclude>**/*.checkstyle</exclude>
             <exclude>**/.classpath</exclude>
             <exclude>**/.settings/**</exclude>
