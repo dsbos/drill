@@ -11,6 +11,7 @@ target/
 *.DS_Store
 *.patch
 *~
+TAGS
 git.properties
 contrib/native/client/build/
 contrib/native/client/build/*
