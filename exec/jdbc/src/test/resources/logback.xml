@@ -33,16 +33,31 @@
     <level value="warn" />
   </appender>
 
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <!-- The property 'logback.log.dir' is defined in pom.xml -->
+    <!--<file>${logback.log.dir:-./target/surefire-reports}/hive-tests-${bySecond}.log</file> -->
+    <file>TEMP_debug.log</file>
+    <append>false</append>
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+   </appender>
+
+
   <logger name="org.apache.drill" additivity="false">
     <level value="debug" />
     <appender-ref ref="SOCKET" />
 <!--     <appender-ref ref="STDOUT" /> -->
+<appender-ref ref="STDOUT" />
+<appender-ref ref="FILE" />
   </logger>
 
   <root>
     <level value="debug" />
     <appender-ref ref="SOCKET" />
 <!--     <appender-ref ref="STDOUT" /> -->
+<appender-ref ref="STDOUT" />  
+<appender-ref ref="FILE" />  
   </root>
 
 </configuration>

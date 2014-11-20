@@ -127,6 +127,7 @@ public class QueryStatus {
         // only foreman will put one node for "pending" query into PStore. This is to avoid concurrency issue when multiple threads fail and
         // call this method.
         profilePStore.put(queryId, getAsProfile(false));
+        //???? TODO: Label intentional fallthrough or add break statement.
       case RUNNING:
         profileEStore.put(queryId, getAsProfile(false));  // store as ephemeral query profile.
         logger.warn("Update running or pending query state : {}", queryState);
