@@ -25,4 +25,15 @@ public class Pointer<T> {
   public Pointer(T value){
     this.value = value;
   }
+
+  @Override
+  public String toString() {
+    return
+        super.toString() + "["
+        + ( null == value
+            ? "null"
+            : ( "(" + value.getClass() + ") " + value ) )
+        + "]";
+  }
+
 }
