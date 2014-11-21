@@ -1,0 +1,33 @@
+{
+    "id": "1"
+    ,
+    "for_VarChar": "Bb"
+    ,
+    "for_Int": "180"
+    ,
+    "for_Float": "180"
+    ,
+    "for_Date": "2014-12-31"
+}
+{
+    "id": "2"
+    ,
+    "for_VarChar": null	
+    ,
+    "for_Int": null
+    ,
+    "for_Float": null
+    ,
+    "for_Date": null
+}
+{
+    "id": "3"
+    ,
+    "for_VarChar": "A"
+    ,
+    "for_Int": "19"
+    ,
+    "for_Float": "19"
+    ,
+    "for_Date": "2014-01-01"
+}
