@@ -25,8 +25,13 @@ import net.hydromatic.avatica.AvaticaConnection;
 import net.hydromatic.avatica.AvaticaFactory;
 import net.hydromatic.avatica.UnregisteredDriver;
 
+
 /**
- * Extension of {@link net.hydromatic.avatica.AvaticaFactory} for Drill.
+ * Partial implementation of {@link net.hydromatic.avatica.AvaticaFactory}
+ * (factory for main JDBC objects) for Drill's JDBC driver.
+ * <p>
+ *   Handles JDBC version number.
+ * </p>
  */
 public abstract class DrillFactory implements AvaticaFactory {
   protected final int major;
@@ -48,13 +53,23 @@ public abstract class DrillFactory implements AvaticaFactory {
     return minor;
   }
 
+
+  /**
+   * Creates a Drill connection for Avatica (in terms of Avatica types).
+   * <p>
+   *   This implementation delegates to
+   *   {@link newDrillConnection(DriverImpl, DrillFactory, String, Properties)}.
+   * </p>
+   */
   @Override
   public final AvaticaConnection newConnection(UnregisteredDriver driver, AvaticaFactory factory, String url,
       Properties info)  throws SQLException{
     return newDrillConnection((Driver) driver, (DrillFactory) factory, url, info);
   }
 
-  /** Creates a connection with a root schema. */
+  /**
+   * Creates a Drill connection (in terms of Drill-specific types).
+   */
   public abstract DrillConnectionImpl newDrillConnection(Driver driver, DrillFactory factory, String url,
       Properties info)  throws SQLException;
 }

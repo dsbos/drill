@@ -48,7 +48,7 @@ import org.apache.drill.jdbc.impl.DrillStatementImpl;
 
 // (Public until JDBC impl. classes moved out of published-intf. package. (DRILL-2089).)
 /**
- * Implementation of JDBC connection in Drill.
+ * Drill's implementation of {@link Connection}.
  *
  * <p>
  * Abstract to allow newer versions of JDBC to add methods.
@@ -324,11 +324,11 @@ public abstract class DrillConnectionImpl extends AvaticaConnection
 
   @Override
   public DrillStatementImpl createStatement(int resultSetType, int resultSetConcurrency,
-                                        int resultSetHoldability) throws SQLException {
+                                            int resultSetHoldability) throws SQLException {
     checkNotClosed();
     DrillStatementImpl statement =
         (DrillStatementImpl) super.createStatement(resultSetType, resultSetConcurrency,
-                                               resultSetHoldability);
+                                                   resultSetHoldability);
     return statement;
   }
 

@@ -30,6 +30,9 @@ import org.apache.drill.jdbc.InvalidParameterSqlException;
 
 import net.hydromatic.avatica.AvaticaStatement;
 
+/**
+ * Drill's implementation of {@link Statement}.
+ */
 public abstract class DrillStatementImpl extends AvaticaStatement
    implements DrillStatement, DrillRemoteStatement {
 

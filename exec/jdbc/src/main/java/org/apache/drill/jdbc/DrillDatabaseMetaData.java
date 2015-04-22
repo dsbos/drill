@@ -23,6 +23,9 @@ import java.sql.SQLException;
 import net.hydromatic.avatica.AvaticaConnection;
 import net.hydromatic.avatica.AvaticaDatabaseMetaData;
 
+/**
+ * Drill's implementation of {@link DatabaseMetaData}.
+ */
 public class DrillDatabaseMetaData extends AvaticaDatabaseMetaData {
 
   protected DrillDatabaseMetaData( AvaticaConnection connection ) {

@@ -86,27 +86,33 @@ public class MetaImpl implements Meta {
     this.connection = connection;
   }
 
+  @Override
   public String getSqlKeywords() {
     return "";
   }
 
+  @Override
   public String getNumericFunctions() {
     return "";
   }
 
+  @Override
   public String getStringFunctions() {
     return "";
   }
 
+  @Override
   public String getSystemFunctions() {
     return "";
   }
 
+  @Override
   public String getTimeDateFunctions() {
     return "";
   }
 
-  public static ResultSet getEmptyResultSet() {
+  // TODO:  BUG: null is not a proper empty result set.
+  private static ResultSet getEmptyResultSet() {
     return null;
   }
 
@@ -123,6 +129,7 @@ public class MetaImpl implements Meta {
 
   }
 
+  @Override
   public ResultSet getTables(String catalog, final Pat schemaPattern, final Pat tableNamePattern,
       final List<String> typeList) {
     StringBuilder sb = new StringBuilder();
@@ -170,6 +177,7 @@ public class MetaImpl implements Meta {
   /**
    * Implements {@link DatabaseMetaData#getColumns()}.
    */
+  @Override
   public ResultSet getColumns(String catalog, Pat schemaPattern,
                               Pat tableNamePattern, Pat columnNamePattern) {
     StringBuilder sb = new StringBuilder();
@@ -503,6 +511,7 @@ public class MetaImpl implements Meta {
     return s(sb.toString());
   }
 
+  @Override
   public ResultSet getSchemas(String catalog, Pat schemaPattern) {
     StringBuilder sb = new StringBuilder();
     sb.append("select "
@@ -521,6 +530,7 @@ public class MetaImpl implements Meta {
     return s(sb.toString());
   }
 
+  @Override
   public ResultSet getCatalogs() {
     StringBuilder sb = new StringBuilder();
     sb.append("select "
@@ -532,96 +542,119 @@ public class MetaImpl implements Meta {
     return s(sb.toString());
   }
 
+  @Override
   public ResultSet getTableTypes() {
     return getEmptyResultSet();
   }
 
+  @Override
   public ResultSet getProcedures(String catalog, Pat schemaPattern, Pat procedureNamePattern) {
     return getEmptyResultSet();
   }
 
+  @Override
   public ResultSet getProcedureColumns(String catalog, Pat schemaPattern, Pat procedureNamePattern,
       Pat columnNamePattern) {
     return getEmptyResultSet();
   }
 
+  @Override
   public ResultSet getColumnPrivileges(String catalog, String schema, String table, Pat columnNamePattern) {
     return getEmptyResultSet();
   }
 
+  @Override
   public ResultSet getTablePrivileges(String catalog, Pat schemaPattern, Pat tableNamePattern) {
     return getEmptyResultSet();
   }
 
+  @Override
   public ResultSet getBestRowIdentifier(String catalog, String schema, String table, int scope, boolean nullable) {
     return getEmptyResultSet();
   }
 
+  @Override
   public ResultSet getVersionColumns(String catalog, String schema, String table) {
     return getEmptyResultSet();
   }
 
+  @Override
   public ResultSet getPrimaryKeys(String catalog, String schema, String table) {
     return getEmptyResultSet();
   }
 
+  @Override
   public ResultSet getImportedKeys(String catalog, String schema, String table) {
     return getEmptyResultSet();
   }
 
+  @Override
   public ResultSet getExportedKeys(String catalog, String schema, String table) {
     return getEmptyResultSet();
   }
 
+  @Override
   public ResultSet getCrossReference(String parentCatalog, String parentSchema, String parentTable,
       String foreignCatalog, String foreignSchema, String foreignTable) {
     return getEmptyResultSet();
   }
 
+  @Override
   public ResultSet getTypeInfo() {
     return getEmptyResultSet();
   }
 
+  @Override
   public ResultSet getIndexInfo(String catalog, String schema, String table, boolean unique, boolean approximate) {
     return getEmptyResultSet();
   }
 
+  @Override
   public ResultSet getUDTs(String catalog, Pat schemaPattern, Pat typeNamePattern, int[] types) {
     return getEmptyResultSet();
   }
 
+  @Override
   public ResultSet getSuperTypes(String catalog, Pat schemaPattern, Pat typeNamePattern) {
     return getEmptyResultSet();
   }
 
+  @Override
   public ResultSet getSuperTables(String catalog, Pat schemaPattern, Pat tableNamePattern) {
     return getEmptyResultSet();
   }
 
+  @Override
   public ResultSet getAttributes(String catalog, Pat schemaPattern, Pat typeNamePattern, Pat attributeNamePattern) {
     return getEmptyResultSet();
   }
 
+  @Override
   public ResultSet getClientInfoProperties() {
     return getEmptyResultSet();
   }
 
+  @Override
   public ResultSet getFunctions(String catalog, Pat schemaPattern, Pat functionNamePattern) {
     return getEmptyResultSet();
   }
 
+  @Override
   public ResultSet getFunctionColumns(String catalog, Pat schemaPattern, Pat functionNamePattern, Pat columnNamePattern) {
     return getEmptyResultSet();
   }
 
+  @Override
   public ResultSet getPseudoColumns(String catalog, Pat schemaPattern, Pat tableNamePattern, Pat columnNamePattern) {
     return getEmptyResultSet();
   }
 
+  @Override
   public Cursor createCursor(AvaticaResultSet resultSet_) {
     return ((DrillResultSetImpl) resultSet_).cursor;
   }
 
+  @Override
   public AvaticaPrepareResult prepare(AvaticaStatement statement_, String sql) {
     //DrillStatement statement = (DrillStatement) statement_;
     return new DrillPrepareResult(sql);

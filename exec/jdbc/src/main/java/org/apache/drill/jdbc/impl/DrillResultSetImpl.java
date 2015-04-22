@@ -55,6 +55,9 @@ import org.slf4j.Logger;
 import com.google.common.collect.Queues;
 
 
+/**
+ * Drill's implementation of {@link ResultSet}.
+ */
 public class DrillResultSetImpl extends AvaticaResultSet implements DrillResultSet {
   @SuppressWarnings("unused")
   private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DrillResultSetImpl.class);

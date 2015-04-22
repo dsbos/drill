@@ -33,15 +33,16 @@ import org.apache.drill.jdbc.impl.DrillResultSetImpl;
 import org.apache.drill.jdbc.impl.DrillStatementImpl;
 
 import net.hydromatic.avatica.AvaticaConnection;
-import net.hydromatic.avatica.AvaticaDatabaseMetaData;
 import net.hydromatic.avatica.AvaticaPrepareResult;
 import net.hydromatic.avatica.AvaticaPreparedStatement;
 import net.hydromatic.avatica.AvaticaResultSetMetaData;
 import net.hydromatic.avatica.AvaticaStatement;
 import net.hydromatic.avatica.ColumnMetaData;
 
+
 /**
- * Implementation of {@link net.hydromatic.avatica.AvaticaFactory} for Drill and JDBC 4.1 (corresponds to JDK 1.7).
+ * Implementation of {@link net.hydromatic.avatica.AvaticaFactory} for Drill and
+ * JDBC 4.1 (corresponds to JDK 1.7).
  */
 @SuppressWarnings("UnusedDeclaration")
 public class DrillJdbc41Factory extends DrillFactory {
@@ -111,80 +112,101 @@ public class DrillJdbc41Factory extends DrillFactory {
     }
   }
 
+  /**
+   * JDBC 4.1 version of {@link DrillPreparedStatement}.
+   */
   private static class DrillJdbc41PreparedStatement extends DrillPreparedStatement {
     DrillJdbc41PreparedStatement(DrillConnectionImpl connection, DrillPrepareResult prepareResult, int resultSetType,
         int resultSetConcurrency, int resultSetHoldability) throws SQLException {
       super(connection, prepareResult, resultSetType, resultSetConcurrency, resultSetHoldability);
     }
 
+    @Override
     public void setRowId(int parameterIndex, RowId x) throws SQLException {
       getParameter(parameterIndex).setRowId(x);
     }
 
+    @Override
     public void setNString(int parameterIndex, String value) throws SQLException {
       getParameter(parameterIndex).setNString(value);
     }
 
+    @Override
     public void setNCharacterStream(int parameterIndex, Reader value, long length) throws SQLException {
       getParameter(parameterIndex).setNCharacterStream(value, length);
     }
 
+    @Override
     public void setNClob(int parameterIndex, NClob value) throws SQLException {
       getParameter(parameterIndex).setNClob(value);
     }
 
+    @Override
     public void setClob(int parameterIndex, Reader reader, long length) throws SQLException {
       getParameter(parameterIndex).setClob(reader, length);
     }
 
+    @Override
     public void setBlob(int parameterIndex, InputStream inputStream, long length) throws SQLException {
       getParameter(parameterIndex).setBlob(inputStream, length);
     }
 
+    @Override
     public void setNClob(int parameterIndex, Reader reader, long length) throws SQLException {
       getParameter(parameterIndex).setNClob(reader, length);
     }
 
+    @Override
     public void setSQLXML(int parameterIndex, SQLXML xmlObject) throws SQLException {
       getParameter(parameterIndex).setSQLXML(xmlObject);
     }
 
+    @Override
     public void setAsciiStream(int parameterIndex, InputStream x, long length) throws SQLException {
       getParameter(parameterIndex).setAsciiStream(x, length);
     }
 
+    @Override
     public void setBinaryStream(int parameterIndex, InputStream x, long length) throws SQLException {
       getParameter(parameterIndex).setBinaryStream(x, length);
     }
 
+    @Override
     public void setCharacterStream(int parameterIndex, Reader reader, long length) throws SQLException {
       getParameter(parameterIndex).setCharacterStream(reader, length);
     }
 
+    @Override
     public void setAsciiStream(int parameterIndex, InputStream x) throws SQLException {
       getParameter(parameterIndex).setAsciiStream(x);
     }
 
+    @Override
     public void setBinaryStream(int parameterIndex, InputStream x) throws SQLException {
       getParameter(parameterIndex).setBinaryStream(x);
     }
 
+    @Override
     public void setCharacterStream(int parameterIndex, Reader reader) throws SQLException {
       getParameter(parameterIndex).setCharacterStream(reader);
     }
 
+    @Override
     public void setNCharacterStream(int parameterIndex, Reader value) throws SQLException {
       getParameter(parameterIndex).setNCharacterStream(value);
     }
 
+    @Override
     public void setClob(int parameterIndex, Reader reader) throws SQLException {
       getParameter(parameterIndex).setClob(reader);
     }
 
+    @Override
     public void setBlob(int parameterIndex, InputStream inputStream) throws SQLException {
       getParameter(parameterIndex).setBlob(inputStream);
     }
 
+    @Override
     public void setNClob(int parameterIndex, Reader reader) throws SQLException {
       getParameter(parameterIndex).setNClob(reader);
     }

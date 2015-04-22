@@ -23,11 +23,10 @@ import net.hydromatic.avatica.HandlerImpl;
 import net.hydromatic.avatica.UnregisteredDriver;
 
 /**
- * Optiq JDBC driver.
+ * Apache Drill JDBC driver.
  */
 public class Driver extends UnregisteredDriver {
   public static final String CONNECT_STRING_PREFIX = "jdbc:drill:";
-
 
 
   public Driver() {
@@ -35,7 +34,14 @@ public class Driver extends UnregisteredDriver {
   }
 
 
-  public static boolean load(){
+  /**
+   * Ensures that class is loaded.
+   * <p>
+   *   (Avoids extra instance of calling {@code new Driver();}; avoids verbosity
+   *   of {@code Class.forName("org.apache.drill.jdbc.Driver");}
+   * </p>
+   */
+  public static boolean load() {
     return true;
   }
 
