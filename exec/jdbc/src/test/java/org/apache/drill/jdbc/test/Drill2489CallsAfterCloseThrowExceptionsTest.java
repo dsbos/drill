@@ -128,7 +128,6 @@ public class Drill2489CallsAfterCloseThrowExceptionsTest extends JdbcTestBase {
     closedConnection.clearWarnings();
   }
 
-  @Ignore( "until DRILL-2489 addressed" )
   @Test( expected = AlreadyClosedSqlException.class )
   public void testClosedConnection_commit_throws() throws SQLException {
     closedConnection.commit();
@@ -313,25 +312,21 @@ public class Drill2489CallsAfterCloseThrowExceptionsTest extends JdbcTestBase {
     closedConnection.prepareStatement( "sql", (int[]) null );
   }
 
-  @Ignore( "until DRILL-2489 addressed" )
   @Test( expected = AlreadyClosedSqlException.class )
   public void testClosedConnection_releaseSavepoint_throws() throws SQLException {
     closedConnection.releaseSavepoint( (Savepoint) null );
   }
 
-  @Ignore( "until DRILL-2489 addressed" )
   @Test( expected = AlreadyClosedSqlException.class )
   public void testClosedConnection_rollback1_throws() throws SQLException {
     closedConnection.rollback();
   }
 
-  @Ignore( "until DRILL-2489 addressed" )
   @Test( expected = AlreadyClosedSqlException.class )
   public void testClosedConnection_rollback2_throws() throws SQLException {
     closedConnection.rollback( (Savepoint) null );
   }
 
-  @Ignore( "until DRILL-2489 addressed" )
   @Test( expected = AlreadyClosedSqlException.class )
   public void testClosedConnection_setAutoCommit_throws() throws SQLException {
     closedConnection.setAutoCommit( true );
@@ -373,13 +368,11 @@ public class Drill2489CallsAfterCloseThrowExceptionsTest extends JdbcTestBase {
     closedConnection.setReadOnly( true );
   }
 
-  @Ignore( "until DRILL-2489 addressed" )
   @Test( expected = AlreadyClosedSqlException.class )
   public void testClosedConnection_setSavepoint1_throws() throws SQLException {
     closedConnection.setSavepoint();
   }
 
-  @Ignore( "until DRILL-2489 addressed" )
   @Test( expected = AlreadyClosedSqlException.class )
   public void testClosedConnection_setSavepoint2_throws() throws SQLException {
     closedConnection.setSavepoint( "name" );
@@ -391,7 +384,6 @@ public class Drill2489CallsAfterCloseThrowExceptionsTest extends JdbcTestBase {
     closedConnection.setSchema( "schema" );
   }
 
-  @Ignore( "until DRILL-2489 addressed" )
   @Test( expected = AlreadyClosedSqlException.class )
   public void testClosedConnection_setTransactionIsolation_throws() throws SQLException {
     closedConnection.setTransactionIsolation( -1 );
@@ -602,7 +594,7 @@ public class Drill2489CallsAfterCloseThrowExceptionsTest extends JdbcTestBase {
     closedStatement.isPoolable();
   }
 
-   @Ignore( "until DRILL-2489 addressed" )
+  @Ignore( "until DRILL-2489 addressed" )
   @Test( expected = AlreadyClosedSqlException.class )
   public void testClosedStatement_setCursorName_throws() throws SQLException {
     closedStatement.setCursorName( "name" );
@@ -638,7 +630,7 @@ public class Drill2489CallsAfterCloseThrowExceptionsTest extends JdbcTestBase {
     closedStatement.setMaxRows(1 );
   }
 
-   @Ignore( "until DRILL-2489 addressed" )
+  @Ignore( "until DRILL-2489 addressed" )
   @Test( expected = AlreadyClosedSqlException.class )
   public void testClosedStatement_setQueryTimeout_throws() throws SQLException {
     closedStatement.setQueryTimeout( 60 );
@@ -1263,7 +1255,7 @@ public class Drill2489CallsAfterCloseThrowExceptionsTest extends JdbcTestBase {
     closedResultSet.next();
   }
 
-   @Ignore( "until DRILL-2489 addressed" )
+  @Ignore( "until DRILL-2489 addressed" )
   @Test( expected = AlreadyClosedSqlException.class )
   public void testClosedResultSet_previous_throws() throws SQLException {
     closedResultSet.previous();
