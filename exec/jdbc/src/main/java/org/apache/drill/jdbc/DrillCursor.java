@@ -31,33 +31,48 @@ import org.apache.drill.exec.exception.SchemaChangeException;
 import org.apache.drill.exec.record.BatchSchema;
 import org.apache.drill.exec.record.RecordBatchLoader;
 import org.apache.drill.exec.rpc.user.QueryDataBatch;
+import org.apache.drill.exec.store.ischema.InfoSchemaConstants;
 import org.apache.drill.jdbc.impl.DrillResultSetImpl;
 
 public class DrillCursor implements Cursor {
-  static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DrillCursor.class);
+  private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DrillCursor.class);
 
-  private static final String UNKNOWN = "--UNKNOWN--";
+  /** Value for catalog, schema, or table name when not applicable. */
+  private static final String UNKNOWN_NAME_VALUE = "";
 
   /** The associated java.sql.ResultSet implementation. */
   private final DrillResultSetImpl resultSet;
 
-  private final RecordBatchLoader currentBatch;
+
+  /** resultSet's RecordBatchLoader; holds any current batch */
+  private final RecordBatchLoader currentBatchHolder;
+  /** resultSet's ResultsListener; for getting {@link QueryDataBatch}es */
   private final DrillResultSetImpl.ResultsListener resultsListener;
 
-  // TODO:  Doc.:  Say what's started (set of rows?  just current result batch?)
+  /** Whether next() has been called; TODO: for what? */
   private boolean started = false;
   private boolean finished = false;
-  // TODO:  Doc.: Say what "readFirstNext" means.
-  private boolean redoFirstNext = false;
+  // TODO:  Doc.: Say what "readFirstNext" means.  ?? Something to do with zero-row batch
+  private boolean redoFirstNextxxx = false;
   // TODO:  Doc.: First what? (First batch? record? "next" call/operation?)
-  private boolean first = true;
+  private boolean firstWHATxxx = true;
+  private String tempReturnedFalseCase = "";
 
-  private DrillColumnMetaDataList columnMetaDataList;
+  /** Zero-based index (offset) of current record in record batch; -1 before
+   *  first used. */
+  private int currentRecordNumber = -1;
+
+  /** Number of record batches read from results listener, including null read at end(??). */
+  private long recordBatchCount;
+
+  /** Drill schema of current batch; null before first used. */
   private BatchSchema schema;
 
-  /** Zero-based index of current record in record batch. */
-  private int currentRecordNumber = -1;
-  private long recordBatchCount;
+  /** ~JDBC schema of current batch; null before first used. */
+  private DrillColumnMetaDataList columnMetaDataList;
+
+  /** Column data accessors, configured for current batch's schema (except
+   *  before first batch). */
   private final DrillAccessorList accessors = new DrillAccessorList();
 
 
@@ -67,7 +82,7 @@ public class DrillCursor implements Cursor {
    */
   public DrillCursor(final DrillResultSetImpl resultSet) {
     this.resultSet = resultSet;
-    currentBatch = resultSet.currentBatch;
+    currentBatchHolder = resultSet.currentBatch;
     resultsListener = resultSet.resultsListener;
   }
 
@@ -95,21 +110,37 @@ public class DrillCursor implements Cursor {
   // for a new result.
   @Override
   public boolean next() throws SQLException {
+    logger.debug( "next() (entry): started = {}, firstWHAT = {}, redoFirstNext = {},"
+                  + " finished = {}, currentRecordNumber = {}.",
+                  started, firstWHATxxx, redoFirstNextxxx, finished, currentRecordNumber );
+    if ( null != tempReturnedFalseCase ) {
+      logger.info( "NOTE:  tempReturnedFalseCase = " + tempReturnedFalseCase );
+    }
     if (!started) {
+      // is first call to next() (from DrillResultSetImpl.execute())
       started = true;
-      redoFirstNext = true;
-    } else if (redoFirstNext && !finished) {
-      redoFirstNext = false;
+      redoFirstNextxxx = true; // ???? Why exactly are we setting this true here rather than in initialization?  (For clarity?)
+    } else if (redoFirstNextxxx && !finished) {
+      // is subsequent call to next() (from AvaticaResultSet.next()),
+      // and <what the heck does "redoFirstNext" mean?> (was set true by first call and not set yet false here or one place below?),
+      // and we're not already finished (early?)
+      redoFirstNextxxx = false;
+      logger.debug( "next(): exit #r1: return true: (what case is this?)" ); //???? testDril2503
       return true;
     }
 
+    // TODO: CONFIRM:  Why not do this first, so it's clear that it doesn't
+    // depend (directly) on any other state bits?
     if (finished) {
-      return false;
+      logger.debug( "next(): exit #r2: return false: already finished (hit end in previous call)" );
+      tempReturnedFalseCase += " + already finished";
+      return false;  // ???? Q: Does this mean next() shouldn't be called any more?  (ResultSet.next() can be, but what about this?)
     }
 
-    if (currentRecordNumber + 1 < currentBatch.getRecordCount()) {
+    if (currentRecordNumber + 1 < currentBatchHolder.getRecordCount()) {
       // Next index is in within current batch--just increment to that record.
       currentRecordNumber++;
+      logger.debug( "next(): exit #r3: advanced to next record in current batch" );
       return true;
     } else {
       // Next index is not in current batch (including initial empty batch--
@@ -117,38 +148,60 @@ public class DrillCursor implements Cursor {
       try {
         QueryDataBatch qrb = resultsListener.getNext();
         recordBatchCount++;
-        while (qrb != null && (qrb.getHeader().getRowCount() == 0 || qrb.getData() == null ) && !first) {
+        // ?????? Why is firstWhatxxx inside the while condition rather than
+        // before it?  (It can't change inside the while statement.)
+        while (qrb != null  // there is a batch,
+               && (qrb.getHeader().getRowCount() == 0 || qrb.getData() == null )
+                            // the batch had no row or no <what kind of> data, and
+               && ! firstWHATxxx   // ?????? first what, exactly?  first batch?
+                                   // first batch with some condition? -
+                                   // (first batch that didn't return just below)
+               ) {
           qrb.release();
-          qrb = resultsListener.getNext();
+          qrb = resultsListener.getNext();  // get next batch
           recordBatchCount++;
-          if(qrb != null && qrb.getData()==null){
+          if (qrb != null && qrb.getData() == null) {  // if no data--indicating what????
             qrb.release();
-            return false;
+            logger.debug( "next(): exit #r4: return false: ... (what case is this?)" );
+            tempReturnedFalseCase += "null getData()? (4)";
+            return false;  // ???? Q: Does this mean next() shouldn't be called any more?  (ResultSet.next() can be, but what about this?)
           }
         }
 
-        first = false;
+        // TODO:  Resolve and rename/doc.:  First WHAT?!
+        //   (Not first call to next(), not first QueryDataBatch (if can be null);
+        //   What?)
+        //  Controls only while statement above
+        firstWHATxxx = false;
 
         if (qrb == null) {
-          currentBatch.clear();
+          // If no more batches(?), then done.
+          currentBatchHolder.clear();
           finished = true;
-          return false;
+          logger.debug( "next(): exit #r5: return false: just got null getting next QueryDataBatch" );
+          tempReturnedFalseCase += "some kind of null QueryDataBase";
+          return false;  // ???? Q: Does this mean next() shouldn't be called any more?  (ResultSet.next() can be, but what about this?)
         } else {
+          // Got a new batch.
           currentRecordNumber = 0;
-          final boolean changed;
+          final boolean schemaChanged;
           try {
-            changed = currentBatch.load(qrb.getHeader().getDef(), qrb.getData());
+            schemaChanged = currentBatchHolder.load(qrb.getHeader().getDef(), qrb.getData());
           }
           finally {
             qrb.release();
           }
-          schema = currentBatch.getSchema();
-          if (changed) {
+          schema = currentBatchHolder.getSchema();
+          if (schemaChanged) {
             updateColumns();
           }
-          if (redoFirstNext && currentBatch.getRecordCount() == 0) {
-            redoFirstNext = false;
+          if (redoFirstNextxxx && currentBatchHolder.getRecordCount() == 0) {
+            // ?????: have had whatever firstWHAT refers to, and got
+            // a batch with zero records--what does that mean, and what does
+            // this control?  Controls something about quickly returning "true"
+            redoFirstNextxxx = false;
           }
+          logger.debug( "next(): exit #r6: return true: (what case is this?  got QueryDataBatch, with ??what?)" );
           return true;
         }
       }
@@ -179,13 +232,16 @@ public class DrillCursor implements Cursor {
   }
 
   void updateColumns() {
-    accessors.generateAccessors(this, currentBatch);
-    columnMetaDataList.updateColumnMetaData(UNKNOWN, UNKNOWN, UNKNOWN, schema);
+    columnMetaDataList.updateColumnMetaData(
+        InfoSchemaConstants.IS_CATALOG_NAME, UNKNOWN_NAME_VALUE /* schema */,
+        UNKNOWN_NAME_VALUE /* table */, schema);
+    accessors.generateAccessors(this, currentBatchHolder);
     if (getResultSet().changeListener != null) {
       getResultSet().changeListener.schemaChanged(schema);
     }
   }
 
+  // ???? Is this used?
   public long getRecordBatchCount() {
     return recordBatchCount;
   }
@@ -193,10 +249,10 @@ public class DrillCursor implements Cursor {
   @Override
   public void close() {
     // currentBatch is owned by resultSet and cleaned up by
-    // DrillResultSet.cleanup()
+    // DrillResultSetImpl.cleanup()
 
     // listener is owned by resultSet and cleaned up by
-    // DrillResultSet.cleanup()
+    // DrillResultSetImpl.cleanup()
 
     // Clean up result set (to deallocate any buffers).
     getResultSet().cleanup();
@@ -205,6 +261,7 @@ public class DrillCursor implements Cursor {
     // closed and skip calls to cursor.close(), statement.onResultSetClose()
   }
 
+  // TODO:  Resolve:  What is this for?  Is doesn't seem to be called ever.
   @Override
   public boolean wasNull() throws SQLException {
     return accessors.wasNull();
