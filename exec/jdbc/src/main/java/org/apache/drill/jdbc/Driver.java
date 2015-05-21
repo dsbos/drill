@@ -17,22 +17,42 @@
  */
 package org.apache.drill.jdbc;
 
-import net.hydromatic.avatica.DriverVersion;
-import net.hydromatic.avatica.Handler;
-import net.hydromatic.avatica.HandlerImpl;
-import net.hydromatic.avatica.UnregisteredDriver;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.DriverPropertyInfo;
+import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+import java.util.Properties;
+
+import org.slf4j.Logger;
+import static org.slf4j.LoggerFactory.getLogger;
+
 
 /**
- * Apache Drill JDBC driver.
+ * Apache Drill JDBC driver main class.
  */
-public class Driver extends UnregisteredDriver {
-  public static final String CONNECT_STRING_PREFIX = "jdbc:drill:";
+public class Driver implements java.sql.Driver {
+  private static final Logger logger = getLogger( Driver.class );
+
+  /** Delegate for everything except registration with DriverManager. */
+  private final DriverImpl impl;
 
 
-  public Driver() {
-    super();
+  // The following should be the last static initialization, so that any other
+  // static initialization is completed before we create an instance and let
+  // DriverManager access it:
+
+  static {
+    // Upon loading of class, register an instance with DriverManager.
+
+    try {
+      DriverManager.registerDriver( new Driver() );
+    }
+    catch ( SQLException e ) {
+      logger.error( "Error in registering Drill JDBC driver {}: {}",
+                    Driver.class, e, e );
+    }
   }
-
 
   /**
    * Ensures that class is loaded.
@@ -45,44 +65,47 @@ public class Driver extends UnregisteredDriver {
     return true;
   }
 
-  @Override
-  protected String getConnectStringPrefix() {
-    return CONNECT_STRING_PREFIX;
-  }
 
-  @Override
-  protected String getFactoryClassName(JdbcVersion jdbcVersion) {
-    switch (jdbcVersion) {
-    case JDBC_30:
-      return "org.apache.drill.jdbc.DrillJdbc3Factory";
-    case JDBC_40:
-      return "org.apache.drill.jdbc.DrillJdbc40Factory";
-    case JDBC_41:
-    default:
-      return "org.apache.drill.jdbc.DrillJdbc41Factory";
-    }
-  }
-
-  @Override
-  protected DriverVersion createDriverVersion() {
-    return DriverVersion.load(
-        Driver.class,
-        "apache-drill-jdbc.properties",
-        "Drill JDBC Driver",
-        "unknown version",
-        "Optiq",
-        "unknown version");
+  public Driver() {
+    impl = new DriverImpl();
   }
 
 
   @Override
-  protected Handler createHandler() {
-    return new DrillHandler();
+  public Connection connect( String url, Properties info ) throws SQLException {
+    return impl.connect( url, info );
   }
 
-  // Any reference to class loads class, and loading class instantiates an
-  // instance and has it register itself:
-  static {
-    new Driver().register();
+
+  @Override
+  public boolean acceptsURL( String url ) throws SQLException {
+    return impl.acceptsURL( url );
   }
+
+  @Override
+  public DriverPropertyInfo[] getPropertyInfo( String url, Properties info )
+     throws SQLException {
+    return impl.getPropertyInfo( url,  info );
+  }
+
+  @Override
+  public int getMajorVersion() {
+    return impl.getMajorVersion();
+  }
+
+  @Override
+  public int getMinorVersion() {
+    return impl.getMinorVersion();
+  }
+
+  @Override
+  public boolean jdbcCompliant() {
+    return impl.jdbcCompliant();
+  }
+
+  @Override
+  public java.util.logging.Logger getParentLogger() throws SQLFeatureNotSupportedException {
+    return impl.getParentLogger();
+  }
+
 }

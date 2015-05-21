@@ -64,12 +64,12 @@ public abstract class DrillFactory implements AvaticaFactory {
   @Override
   public final AvaticaConnection newConnection(UnregisteredDriver driver, AvaticaFactory factory, String url,
       Properties info)  throws SQLException{
-    return newDrillConnection((Driver) driver, (DrillFactory) factory, url, info);
+    return newDrillConnection((DriverImpl) driver, (DrillFactory) factory, url, info);
   }
 
   /**
    * Creates a Drill connection (in terms of Drill-specific types).
    */
-  public abstract DrillConnectionImpl newDrillConnection(Driver driver, DrillFactory factory, String url,
+  public abstract DrillConnectionImpl newDrillConnection(DriverImpl driver, DrillFactory factory, String url,
       Properties info)  throws SQLException;
 }

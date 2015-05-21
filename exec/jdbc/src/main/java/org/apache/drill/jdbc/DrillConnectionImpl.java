@@ -67,7 +67,7 @@ public abstract class DrillConnectionImpl extends AvaticaConnection
   private Drillbit bit;
   private RemoteServiceSet serviceSet;
 
-  protected DrillConnectionImpl(Driver driver, AvaticaFactory factory, String url, Properties info) throws SQLException {
+  protected DrillConnectionImpl(DriverImpl driver, AvaticaFactory factory, String url, Properties info) throws SQLException {
     super(driver, factory, url, info);
 
     // Initialize transaction-related settings per Drill behavior.

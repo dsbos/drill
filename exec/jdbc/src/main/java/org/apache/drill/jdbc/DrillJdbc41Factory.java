@@ -57,8 +57,8 @@ public class DrillJdbc41Factory extends DrillFactory {
   }
 
   @Override
-  public DrillJdbc41Connection newDrillConnection(Driver driver, DrillFactory factory, String url, Properties info)  throws SQLException{
-    return new DrillJdbc41Connection((Driver) driver, factory, url, info);
+  public DrillJdbc41Connection newDrillConnection(DriverImpl driver, DrillFactory factory, String url, Properties info)  throws SQLException{
+    return new DrillJdbc41Connection(driver, factory, url, info);
   }
 
   @Override
@@ -99,7 +99,7 @@ public class DrillJdbc41Factory extends DrillFactory {
   }
 
   private static class DrillJdbc41Connection extends DrillConnectionImpl {
-    DrillJdbc41Connection(Driver driver, DrillFactory factory, String url, Properties info) throws SQLException {
+    DrillJdbc41Connection(DriverImpl driver, DrillFactory factory, String url, Properties info) throws SQLException {
       super(driver, factory, url, info);
     }
 
