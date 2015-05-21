@@ -51,7 +51,6 @@ import org.apache.drill.jdbc.InvalidParameterSqlException;
 import org.apache.drill.jdbc.JdbcApiSqlException;
 
 
-// (Public until JDBC impl. classes moved out of published-intf. package. (DRILL-2089).)
 /**
  * Drill's implementation of {@link Connection}.
  *
@@ -59,12 +58,11 @@ import org.apache.drill.jdbc.JdbcApiSqlException;
  * Abstract to allow newer versions of JDBC to add methods.
  * </p>
  */
-public abstract class DrillConnectionImpl extends AvaticaConnection
-                                          implements DrillConnection {
+abstract class DrillConnectionImpl extends AvaticaConnection
+                                   implements DrillConnection {
   private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DrillConnection.class);
 
-  // (Public until JDBC impl. classes moved out of published-intf. package. (DRILL-2089).)
-  public final DrillStatementRegistry openStatementsRegistry = new DrillStatementRegistry();
+  final DrillStatementRegistry openStatementsRegistry = new DrillStatementRegistry();
   final DrillConnectionConfig config;
 
   private final DrillClient client;
@@ -361,9 +359,8 @@ public abstract class DrillConnectionImpl extends AvaticaConnection
     return config.getTimeZone();
   }
 
-  // (Public until JDBC impl. classes moved out of published-intf. package. (DRILL-2089).)
   // do not make public
-  public UnregisteredDriver getDriver() {
+  UnregisteredDriver getDriver() {
     return driver;
   }
 

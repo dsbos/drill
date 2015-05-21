@@ -33,7 +33,7 @@ import org.apache.drill.exec.record.RecordBatchLoader;
 import org.apache.drill.exec.rpc.user.QueryDataBatch;
 
 
-public class DrillCursor implements Cursor {
+class DrillCursor implements Cursor {
   static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DrillCursor.class);
 
   private static final String UNKNOWN = "--UNKNOWN--";
@@ -65,13 +65,13 @@ public class DrillCursor implements Cursor {
    *
    * @param  resultSet  the associated ResultSet implementation
    */
-  public DrillCursor(final DrillResultSetImpl resultSet) {
+  DrillCursor(final DrillResultSetImpl resultSet) {
     this.resultSet = resultSet;
     currentBatch = resultSet.currentBatch;
     resultsListener = resultSet.resultsListener;
   }
 
-  public DrillResultSetImpl getResultSet() {
+  DrillResultSetImpl getResultSet() {
     return resultSet;
   }
 

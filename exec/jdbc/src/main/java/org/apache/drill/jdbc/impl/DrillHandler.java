@@ -23,7 +23,7 @@ import net.hydromatic.avatica.AvaticaConnection;
 import net.hydromatic.avatica.AvaticaStatement;
 import net.hydromatic.avatica.Handler;
 
-public class DrillHandler implements Handler{
+class DrillHandler implements Handler {
   static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DrillHandler.class);
 
   @Override

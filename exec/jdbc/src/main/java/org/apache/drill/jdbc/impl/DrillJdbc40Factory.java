@@ -21,8 +21,13 @@ package org.apache.drill.jdbc.impl;
  * Implementation of {@link net.hydromatic.avatica.AvaticaFactory}
  * for Drill and JDBC 4.0 (corresponds to JDK 1.6).
  */
+// Note:  Must be public so net.hydromatic.avatica.UnregisteredDriver can
+// (reflectively) call no-args constructor.
 public class DrillJdbc40Factory extends DrillJdbc41Factory {
+
   /** Creates a factory for JDBC version 4.1. */
+  // Note:  Must be public so net.hydromatic.avatica.UnregisteredDriver can
+  // (reflectively) call this constructor.
   public DrillJdbc40Factory() {
     super(4, 0);
   }

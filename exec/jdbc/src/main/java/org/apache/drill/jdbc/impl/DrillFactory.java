@@ -33,7 +33,7 @@ import net.hydromatic.avatica.UnregisteredDriver;
  *   Handles JDBC version number.
  * </p>
  */
-public abstract class DrillFactory implements AvaticaFactory {
+abstract class DrillFactory implements AvaticaFactory {
   protected final int major;
   protected final int minor;
 
@@ -70,6 +70,6 @@ public abstract class DrillFactory implements AvaticaFactory {
   /**
    * Creates a Drill connection (in terms of Drill-specific types).
    */
-  public abstract DrillConnectionImpl newDrillConnection(DriverImpl driver, DrillFactory factory, String url,
+  abstract DrillConnectionImpl newDrillConnection(DriverImpl driver, DrillFactory factory, String url,
       Properties info)  throws SQLException;
 }

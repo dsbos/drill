@@ -31,13 +31,12 @@ import net.hydromatic.avatica.AvaticaStatement;
 /**
  * Drill's implementation of {@link Statement}.
  */
-public abstract class DrillStatementImpl extends AvaticaStatement
+abstract class DrillStatementImpl extends AvaticaStatement
    implements DrillStatement, DrillRemoteStatement {
 
   private final DrillConnectionImpl connection;
 
-  // (Public until JDBC impl. classes moved out of published-intf. package. (DRILL-2089).)
-  public DrillStatementImpl(DrillConnectionImpl connection, int resultSetType, int resultSetConcurrency, int resultSetHoldability) {
+  DrillStatementImpl(DrillConnectionImpl connection, int resultSetType, int resultSetConcurrency, int resultSetHoldability) {
     super(connection, resultSetType, resultSetConcurrency, resultSetHoldability);
     this.connection = connection;
     connection.openStatementsRegistry.addStatement(this);

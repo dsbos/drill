@@ -41,9 +41,13 @@ import net.hydromatic.avatica.ColumnMetaData;
  * Implementation of {@link net.hydromatic.avatica.AvaticaFactory} for Drill and
  * JDBC 4.1 (corresponds to JDK 1.7).
  */
-@SuppressWarnings("UnusedDeclaration")
+// Note:  Must be public so net.hydromatic.avatica.UnregisteredDriver can
+// (reflectively) call no-args constructor.
 public class DrillJdbc41Factory extends DrillFactory {
+
   /** Creates a factory for JDBC version 4.1. */
+  // Note:  Must be public so net.hydromatic.avatica.UnregisteredDriver can
+  // (reflectively) call this constructor.
   public DrillJdbc41Factory() {
     this(4, 1);
   }
@@ -103,7 +107,7 @@ public class DrillJdbc41Factory extends DrillFactory {
   }
 
   private static class DrillJdbc41Statement extends DrillStatementImpl {
-    public DrillJdbc41Statement(DrillConnectionImpl connection, int resultSetType, int resultSetConcurrency,
+    DrillJdbc41Statement(DrillConnectionImpl connection, int resultSetType, int resultSetConcurrency,
         int resultSetHoldability) {
       super(connection, resultSetType, resultSetConcurrency, resultSetHoldability);
     }

@@ -32,7 +32,7 @@ import org.apache.drill.common.exceptions.DrillRuntimeException;
 import org.apache.drill.common.util.DrillStringUtils;
 
 
-public class MetaImpl implements Meta {
+class MetaImpl implements Meta {
   private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(MetaImpl.class);
 
   // TODO:  Use more central version of these constants if availabe.
@@ -81,7 +81,7 @@ public class MetaImpl implements Meta {
 
   final DrillConnectionImpl connection;
 
-  public MetaImpl(DrillConnectionImpl connection) {
+  MetaImpl(DrillConnectionImpl connection) {
     this.connection = connection;
   }
 

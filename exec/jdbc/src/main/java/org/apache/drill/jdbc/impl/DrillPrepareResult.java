@@ -24,13 +24,13 @@ import net.hydromatic.avatica.AvaticaParameter;
 import net.hydromatic.avatica.AvaticaPrepareResult;
 import net.hydromatic.avatica.ColumnMetaData;
 
-public class DrillPrepareResult implements AvaticaPrepareResult{
+class DrillPrepareResult implements AvaticaPrepareResult{
   static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DrillPrepareResult.class);
 
   final String sql;
   final DrillColumnMetaDataList columns = new DrillColumnMetaDataList();
 
-  public DrillPrepareResult(String sql) {
+  DrillPrepareResult(String sql) {
     super();
     this.sql = sql;
   }

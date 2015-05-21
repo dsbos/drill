@@ -26,8 +26,7 @@ import net.hydromatic.avatica.UnregisteredDriver;
  * Optiq JDBC driver.
  */
 public class DriverImpl extends UnregisteredDriver {
-  public static final String CONNECTION_STRING_PREFIX = "jdbc:drill:";
-
+  private static final String CONNECTION_STRING_PREFIX = "jdbc:drill:";
 
 
   public DriverImpl() {

@@ -56,27 +56,23 @@ import com.google.common.collect.Queues;
 /**
  * Drill's implementation of {@link ResultSet}.
  */
-public class DrillResultSetImpl extends AvaticaResultSet implements DrillResultSet {
+class DrillResultSetImpl extends AvaticaResultSet implements DrillResultSet {
   @SuppressWarnings("unused")
   private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DrillResultSetImpl.class);
 
   private final DrillStatementImpl statement;
 
-  // (Public until JDBC impl. classes moved out of published-intf. package. (DRILL-2089).)
-  public SchemaChangeListener changeListener;
-  // (Public until JDBC impl. classes moved out of published-intf. package. (DRILL-2089).)
-  public final ResultsListener resultsListener;
+  SchemaChangeListener changeListener;
+  final ResultsListener resultsListener;
   private final DrillClient client;
-  // (Public until JDBC impl. classes moved out of published-intf. package. (DRILL-2089).)
   // TODO:  Resolve:  Since is barely manipulated here in DrillResultSetImpl,
   //  move down into DrillCursor and have this.clean() have cursor clean it.
-  public final RecordBatchLoader currentBatch;
-  // (Public until JDBC impl. classes moved out of published-intf. package. (DRILL-2089).)
-  public final DrillCursor cursor;
-  public boolean hasPendingCancelationNotification;
+  final RecordBatchLoader currentBatch;
+  final DrillCursor cursor;
+  boolean hasPendingCancelationNotification;
 
-  public DrillResultSetImpl(DrillStatementImpl statement, AvaticaPrepareResult prepareResult,
-                            ResultSetMetaData resultSetMetaData, TimeZone timeZone) {
+  DrillResultSetImpl(DrillStatementImpl statement, AvaticaPrepareResult prepareResult,
+                     ResultSetMetaData resultSetMetaData, TimeZone timeZone) {
     super(statement, prepareResult, resultSetMetaData, timeZone);
     this.statement = statement;
     final int batchQueueThrottlingThreshold =
@@ -131,8 +127,7 @@ public class DrillResultSetImpl extends AvaticaResultSet implements DrillResultS
     close();
   }
 
-  // (Public until JDBC impl. classes moved out of published-intf. package. (DRILL-2089).)
-  public synchronized void cleanup() {
+  synchronized void cleanup() {
     if (resultsListener.getQueryId() != null && ! resultsListener.completed) {
       client.cancelQuery(resultsListener.getQueryId());
     }
@@ -190,8 +185,7 @@ public class DrillResultSetImpl extends AvaticaResultSet implements DrillResultS
     }
   }
 
-  // (Public until JDBC impl. classes moved out of published-intf. package. (DRILL-2089).)
-  public static class ResultsListener implements UserResultsListener {
+  static class ResultsListener implements UserResultsListener {
     private static final Logger logger = getLogger( ResultsListener.class );
 
     private static volatile int nextInstanceId = 1;
@@ -332,7 +326,7 @@ public class DrillResultSetImpl extends AvaticaResultSet implements DrillResultS
       completed = true;
     }
 
-    public QueryId getQueryId() {
+    QueryId getQueryId() {
       return queryId;
     }
 
@@ -345,8 +339,7 @@ public class DrillResultSetImpl extends AvaticaResultSet implements DrillResultS
      * @throws InterruptedException
      *         if waiting on the queue was interrupted
      */
-    public QueryDataBatch getNext() throws UserException,
-                                           InterruptedException {
+    QueryDataBatch getNext() throws UserException, InterruptedException {
       while (true) {
         if (executionFailureException != null) {
           logger.debug( "[#{}] Dequeued query failure exception: {}.",

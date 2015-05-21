@@ -17,6 +17,6 @@
  */
 package org.apache.drill.jdbc.impl;
 
-public interface DrillRemoteStatement {
-  public void cleanup();
+interface DrillRemoteStatement {
+  void cleanup();
 }
