@@ -23,8 +23,6 @@ import java.sql.SQLFeatureNotSupportedException;
 
 import org.apache.drill.common.exceptions.DrillRuntimeException;
 import org.apache.drill.jdbc.AlreadyClosedSqlException;
-import org.apache.drill.jdbc.DrillConnectionImpl;
-import org.apache.drill.jdbc.DrillRemoteStatement;
 import org.apache.drill.jdbc.DrillStatement;
 import org.apache.drill.jdbc.InvalidParameterSqlException;
 

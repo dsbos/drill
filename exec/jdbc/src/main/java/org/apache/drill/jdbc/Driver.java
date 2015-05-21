@@ -24,6 +24,8 @@ import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
 
+import org.apache.drill.jdbc.impl.DriverImpl;
+
 import org.slf4j.Logger;
 import static org.slf4j.LoggerFactory.getLogger;
 

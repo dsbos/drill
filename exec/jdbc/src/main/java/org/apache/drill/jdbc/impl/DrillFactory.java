@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.apache.drill.jdbc;
+package org.apache.drill.jdbc.impl;
 
 import java.sql.SQLException;
 import java.util.Properties;

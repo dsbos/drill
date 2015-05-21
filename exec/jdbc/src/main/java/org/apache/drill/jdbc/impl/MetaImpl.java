@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.drill.jdbc;
+package org.apache.drill.jdbc.impl;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -30,7 +30,6 @@ import net.hydromatic.avatica.Meta;
 
 import org.apache.drill.common.exceptions.DrillRuntimeException;
 import org.apache.drill.common.util.DrillStringUtils;
-import org.apache.drill.jdbc.impl.DrillResultSetImpl;
 
 
 public class MetaImpl implements Meta {

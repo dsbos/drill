@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.drill.jdbc;
+package org.apache.drill.jdbc.impl;
 
 import net.hydromatic.avatica.DriverVersion;
 import net.hydromatic.avatica.Handler;
@@ -44,12 +44,12 @@ public class DriverImpl extends UnregisteredDriver {
   protected String getFactoryClassName(JdbcVersion jdbcVersion) {
     switch (jdbcVersion) {
     case JDBC_30:
-      return "org.apache.drill.jdbc.DrillJdbc3Factory";
+      return "org.apache.drill.jdbc.impl.DrillJdbc3Factory";
     case JDBC_40:
-      return "org.apache.drill.jdbc.DrillJdbc40Factory";
+      return "org.apache.drill.jdbc.impl.DrillJdbc40Factory";
     case JDBC_41:
     default:
-      return "org.apache.drill.jdbc.DrillJdbc41Factory";
+      return "org.apache.drill.jdbc.impl.DrillJdbc41Factory";
     }
   }
 

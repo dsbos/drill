@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.apache.drill.jdbc;
+package org.apache.drill.jdbc.impl;
 
 import java.io.InputStream;
 import java.io.Reader;
@@ -28,9 +28,6 @@ import java.sql.SQLXML;
 import java.util.List;
 import java.util.Properties;
 import java.util.TimeZone;
-
-import org.apache.drill.jdbc.impl.DrillResultSetImpl;
-import org.apache.drill.jdbc.impl.DrillStatementImpl;
 
 import net.hydromatic.avatica.AvaticaConnection;
 import net.hydromatic.avatica.AvaticaPrepareResult;

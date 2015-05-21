@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.drill.jdbc;
+package org.apache.drill.jdbc.impl;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -44,7 +44,12 @@ import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.RemoteServiceSet;
 import org.apache.drill.exec.store.StoragePluginRegistry;
 import org.apache.drill.exec.util.TestUtilities;
-import org.apache.drill.jdbc.impl.DrillStatementImpl;
+import org.apache.drill.jdbc.AlreadyClosedSqlException;
+import org.apache.drill.jdbc.DrillConnection;
+import org.apache.drill.jdbc.DrillConnectionConfig;
+import org.apache.drill.jdbc.InvalidParameterSqlException;
+import org.apache.drill.jdbc.JdbcApiSqlException;
+
 
 // (Public until JDBC impl. classes moved out of published-intf. package. (DRILL-2089).)
 /**
