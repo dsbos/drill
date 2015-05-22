@@ -57,36 +57,50 @@ public class DrillJdbc41Factory extends DrillFactory {
     super(major, minor);
   }
 
+
   @Override
-  public DrillJdbc41Connection newDrillConnection(DriverImpl driver, DrillFactory factory, String url, Properties info)  throws SQLException{
-    return new DrillJdbc41Connection(driver, factory, url, info);
+  DrillConnectionImpl newDrillConnection(DriverImpl driver,
+                                         DrillFactory factory,
+                                         String url,
+                                         Properties info) throws SQLException {
+    return new DrillConnectionImpl(driver, factory, url, info);
   }
 
   @Override
-  public DrillJdbc41DatabaseMetaData newDatabaseMetaData(AvaticaConnection connection) {
-    return new DrillJdbc41DatabaseMetaData((DrillConnectionImpl) connection);
+  public DrillDatabaseMetaData newDatabaseMetaData(AvaticaConnection connection) {
+    return new DrillDatabaseMetaData((DrillConnectionImpl) connection);
   }
 
 
   @Override
-  public DrillJdbc41Statement newStatement(AvaticaConnection connection, int resultSetType, int resultSetConcurrency,
-      int resultSetHoldability) {
-    return new DrillJdbc41Statement((DrillConnectionImpl) connection, resultSetType, resultSetConcurrency,
-        resultSetHoldability);
+  public DrillStatementImpl newStatement(AvaticaConnection connection,
+                                         int resultSetType,
+                                         int resultSetConcurrency,
+                                         int resultSetHoldability) {
+    return new DrillStatementImpl((DrillConnectionImpl) connection,
+                                  resultSetType,
+                                  resultSetConcurrency,
+                                  resultSetHoldability);
   }
 
   @Override
-  public AvaticaPreparedStatement newPreparedStatement(AvaticaConnection connection,
-      AvaticaPrepareResult prepareResult, int resultSetType, int resultSetConcurrency, int resultSetHoldability)
+  public DrillJdbc41PreparedStatement newPreparedStatement(AvaticaConnection connection,
+                                                       AvaticaPrepareResult prepareResult,
+                                                       int resultSetType,
+                                                       int resultSetConcurrency,
+                                                       int resultSetHoldability)
       throws SQLException {
-    return new DrillJdbc41PreparedStatement((DrillConnectionImpl) connection, (DrillPrepareResult) prepareResult,
-        resultSetType, resultSetConcurrency, resultSetHoldability);
+    return new DrillJdbc41PreparedStatement((DrillConnectionImpl) connection,
+                                            (DrillPrepareResult) prepareResult,
+                                            resultSetType,
+                                            resultSetConcurrency,
+                                            resultSetHoldability);
   }
 
   @Override
-  public DrillResultSetImpl newResultSet( AvaticaStatement statement,
-                                          AvaticaPrepareResult prepareResult,
-                                          TimeZone timeZone ) {
+  public DrillResultSetImpl newResultSet(AvaticaStatement statement,
+                                         AvaticaPrepareResult prepareResult,
+                                         TimeZone timeZone) {
     final ResultSetMetaData metaData =
         newResultSetMetaData(statement, prepareResult.getColumnList());
     return new DrillResultSetImpl( (DrillStatementImpl) statement,
@@ -95,31 +109,24 @@ public class DrillJdbc41Factory extends DrillFactory {
   }
 
   @Override
-  public ResultSetMetaData newResultSetMetaData(AvaticaStatement statement, List<ColumnMetaData> columnMetaDataList) {
+  public ResultSetMetaData newResultSetMetaData(AvaticaStatement statement,
+                                                List<ColumnMetaData> columnMetaDataList) {
     return new AvaticaResultSetMetaData(statement, null, columnMetaDataList);
   }
 
-  private static class DrillJdbc41Connection extends DrillConnectionImpl {
-    DrillJdbc41Connection(DriverImpl driver, DrillFactory factory, String url, Properties info) throws SQLException {
-      super(driver, factory, url, info);
-    }
-
-  }
-
-  private static class DrillJdbc41Statement extends DrillStatementImpl {
-    DrillJdbc41Statement(DrillConnectionImpl connection, int resultSetType, int resultSetConcurrency,
-        int resultSetHoldability) {
-      super(connection, resultSetType, resultSetConcurrency, resultSetHoldability);
-    }
-  }
 
   /**
    * JDBC 4.1 version of {@link DrillPreparedStatementImpl}.
    */
   private static class DrillJdbc41PreparedStatement extends DrillPreparedStatementImpl {
-    DrillJdbc41PreparedStatement(DrillConnectionImpl connection, DrillPrepareResult prepareResult, int resultSetType,
-        int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-      super(connection, prepareResult, resultSetType, resultSetConcurrency, resultSetHoldability);
+
+    DrillJdbc41PreparedStatement(DrillConnectionImpl connection,
+                                 DrillPrepareResult prepareResult,
+                                 int resultSetType,
+                                 int resultSetConcurrency,
+                                 int resultSetHoldability) throws SQLException {
+      super(connection, prepareResult,
+            resultSetType, resultSetConcurrency, resultSetHoldability);
     }
 
     @Override
@@ -211,12 +218,7 @@ public class DrillJdbc41Factory extends DrillFactory {
     public void setNClob(int parameterIndex, Reader reader) throws SQLException {
       getParameter(parameterIndex).setNClob(reader);
     }
-  }
 
-  private static class DrillJdbc41DatabaseMetaData extends DrillDatabaseMetaData {
-    DrillJdbc41DatabaseMetaData(DrillConnectionImpl connection) {
-      super(connection);
-    }
   }
 
 }

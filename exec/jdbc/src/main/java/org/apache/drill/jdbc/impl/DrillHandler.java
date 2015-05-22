@@ -37,11 +37,12 @@ class DrillHandler implements Handler {
   }
 
   @Override
-  public void onStatementExecute(AvaticaStatement statement, ResultSink resultSink) throws RuntimeException {
+  public void onStatementExecute(AvaticaStatement statement,
+                                 ResultSink resultSink) throws RuntimeException {
   }
 
   @Override
   public void onStatementClose(AvaticaStatement statement) throws RuntimeException {
-    ((DrillRemoteStatement) statement).cleanup();
+    ((DrillRemoteStatement) statement).cleanUp();
   }
 }

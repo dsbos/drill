@@ -58,7 +58,8 @@ import com.google.common.collect.Queues;
  */
 class DrillResultSetImpl extends AvaticaResultSet implements DrillResultSet {
   @SuppressWarnings("unused")
-  private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DrillResultSetImpl.class);
+  private static final org.slf4j.Logger logger =
+      org.slf4j.LoggerFactory.getLogger(DrillResultSetImpl.class);
 
   private final DrillStatementImpl statement;
 
@@ -138,8 +139,15 @@ class DrillResultSetImpl extends AvaticaResultSet implements DrillResultSet {
   @Override
   public boolean next() throws SQLException {
     checkNotClosed();
-    // Next may be called after close has been called (for example after a user cancel) which in turn
-    // sets the cursor to null. So we must check before we call next.
+    // TODO:  Resolve following comments (possibly obsolete because of later
+    // addition of preceding call to checkNotClosed.  Also, NOTE that the
+    // following check, and maybe some checkNotClosed() calls, probably must
+    // synchronize on the statement, per the comment on AvaticaStatement's
+    // openResultSet:
+
+    // Next may be called after close has been called (for example after a user
+    // cancellation) which in turn sets the cursor to null.  So we must check
+    // before we call next.
     // TODO: handle next() after close is called in the Avatica code.
     if (super.cursor != null) {
       return super.next();
@@ -164,8 +172,9 @@ class DrillResultSetImpl extends AvaticaResultSet implements DrillResultSet {
       // calling some wait method?
       resultsListener.latch.await();
     } catch ( InterruptedException e ) {
-      // Preserve evidence that the interruption occurred so that code higher up on the call stack can learn of the
-      // interruption and respond to it if it wants to.
+      // Preserve evidence that the interruption occurred so that code higher up
+      // on the call stack can learn of the interruption and respond to it if it
+      // wants to.
       Thread.currentThread().interrupt();
 
       // Not normally expected--Drill doesn't interrupt in this area (right?)--

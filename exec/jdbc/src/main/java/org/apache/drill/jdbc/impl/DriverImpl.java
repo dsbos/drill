@@ -27,6 +27,8 @@ import net.hydromatic.avatica.UnregisteredDriver;
  */
 public class DriverImpl extends UnregisteredDriver {
   private static final String CONNECTION_STRING_PREFIX = "jdbc:drill:";
+  private static final String METADATA_PROPERTIES_RESOURCE_PATH =
+      "apache-drill-jdbc.properties";
 
 
   public DriverImpl() {
@@ -55,12 +57,14 @@ public class DriverImpl extends UnregisteredDriver {
   @Override
   protected DriverVersion createDriverVersion() {
     return DriverVersion.load(
-        DriverImpl.class,
-        "apache-drill-jdbc.properties",
-        "Drill JDBC Driver",
-        "unknown version",
-        "Optiq",
-        "unknown version");
+        this.getClass(),
+        METADATA_PROPERTIES_RESOURCE_PATH,
+        // Driver name and version:
+        "Apache Drill JDBC Driver",
+        "<Properties resource " + METADATA_PROPERTIES_RESOURCE_PATH + " not loaded>",
+        // Database product name and version:
+        "Apache Drill",
+        "<Properties resource " + METADATA_PROPERTIES_RESOURCE_PATH + " not loaded>");
   }
 
 

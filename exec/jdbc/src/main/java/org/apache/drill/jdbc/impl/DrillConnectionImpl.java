@@ -53,12 +53,11 @@ import org.apache.drill.jdbc.JdbcApiSqlException;
 
 /**
  * Drill's implementation of {@link Connection}.
- *
- * <p>
- * Abstract to allow newer versions of JDBC to add methods.
- * </p>
  */
-abstract class DrillConnectionImpl extends AvaticaConnection
+// (Was abstract to avoid errors _here_ if newer versions of JDBC added
+// interface methods, but now newer versions would probably use Java 8's default
+// methods for compatibility.)
+class DrillConnectionImpl extends AvaticaConnection
                                    implements DrillConnection {
   private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DrillConnection.class);
 
@@ -152,7 +151,7 @@ abstract class DrillConnectionImpl extends AvaticaConnection
   }
 
   @Override
-  public DrillConnectionConfig config() {
+  public DrillConnectionConfig getConfig() {
     return config;
   }
 
