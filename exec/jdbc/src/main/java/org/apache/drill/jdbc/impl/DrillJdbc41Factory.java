@@ -114,9 +114,9 @@ public class DrillJdbc41Factory extends DrillFactory {
   }
 
   /**
-   * JDBC 4.1 version of {@link DrillPreparedStatement}.
+   * JDBC 4.1 version of {@link DrillPreparedStatementImpl}.
    */
-  private static class DrillJdbc41PreparedStatement extends DrillPreparedStatement {
+  private static class DrillJdbc41PreparedStatement extends DrillPreparedStatementImpl {
     DrillJdbc41PreparedStatement(DrillConnectionImpl connection, DrillPrepareResult prepareResult, int resultSetType,
         int resultSetConcurrency, int resultSetHoldability) throws SQLException {
       super(connection, prepareResult, resultSetType, resultSetConcurrency, resultSetHoldability);

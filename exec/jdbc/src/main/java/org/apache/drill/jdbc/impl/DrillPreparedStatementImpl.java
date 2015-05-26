@@ -30,10 +30,10 @@ import net.hydromatic.avatica.AvaticaPreparedStatement;
  * {@link net.hydromatic.avatica.AvaticaFactory#newPreparedStatement}.
  * </p>
  */
-abstract class DrillPreparedStatement extends AvaticaPreparedStatement
+abstract class DrillPreparedStatementImpl extends AvaticaPreparedStatement
     implements DrillRemoteStatement {
 
-  protected DrillPreparedStatement(DrillConnectionImpl connection, AvaticaPrepareResult prepareResult,
+  protected DrillPreparedStatementImpl(DrillConnectionImpl connection, AvaticaPrepareResult prepareResult,
       int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
     super(connection, prepareResult, resultSetType, resultSetConcurrency, resultSetHoldability);
     connection.openStatementsRegistry.addStatement(this);

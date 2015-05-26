@@ -342,8 +342,8 @@ abstract class DrillConnectionImpl extends AvaticaConnection
     checkNotClosed();
     try {
       DrillPrepareResult prepareResult = new DrillPrepareResult(sql);
-      DrillPreparedStatement statement =
-          (DrillPreparedStatement) factory.newPreparedStatement(
+      DrillPreparedStatementImpl statement =
+          (DrillPreparedStatementImpl) factory.newPreparedStatement(
               this, prepareResult, resultSetType, resultSetConcurrency,
               resultSetHoldability);
       return statement;
