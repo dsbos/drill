@@ -33,6 +33,7 @@ import org.apache.drill.exec.physical.base.GroupScan;
 import org.apache.drill.exec.physical.base.PhysicalOperator;
 import org.apache.drill.exec.physical.base.ScanStats;
 import org.apache.drill.exec.physical.base.SubScan;
+import org.apache.drill.exec.planner.physical.PlannerSettings;
 import org.apache.drill.exec.proto.CoordinationProtos.DrillbitEndpoint;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -58,7 +59,8 @@ public class MockGroupScanPOP extends AbstractGroupScan {
     this.url = url;
   }
 
-  public ScanStats getScanStats() {
+  @Override
+  public ScanStats getScanStats(PlannerSettings settings) {
     return ScanStats.TRIVIAL_TABLE;
   }
 

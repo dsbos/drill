@@ -31,7 +31,9 @@ import java.util.concurrent.TimeUnit;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+
 import io.netty.buffer.DrillBuf;
+
 import org.apache.drill.common.exceptions.DrillRuntimeException;
 import org.apache.drill.common.exceptions.ExecutionSetupException;
 import org.apache.drill.common.expression.SchemaPath;
@@ -51,6 +53,7 @@ import org.apache.drill.exec.physical.base.GroupScan;
 import org.apache.drill.exec.physical.base.PhysicalOperator;
 import org.apache.drill.exec.physical.base.ScanStats;
 import org.apache.drill.exec.physical.base.ScanStats.GroupScanProperty;
+import org.apache.drill.exec.planner.physical.PlannerSettings;
 import org.apache.drill.exec.proto.CoordinationProtos.DrillbitEndpoint;
 import org.apache.drill.exec.store.ParquetOutputRecordWriter;
 import org.apache.drill.exec.store.StoragePluginRegistry;
@@ -90,9 +93,9 @@ import org.apache.drill.exec.vector.ValueVector;
 import org.apache.drill.exec.vector.VarBinaryVector;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.Path;
-
 import org.apache.hadoop.security.UserGroupInformation;
 import org.joda.time.DateTimeUtils;
+
 import parquet.column.statistics.Statistics;
 import parquet.format.ConvertedType;
 import parquet.format.FileMetaData;
@@ -116,6 +119,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
+
 import parquet.schema.OriginalType;
 import parquet.schema.PrimitiveType.PrimitiveTypeName;
 import parquet.schema.Type;
@@ -721,7 +725,7 @@ public class ParquetGroupScan extends AbstractFileGroupScan {
   }
 
   @Override
-  public ScanStats getScanStats() {
+  public ScanStats getScanStats(PlannerSettings settings) {
     int columnCount = columns == null ? 20 : columns.size();
     return new ScanStats(GroupScanProperty.EXACT_ROW_COUNT, rowCount, 1, rowCount * columnCount);
   }

@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+
 import org.apache.drill.common.exceptions.ExecutionSetupException;
 import org.apache.drill.common.expression.SchemaPath;
 import org.apache.drill.exec.physical.EndpointAffinity;
@@ -31,6 +32,7 @@ import org.apache.drill.exec.physical.base.GroupScan;
 import org.apache.drill.exec.physical.base.PhysicalOperator;
 import org.apache.drill.exec.physical.base.ScanStats;
 import org.apache.drill.exec.physical.base.SubScan;
+import org.apache.drill.exec.planner.physical.PlannerSettings;
 import org.apache.drill.exec.proto.CoordinationProtos.DrillbitEndpoint;
 import org.apache.drill.exec.proto.UserBitShared.CoreOperatorType;
 import org.apache.drill.exec.store.StoragePluginRegistry;
@@ -70,7 +72,7 @@ public class SystemTableScan extends AbstractGroupScan implements SubScan {
    * @return a trivial stats table
    */
   @Override
-  public ScanStats getScanStats() {
+  public ScanStats getScanStats(PlannerSettings settings) {
     return ScanStats.TRIVIAL_TABLE;
   }
 

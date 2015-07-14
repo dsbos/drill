@@ -29,10 +29,11 @@ import org.apache.drill.exec.physical.base.GroupScan;
 import org.apache.drill.exec.physical.base.PhysicalOperator;
 import org.apache.drill.exec.physical.base.ScanStats;
 import org.apache.drill.exec.physical.base.SubScan;
+import org.apache.drill.exec.planner.physical.PlannerSettings;
 import org.apache.drill.exec.proto.CoordinationProtos.DrillbitEndpoint;
 import org.apache.drill.exec.store.RecordReader;
 
-public class DirectGroupScan extends AbstractGroupScan{
+public class DirectGroupScan extends AbstractGroupScan {
   static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DirectGroupScan.class);
 
   private final RecordReader reader;
@@ -58,7 +59,8 @@ public class DirectGroupScan extends AbstractGroupScan{
     return 1;
   }
 
-  public ScanStats getScanStats(){
+  @Override
+  public ScanStats getScanStats(PlannerSettings settings) {
     return ScanStats.TRIVIAL_TABLE;
   }
 

@@ -31,6 +31,7 @@ import org.apache.drill.exec.physical.base.PhysicalOperator;
 import org.apache.drill.exec.physical.base.ScanStats;
 import org.apache.drill.exec.physical.base.ScanStats.GroupScanProperty;
 import org.apache.drill.exec.physical.base.SubScan;
+import org.apache.drill.exec.planner.physical.PlannerSettings;
 import org.apache.drill.exec.proto.CoordinationProtos.DrillbitEndpoint;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -87,7 +88,8 @@ public class InfoSchemaGroupScan extends AbstractGroupScan{
     return new InfoSchemaSubScan(table, filter);
   }
 
-  public ScanStats getScanStats(){
+  @Override
+  public ScanStats getScanStats(PlannerSettings settings) {
     if (filter == null) {
       return ScanStats.TRIVIAL_TABLE;
     } else {
@@ -104,7 +106,7 @@ public class InfoSchemaGroupScan extends AbstractGroupScan{
 
   @Override
   public PhysicalOperator getNewWithChildren(List<PhysicalOperator> children) throws ExecutionSetupException {
-    return new InfoSchemaGroupScan (this);
+    return new InfoSchemaGroupScan(this);
   }
 
   @Override
@@ -114,7 +116,7 @@ public class InfoSchemaGroupScan extends AbstractGroupScan{
 
   @Override
   public GroupScan clone(List<SchemaPath> columns) {
-    InfoSchemaGroupScan  newScan = new InfoSchemaGroupScan (this);
+    InfoSchemaGroupScan newScan = new InfoSchemaGroupScan(this);
     return newScan;
   }
 
