@@ -72,16 +72,6 @@ public abstract class AbstractGroupScan extends AbstractBase implements GroupSca
   }
 
   @Override
-  public ScanStats getScanStats(PlannerSettings settings) {
-    return getScanStats();
-  }
-
-  @JsonIgnore
-  public ScanStats getScanStats() {
-    throw new UnsupportedOperationException("This should be implemented.");
-  }
-
-  @Override
   @JsonIgnore
   public boolean enforceWidth() {
     return false;
