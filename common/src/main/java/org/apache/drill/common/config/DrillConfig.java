@@ -195,10 +195,21 @@ public final class DrillConfig extends NestedConfig{
 
     // 2. Load per-module configuration files.
     final Collection<URL> urls = PathScanner.getConfigURLs();
+<<<<<<< HEAD
     final String lineBrokenList =
         urls.size() == 0 ? "" : "\n\t- " + Joiner.on("\n\t- ").join(urls);
     logger.info("Loading {} module configuration files at: {}.",
                 urls.size(), lineBrokenList);
+=======
+    if (logger.isInfoEnabled()) {
+      final StringBuilder sb = new StringBuilder();
+      for (URL url : urls) {
+        sb.append( "\n\t- " ).append( url );
+      }
+      logger.info("Loading {} module configuration files at: {}.",
+                  urls.size(), sb);
+    }
+>>>>>>> DRILL-3496: Update 2: Some DEBUG -> INFO; another single multi-line msg.
     for (URL url : urls) {
       fallback = ConfigFactory.parseURL(url).withFallback(fallback);
     }
