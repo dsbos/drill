@@ -17,6 +17,7 @@
  */
 package org.apache.drill.jdbc.impl;
 
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
