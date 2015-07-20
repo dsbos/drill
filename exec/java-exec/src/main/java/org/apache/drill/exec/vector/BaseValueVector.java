@@ -93,7 +93,7 @@ public abstract class BaseValueVector implements ValueVector {
     @Override
     public void generateTestData(int values) { }
 
-    //TODO: consider making mutator stateless(if possible) on another issue.
+    //TODO: consider making mutator stateless (if possible) on another issue.
     public void reset() { }
   }
 
