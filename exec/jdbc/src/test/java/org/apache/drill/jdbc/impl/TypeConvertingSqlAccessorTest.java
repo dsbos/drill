@@ -38,8 +38,8 @@ import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
 /**
- * Class-level unit test for  {@link TypeConvertingSqlAccessor}.
- * (Also see {@link org.apache.drill.jdbcResultSetGetMethodConversionsTest}.
+ * Class-level unit test for {@link org.apache.drill.jdbc.impl.TypeConvertingSqlAccessor}.
+ * (Also see {@link org.apache.drill.jdbc.ResultSetGetMethodConversionsTest}.
  */
 public class TypeConvertingSqlAccessorTest {
 
