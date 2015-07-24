@@ -88,7 +88,15 @@ public class DatabaseMetaDataTest {
   //  storesUpperCaseQuotedIdentifiers()
   //  storesLowerCaseQuotedIdentifiers()
   //  storesMixedCaseQuotedIdentifiers()
-  //  getIdentifierQuoteString()
+
+  // TODO(DRILL-3510):  Update when Drill accepts standard SQL's double quote.
+  @Test
+  public void testGetIdentifierQuoteStringSaysBackquote() throws SQLException {
+    assertThat( dbmd.getIdentifierQuoteString(), equalTo( "`" ) );
+  }
+
+  // For matching order of java.sql.DatabaseMetaData:
+  //
   //  getSQLKeywords()
   //  getNumericFunctions()
   //  getStringFunctions()
