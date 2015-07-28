@@ -33,16 +33,45 @@
     <level value="warn" />
   </appender>
 
-  <logger name="org.apache.drill" additivity="false">
+<!--
+  <logger name="org.apache.drill">
     <level value="debug" />
-    <appender-ref ref="SOCKET" />
-<!--     <appender-ref ref="STDOUT" /> -->
   </logger>
+
+
+
+-->
+
+  <logger name="org.apache.drill.exec.rpc">
+    <level value="error" />
+  </logger>
+
+  <logger name="org.apache.drill.exec.expr.fn.DrillFunctionRegistry">
+    <level value="error" />
+  </logger>
+
+  <logger name="org.apache.drill.exec.memory">
+    <level value="info" />
+  </logger>
+
+  <logger name="org.apache.drill.exec.work.foreman">
+    <level value="info" />
+  </logger>
+
+
+  <logger name="io.netty">
+    <level value="info" />
+  </logger>
+
+  <logger name="org.apache.hadoop">
+    <level value="info" />
+  </logger>
+
 
   <root>
     <level value="debug" />
     <appender-ref ref="SOCKET" />
-<!--     <appender-ref ref="STDOUT" /> -->
+    <appender-ref ref="STDOUT" />
   </root>
 
 </configuration>
