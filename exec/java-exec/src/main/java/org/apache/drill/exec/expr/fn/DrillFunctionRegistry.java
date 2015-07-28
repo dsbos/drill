@@ -53,7 +53,7 @@ public class DrillFunctionRegistry {
     Set<Class<? extends DrillFunc>> providerClasses = PathScanner.scanForImplementations(DrillFunc.class, config.getStringList(ExecConstants.FUNCTION_PACKAGES));
     boolean TEMPDISABLE = false; //??????????
     if ( TEMPDISABLE ) { System.err.println( "???? FUNCTIONS SUPPRESSED" ); }
-    if ( ! TEMPDISABLE ) { System.err.println( "???? FUNCTIONS ENABLED" ); }
+    if ( ! TEMPDISABLE ) { System.err.println( "???? FUNCTIONS STILL ENABLED" ); }
     for (Class<? extends DrillFunc> clazz : providerClasses) {
       if (TEMPDISABLE) {continue;}
       DrillFuncHolder holder = converter.getHolder(clazz);
