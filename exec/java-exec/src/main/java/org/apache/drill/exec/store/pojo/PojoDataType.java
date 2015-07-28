@@ -41,6 +41,7 @@ public class PojoDataType extends RecordDataType {
 
   public PojoDataType(Class<?> pojoClass) {
     this.pojoClass = pojoClass;
+    System.err.println( "???.11: PojoDataType.PojoDataType(...): pojoClass.getDeclaredFields().length = " + pojoClass.getDeclaredFields().length );
     for (Field f : pojoClass.getDeclaredFields()) {
       if (Modifier.isStatic(f.getModifiers())) {
         continue;

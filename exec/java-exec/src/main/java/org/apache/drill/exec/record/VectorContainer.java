@@ -46,11 +46,16 @@ public class VectorContainer implements Iterable<VectorWrapper<?>>, VectorAccess
   private OperatorContext oContext;
   private boolean schemaChanged = true; // Schema has changed since last built. Must rebuild schema
 
+  private static int instanceCount = 0; //???? TEMP
+  private final int instNum = ++instanceCount; //???? TEMP
+
   public VectorContainer() {
+    System.err.println( "VectorContainer#" + instNum + ".VectorContainer()" );
     this.oContext = null;
   }
 
   public VectorContainer( OperatorContext oContext) {
+    System.err.println( "VectorContainer#" + instNum + ".VectorContainer(OperatorContext)" );
     this.oContext = oContext;
   }
 
@@ -166,7 +171,9 @@ public class VectorContainer implements Iterable<VectorWrapper<?>>, VectorAccess
     schemaChanged = true;
     schema = null;
     int i = wrappers.size();
+    System. err.println( "???.xx: VectorContainer#" + instNum + ".add(...): wrappers.size().1 = " + wrappers.size() );
     wrappers.add(SimpleVectorWrapper.create(vv));
+    System. err.println( "???.xx: VectorContainer#" + instNum + ".add(...): wrappers.size().2 = " + wrappers.size() );
     return new TypedFieldId(vv.getField().getType(), i);
   }
 
@@ -270,6 +277,7 @@ public class VectorContainer implements Iterable<VectorWrapper<?>>, VectorAccess
 
   public void buildSchema(SelectionVectorMode mode) {
     SchemaBuilder bldr = BatchSchema.newBuilder().setSelectionVectorMode(mode);
+    System.err.println( "???.35: VectorContainer#" + instNum + ".buildSchema(...): wrappers.size() = " + wrappers.size() );
     for (VectorWrapper<?> v : wrappers) {
       bldr.addField(v.getField());
     }
@@ -305,6 +313,7 @@ public class VectorContainer implements Iterable<VectorWrapper<?>>, VectorAccess
   }
 
   public int getNumberOfColumns() {
+    System.err.println( "???.41: VectorContainer#" + instNum + ".getNumberOfColumns(): wrappers.size() = " + wrappers.size() );
     return this.wrappers.size();
   }
 

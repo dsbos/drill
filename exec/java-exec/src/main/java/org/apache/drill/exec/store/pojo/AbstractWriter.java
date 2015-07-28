@@ -33,6 +33,7 @@ abstract class AbstractWriter<V extends ValueVector> implements PojoWriter{
   protected final MajorType type;
 
   public AbstractWriter(Field field, MajorType type){
+    System.err.println( "???.22: AbstractWriter[" + getClass().getSimpleName() + "].AbstractWriter(...): field = " + field );
     this.field = field;
     this.type = type;
   }

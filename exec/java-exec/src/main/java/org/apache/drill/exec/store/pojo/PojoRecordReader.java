@@ -74,6 +74,7 @@ public class PojoRecordReader<T> extends AbstractRecordReader {
       Field[] fields = pojoClass.getDeclaredFields();
       List<PojoWriter> writers = Lists.newArrayList();
 
+      System.err.println( "???.21: PojoRecordReader.setup(...): fields.length = " + fields.length );
       for (int i = 0; i < fields.length; i++) {
         Field f = fields[i];
 
@@ -142,6 +143,7 @@ public class PojoRecordReader<T> extends AbstractRecordReader {
 
   @Override
   public int next() {
+    System.err.println( "???.31: PojoRecordReader.next(): writers.length = " + writers.length );
     boolean allocated = false;
     injector.injectPause(operatorContext.getExecutionControls(), "read-next", logger);
     try {

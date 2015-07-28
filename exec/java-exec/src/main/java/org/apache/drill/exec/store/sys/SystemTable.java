@@ -59,6 +59,13 @@ public enum SystemTable {
       return new VersionIterator();
     }
   },
+  // ??? TEMP.
+  VERSION_NO_ROWS("version_no_rows", false, VersionIterator.VersionInfo.class) {
+    @Override
+    public Iterator<Object> getIterator(final FragmentContext context) {
+      return new VersionNoRowsIterator();
+    }
+  },
 
   MEMORY("memory", true, MemoryIterator.MemoryInfo.class) {
     @Override

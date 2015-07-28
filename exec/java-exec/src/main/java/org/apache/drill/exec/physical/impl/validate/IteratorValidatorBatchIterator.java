@@ -122,6 +122,7 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
 
     if (state == IterOutcome.OK || state == IterOutcome.OK_NEW_SCHEMA) {
       BatchSchema schema = incoming.getSchema();
+      System.err.println( "???.??: IteratorValidatorBatchIterator.next(): schema.getFieldCount() = " + schema.getFieldCount() );
       if (schema == null) {
         return state;
       }

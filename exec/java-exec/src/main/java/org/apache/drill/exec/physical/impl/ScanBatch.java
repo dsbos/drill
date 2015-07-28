@@ -309,7 +309,9 @@ public class ScanBatch implements CloseableRecordBatch {
     @SuppressWarnings("unchecked")
     @Override
     public <T extends ValueVector> T addField(MaterializedField field, Class<T> clazz) throws SchemaChangeException {
-      // Check if the field exists
+      System.err.println( "???.24: ScanBatch.Mutator.addField(...): field = " + field );
+      System.err.println( "???.24: ScanBatch.Mutator.addField(...): container.getNumberOfColumns().1 = " + container.getNumberOfColumns() );
+      // Check if the field exists.
       ValueVector v = fieldVectorMap.get(field.key());
 
       if (v == null || v.getClass() != clazz) {
@@ -330,6 +332,7 @@ public class ScanBatch implements CloseableRecordBatch {
         schemaChange = true;
       }
 
+      System.err.println( "??.24: ScanBatch.Mutator.addField(...): container.getNumberOfColumns().2 = " + container.getNumberOfColumns() );
       return (T) v;
     }
 

@@ -50,6 +50,7 @@ public abstract class RecordDataType {
     final List<SqlTypeName> types = getFieldSqlTypeNames();
     final List<String> names = getFieldNames();
     final List<RelDataType> fields = Lists.newArrayList();
+    System.err.println( "???.12: RecordDataType[" + getClass().getSimpleName() + "].getRowType(...): types.size() = " + types.size() );
     for (final SqlTypeName typeName : types) {
       switch (typeName) {
         case VARCHAR:

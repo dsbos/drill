@@ -30,6 +30,7 @@ public class BatchSchema implements Iterable<MaterializedField> {
   private final List<MaterializedField> fields;
 
   BatchSchema(SelectionVectorMode selectionVector, List<MaterializedField> fields) {
+    System.err.println( "???.37: BatchSchema.BatchSchema(...): fields.size() = " + fields.size() );
     this.fields = fields;
     this.selectionVectorMode = selectionVector;
   }

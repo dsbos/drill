@@ -40,6 +40,9 @@ public class MaterializedField {
   }
 
   private MaterializedField(SchemaPath path, MajorType type, LinkedHashSet<MaterializedField> children) {
+    System.err.println( "???.23: MaterializedField.MaterializedField(...): path = " + path );
+    //??System.err.println( "???.XX33: MaterializedField.MaterializedField(...): type = " + type );
+    //??System.err.println( "???.XX33: MaterializedField.MaterializedField(...): children = " + children );
     this.key = new Key(path, type);
     this.children = children;
   }

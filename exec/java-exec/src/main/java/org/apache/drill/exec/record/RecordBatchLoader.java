@@ -70,6 +70,13 @@ public class RecordBatchLoader implements VectorAccessible, Iterable<VectorWrapp
     boolean schemaChanged = schema == null;
 
     final Map<MaterializedField, ValueVector> oldFields = Maps.newHashMap();
+    System.err.println( "???.C.1: RecordBatchLoader.load(...): container.getNumberOfColumns() = " + container.getNumberOfColumns() );
+    if ( null == schema ) {
+      System.err.println( "       : RecordBatchLoader.load(...): schema = " + schema );
+    }
+    else {
+      System.err.println( "       : RecordBatchLoader.load(...): schema.getFieldCount() = " + schema.getFieldCount() );
+    }
     for (final VectorWrapper wrapper : container) {
       final ValueVector vector = wrapper.getValueVector();
       oldFields.put(vector.getField(), vector);
@@ -113,6 +120,13 @@ public class RecordBatchLoader implements VectorAccessible, Iterable<VectorWrapp
       schema = builder.build();
       newVectors.buildSchema(BatchSchema.SelectionVectorMode.NONE);
       container = newVectors;
+      System.err.println( "???.C.2: RecordBatchLoader.load(...): container.getNumberOfColumns() = " + container.getNumberOfColumns() );
+      if ( null == schema ) {
+        System.err.println( "       : RecordBatchLoader.load(...): schema = " + schema );
+      }
+      else {
+        System.err.println( "       : RecordBatchLoader.load(...): schema.getFieldCount() = " + schema.getFieldCount() );
+      }
     } catch (final Throwable cause) {
       // We have to clean up new vectors created here and pass over the actual cause. It is upper layer who should
       // adjudicate to call upper layer specific clean up logic.
