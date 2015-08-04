@@ -73,6 +73,7 @@ public class ${name}Accessor extends AbstractSqlAccessor {
     return ${jdbcObjectClass}.class;
   }
 
+  @Override
   public Object getObject(int index) {
    <#if mode == "Nullable">
     if (ac.isNull(index)) {
@@ -110,6 +111,8 @@ public class ${name}Accessor extends AbstractSqlAccessor {
   <#switch minor.class>
 
     <#case "VarBinary">
+
+    @Override
     public String getString(int index) {
      <#if mode == "Nullable">
       if (ac.isNull(index)) {
@@ -160,6 +163,7 @@ public class ${name}Accessor extends AbstractSqlAccessor {
       <#break>
 
     <#case "Var16Char">
+
     @Override
     public InputStreamReader getReader(int index) {
      <#if mode == "Nullable">
@@ -195,6 +199,7 @@ public class ${name}Accessor extends AbstractSqlAccessor {
     return Timestamp.class;
   }
 
+  @Override
   public Object getObject(int index) {
     return getTimestamp(index);
   }
@@ -239,6 +244,7 @@ public class ${name}Accessor extends AbstractSqlAccessor {
     return Date.class;
   }
 
+  @Override
   public Object getObject(int index) {
    <#if mode == "Nullable">
     if (ac.isNull(index)) {
@@ -267,6 +273,7 @@ public class ${name}Accessor extends AbstractSqlAccessor {
     return Timestamp.class;
   }
 
+  @Override
   public Object getObject(int index) {
    <#if mode == "Nullable">
     if (ac.isNull(index)) {
@@ -295,6 +302,7 @@ public class ${name}Accessor extends AbstractSqlAccessor {
     return Time.class;
   }
 
+  @Override
   public Object getObject(int index) {
     return getTime(index);
   }
