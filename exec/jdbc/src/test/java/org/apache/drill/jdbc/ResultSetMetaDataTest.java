@@ -990,8 +990,7 @@ public class ResultSetMetaDataTest extends JdbcTestBase {
   public void test_getColumnClassName_forVARCHAR_10_isString() throws SQLException {
     // TODO(DRILL-3347):  Resolve which type(s) to test for:
     assertThat( rowMetadata.getColumnClassName( ordReqVARCHAR_10 ),
-                anyOf( equalTo( String.class.getName() ),
-                       equalTo( org.apache.hadoop.io.Text.class.getName() ) ) );
+                equalTo( String.class.getName() ) );
   }
 
   @Test
