@@ -312,12 +312,18 @@
             <option>-ignorewarnings</option>
             <option>-keep class org.apache.drill.exec.proto.** { *; }</option>
             <option>-keep class org.apache.drill.common.types.** { *; }</option>
+            <!-- Entry point:  Drill JDBC driver main class: -->
             <option>-keep class org.apache.drill.jdbc.Driver { *; }</option>
+            <!-- Unclear why "-keep" needed:  Drill-specific subinterfaces of
+                 JDBC-defined interfaces, defining Drill extension methods  -->
             <option>-keep class org.apache.drill.jdbc.DrillConnection { *; }</option>
             <option>-keep class org.apache.drill.jdbc.DrillStatement { *; }</option>
             <option>-keep class org.apache.drill.jdbc.DrillResultSet { *; }</option>
+            <!-- Dynamically accessed JDBC-module classes: -->
             <option>-keep class org.apache.drill.jdbc.impl.DrillJdbc40Factory { *; }</option>
             <option>-keep class org.apache.drill.jdbc.impl.DrillJdbc41Factory { *; }</option>
+
+            <!-- Entry point: Drill JDBC tracing proxing JDBC driver main class: -->
             <option>-keep class org.apache.drill.jdbc.proxy.TracingProxyDriver { *; }</option>
             <option>-keep class org.apache.drill.common.config.CommonConstants { *; }</option>
             <option>-keep class org.apache.drill.common.config.ConfigProvider { *; }</option>
