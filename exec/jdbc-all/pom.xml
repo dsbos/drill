@@ -402,6 +402,13 @@
             <configuration>
               <artifactSet>
               </artifactSet>
+              <relocations>
+                <relocation>
+                  <!-- for com.google.protobuf: -->
+                  <pattern>com.google.protobuf.</pattern>
+                  <shadedPattern>sHaDeD.com.google.protobuf.</shadedPattern>
+                </relocation>
+              </relocations>
             </configuration>
           </execution>
         </executions>
