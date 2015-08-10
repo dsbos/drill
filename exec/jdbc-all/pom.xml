@@ -419,9 +419,100 @@
                     Class.forName(...) gets wrong answer - even with ???.)
                 -->
                 <relocation>
-                  <!-- for com.google.protobuf: -->
-                  <pattern>com.google.protobuf.</pattern>
-                  <shadedPattern>sHaDeD.com.google.protobuf.</shadedPattern>
+		  <!-- for ch.qos.logback: -->
+                  <pattern>??DISABLE??ch.</pattern>
+                  <shadedPattern>sHaDeD.ch.</shadedPattern>
+                </relocation>
+                <relocation>
+		  <!-- for codegen... (Calcite-related files?): -->
+                  <pattern>??DISABLE??codegen.</pattern>
+                  <shadedPattern>sHaDeD.codegen.</shadedPattern>
+                </relocation>
+                <relocation>
+		  <!-- for com.carrotsearch...,
+                           com.codahale.metrics...,
+                           com.dyuproject.protostuff,
+                           com.fasterxml.jackson...,
+                           com.google.common...,
+                           com.google.protobuf,
+                           com.thoughtworks/paranamer,
+                           com.typesafe.config...,
+                           com.univocity.parsers.common.processor.RowPlacement.class: -->
+                  <pattern>??DISABLE??com.</pattern>
+                  <shadedPattern>sHaDeD.com.</shadedPattern>
+                </relocation>
+                <relocation>
+		  <!-- for de.huxhorn.lilith: -->
+                  <pattern>??DISABLE??de.</pattern>
+                  <shadedPattern>sHaDeD.de.</shadedPattern>
+                </relocation>
+                <relocation>
+		  <!-- for io.netty...: -->
+                  <pattern>??DISABLE??io.</pattern>
+                  <shadedPattern>sHaDeD.io.</shadedPattern>
+                </relocation>
+                <relocation>
+		  <!-- for javacc/Parser.jj: -->
+                  <pattern>??DISABLE??javacc.</pattern>
+                  <shadedPattern>sHaDeD.javacc.</shadedPattern>
+                </relocation>
+                <relocation>
+		  <!-- for javassist...: -->
+                  <pattern>??DISABLE??javassist.</pattern>
+                  <shadedPattern>sHaDeD.javassist.</shadedPattern>
+                </relocation>
+
+                <relocation>
+		  <!-- for javax.inject: -->
+                  <pattern>??DISABLE??javax.inject</pattern>
+                  <shadedPattern>sHaDeD.javax.inject</shadedPattern>
+                </relocation>
+                <relocation>
+		  <!-- for javax.validation...: -->
+                  <pattern>??DISABLE??javax.validation</pattern>
+                  <shadedPattern>sHaDeD.javax.validation</shadedPattern>
+                </relocation>
+                <relocation>
+		  <!-- for javax.xml.parsers: -->
+                  <pattern>??DISABLE??javax.xml.parsers</pattern>
+                  <shadedPattern>sHaDeD.javax.xml.parsers</shadedPattern>
+                </relocation>
+                <relocation>
+		  <!-- for jline...: -->
+                  <pattern>??DISABLE??jline.</pattern>
+                  <shadedPattern>sHaDeD.jline.</shadedPattern>
+                </relocation>
+
+                <relocation>
+		  <!-- for net.hydromatic.avatica,
+                           net.hydromatic.linq4: -->
+                  <pattern>??DISABLE??net.</pattern>
+                  <shadedPattern>sHaDeD.net.</shadedPattern>
+                </relocation>
+
+                <relocation>
+                  <pattern>??DISABLE??org.</pattern>
+                  <shadedPattern>sHaDeD.org.</shadedPattern>
+                  <excludes>
+                    <exclude>org.apache.drill.**</exclude>
+                    <exclude>org.ietf.**</exclude>
+                  </excludes>
+                </relocation>
+
+                <relocation>
+		  <!-- for parquet...: -->
+                  <pattern>??DISABLE??parquet.</pattern>
+                  <shadedPattern>sHaDeD.parquet.</shadedPattern>
+                </relocation>
+                <relocation>
+		  <!-- for rest...: -->
+                  <pattern>??DISABLE??rest.</pattern>
+                  <shadedPattern>sHaDeD.rest.</shadedPattern>
+                </relocation>
+                <relocation>
+		  <!-- for trax/trax.properties: -->
+                  <pattern>??DISABLE??trax</pattern>
+                  <shadedPattern>sHaDeD.trax.</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>
