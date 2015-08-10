@@ -402,6 +402,12 @@
             <configuration>
               <artifactSet>
               </artifactSet>
+	      <!--
+                  <!- -  ???: COPIED, PASTED, BUT NOT EDITED: - - >
+              <createDependencyReducedPom>false</createDependencyReducedPom>
+                  <!- -  ???: COPIED, PASTED, BUT NOT EDITED: - - >
+              <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
+	      -->
               <relocations>
                 <!-- 
                   Notes:  
