@@ -399,6 +399,19 @@
               <artifactSet>
               </artifactSet>
               <relocations>
+                <!-- 
+                  Notes:  
+                  - <exclude> syntax is not (currently) documented.  Apparently,
+                    p1.p2.** refers to everything in packages below p1.p2.  It's
+                    not clear if it also classes(etc.) immediately within p1.p2.  
+                  - <pattern></pattern> matches everything (including references
+                    to classes that are not in the input, such as
+                    java.lang.Object).
+                  - Trying to match everything and then exclude external things
+                    (starting with java.**) and Drill leads to non-obvious errors.
+                    (E.g., Avatica's detection of JDBC version using 
+                    Class.forName(...) gets wrong answer - even with ???.)
+                -->
                 <relocation>
                   <!-- for com.google.protobuf: -->
                   <pattern>com.google.protobuf.</pattern>
