@@ -317,6 +317,8 @@
             <!-- Unclear why "-keep" needed:  Drill-specific subinterfaces of
                  JDBC-defined interfaces, defining Drill extension methods  -->
             <option>-keep class org.apache.drill.jdbc.DrillConnection { *; }</option>
+            <option>-keep class org.apache.drill.jdbc.DrillDatabaseMetaData { *; }</option>
+            <option>-keep class org.apache.drill.jdbc.DrillPreparedStatement { *; }</option>
             <option>-keep class org.apache.drill.jdbc.DrillStatement { *; }</option>
             <option>-keep class org.apache.drill.jdbc.DrillResultSet { *; }</option>
             <!-- Dynamically accessed JDBC-module classes: -->
