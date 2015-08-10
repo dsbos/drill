@@ -397,6 +397,8 @@
             </goals>
             <configuration>
               <artifactSet>
+                <!-- Default to including everything and excluding nothing since we're shading
+                     the ProGuard-trimmed Jar file. -->
               </artifactSet>
 	      <!--
                   <!- -  ???: COPIED, PASTED, BUT NOT EDITED: - - >
