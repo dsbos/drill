@@ -32,13 +32,27 @@
   </appender>
 
   <logger name="org.apache.drill" additivity="false">
-    <level value="debug" />
+    <level value="info" />
     <appender-ref ref="SOCKET" />
+    <appender-ref ref="STDOUT" />
+  </logger>
+
+  <logger name="org.apache.drill.exec.physical.impl.validate" additivity="false">
+    <level value="trace" />
+    <appender-ref ref="SOCKET" />
+    <appender-ref ref="STDOUT" />
+  </logger>
+
+  <logger name="org.apache.drill.exec.physical.impl.ScreenCreator" additivity="false">
+    <level value="trace" />
+    <appender-ref ref="SOCKET" />
+    <appender-ref ref="STDOUT" />
   </logger>
 
   <logger name="query.logger" additivity="false">
     <level value="info" />
     <appender-ref ref="SOCKET" />
+    <appender-ref ref="STDOUT" />
   </logger>
 
 <!--   <logger name="io.netty" additivity="false"> -->
@@ -47,7 +61,7 @@
 <!--   </logger> -->
 
   <root>
-    <level value="error" />
+    <level value="info" />
     <appender-ref ref="STDOUT" />
   </root>
 
