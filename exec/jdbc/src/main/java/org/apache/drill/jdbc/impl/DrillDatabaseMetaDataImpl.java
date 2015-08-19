@@ -122,7 +122,6 @@ class DrillDatabaseMetaDataImpl extends AvaticaDatabaseMetaData
     return false;
   }
 
-
   @Override
   public String getDatabaseProductName() throws SQLException {
     throwIfClosed();
@@ -157,6 +156,25 @@ class DrillDatabaseMetaDataImpl extends AvaticaDatabaseMetaData
   public int getDriverMinorVersion() {
     // No already-closed exception required or allowed by JDBC.
     return super.getDriverMinorVersion();
+  }
+
+
+  @Override
+  public ResultSet getSchemas() throws SQLException {
+    throwIfClosed();
+    return super.getSchemas();
+  }
+
+  @Override
+  public ResultSet getCatalogs() throws SQLException {
+    throwIfClosed();
+    return super.getCatalogs();
+  }
+
+  @Override
+  public ResultSet getTableTypes() throws SQLException {
+    throwIfClosed();
+    return super.getTableTypes();
   }
 
   @Override
