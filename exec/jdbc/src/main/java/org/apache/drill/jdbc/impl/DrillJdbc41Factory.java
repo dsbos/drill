@@ -111,7 +111,7 @@ public class DrillJdbc41Factory extends DrillFactory {
   @Override
   public ResultSetMetaData newResultSetMetaData(AvaticaStatement statement,
                                                 List<ColumnMetaData> columnMetaDataList) {
-    return new AvaticaResultSetMetaData(statement, null, columnMetaDataList);
+    return new DrillResultSetMetaDataImpl(statement, null, columnMetaDataList);
   }
 
 
