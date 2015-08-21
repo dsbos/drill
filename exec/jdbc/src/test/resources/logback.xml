@@ -42,6 +42,10 @@
 
 -->
 
+  <logger name="org.apache.drill.jdbc.test.Drill2489CallsAfterCloseThrowExceptionsTest">
+    <level value="trace" />
+  </logger>
+
   <logger name="org.apache.drill.exec.compile">
     <level value="info" />
   </logger>
