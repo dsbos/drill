@@ -318,6 +318,7 @@ class DrillCursor implements Cursor {
       return true;
     }
     else {
+      accessors.clearLastColumnIndexedInRow();
       return nextRowInternally();
     }
   }
