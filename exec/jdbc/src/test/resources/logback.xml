@@ -46,6 +46,10 @@
     <level value="trace" />
   </logger>
 
+  <logger name="org.apache.drill.jdbc.test.Drill2769UnsupportedReportsUseSqlExceptionTest">
+    <level value="trace" />
+  </logger>
+
   <logger name="org.apache.drill.exec.compile">
     <level value="info" />
   </logger>
