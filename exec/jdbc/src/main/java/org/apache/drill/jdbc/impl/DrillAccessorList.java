@@ -78,8 +78,8 @@ class DrillAccessorList extends BasicList<Accessor> {
   @Override
   public AvaticaDrillSqlAccessor get(final int accessorOffset) {
     final AvaticaDrillSqlAccessor accessor = accessors[accessorOffset];
-    // Update lastColumnIndexedInRow after indexing accessors to not touch in
-    // case of out-of-bounds exception.
+    // Update lastColumnIndexedInRow after indexing accessors to not touch
+    // lastColumnIndexedInRow in case of out-of-bounds exception.
     rowLastColumnOffset = accessorOffset;
     return accessor;
   }
