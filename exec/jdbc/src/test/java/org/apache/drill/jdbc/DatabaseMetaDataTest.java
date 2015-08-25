@@ -68,10 +68,21 @@ public class DatabaseMetaDataTest {
   //  getURL()
   //  getUserName()
   //  isReadOnly()
-  //  nullsAreSortedHigh()
-  //  nullsAreSortedLow()
-  //  nullsAreSortedAtStart()
-  //  nullsAreSortedAtEnd()
+
+  @Test
+  public void testNullsAreSortedMethodsSaySortedHigh() throws SQLException {
+    assertThat( "DatabaseMetadata.nullsAreSortedHigh()",
+                dbmd.nullsAreSortedHigh(), equalTo( true ) );
+    assertThat( "DatabaseMetadata.nullsAreSortedLow()",
+                dbmd.nullsAreSortedLow(), equalTo( false ) );
+    assertThat( "DatabaseMetadata.nullsAreSortedAtEnd()",
+                dbmd.nullsAreSortedAtEnd(), equalTo( false ) );
+    assertThat( "DatabaseMetadata.nullsAreSortedAtStart()",
+                dbmd.nullsAreSortedAtStart(), equalTo( false ) );
+  }
+
+  // For matching order of java.sql.DatabaseMetaData:
+  //
   //  getDatabaseProductName()
   //  getDatabaseProductVersion()
   //  getDriverName()
