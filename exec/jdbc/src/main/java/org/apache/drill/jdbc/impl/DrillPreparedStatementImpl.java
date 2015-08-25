@@ -75,11 +75,11 @@ abstract class DrillPreparedStatementImpl extends AvaticaPreparedStatement
 
   @Override
   public DrillConnectionImpl getConnection() {
-    // Can't throw any SQLException because AvaticaConnection's getConnection() is
-    // missing "throws SQLException".
     try {
       throwIfClosed();
     } catch ( AlreadyClosedSqlException e ) {
+      // Can't throw any SQLException because AvaticaConnection's
+      // getConnection() is missing "throws SQLException".
       throw new RuntimeException( e.getMessage(), e );
     }
     return (DrillConnectionImpl) super.getConnection();
@@ -151,11 +151,11 @@ abstract class DrillPreparedStatementImpl extends AvaticaPreparedStatement
 
   @Override
   public int getMaxRows() {
-    // Can't throw any SQLException because AvaticaConnection's getMaxRows() is
-    // missing "throws SQLException".
     try {
       throwIfClosed();
     } catch ( AlreadyClosedSqlException e ) {
+      // Can't throw any SQLException because AvaticaConnection's
+      // getMaxRows() is missing "throws SQLException".
       throw new RuntimeException( e.getMessage(), e );
     }
     return super.getMaxRows();
@@ -261,11 +261,11 @@ abstract class DrillPreparedStatementImpl extends AvaticaPreparedStatement
 
   @Override
   public int getFetchDirection(){
-    // Can't throw any SQLException because AvaticaConnection's getFetchDirection()
-    // is missing "throws SQLException".
     try {
       throwIfClosed();
     } catch ( AlreadyClosedSqlException e ) {
+      // Can't throw any SQLException because AvaticaConnection's
+      // getFetchDirection() is missing "throws SQLException".
       throw new RuntimeException( e.getMessage(), e );
     }
     return super.getFetchDirection();
@@ -279,11 +279,11 @@ abstract class DrillPreparedStatementImpl extends AvaticaPreparedStatement
 
   @Override
   public int getFetchSize() {
-    // Can't throw any SQLException because AvaticaConnection's getFetchSize()
-    // ismissing "throws SQLException".
     try {
       throwIfClosed();
     } catch ( AlreadyClosedSqlException e ) {
+      // Can't throw any SQLException because AvaticaConnection's
+      // getFetchSize() is missing "throws SQLException".
       throw new RuntimeException( e.getMessage(), e );
     }
     return super.getFetchSize();
@@ -569,11 +569,11 @@ abstract class DrillPreparedStatementImpl extends AvaticaPreparedStatement
 
   @Override
   public ResultSetMetaData getMetaData() {
-    // Can't throw any SQLException because AvaticaConnection's getMetaData() is
-    // missing "throws SQLException".
     try {
       throwIfClosed();
     } catch ( AlreadyClosedSqlException e ) {
+      // Can't throw any SQLException because AvaticaConnection's
+      // getMetaData() is missing "throws SQLException".
       throw new RuntimeException( e.getMessage(), e );
     }
     return super.getMetaData();
