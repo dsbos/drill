@@ -28,13 +28,20 @@ import org.apache.drill.exec.vector.accessor.BoundCheckingAccessor;
 import org.apache.drill.exec.vector.accessor.SqlAccessor;
 
 
-class DrillAccessorList extends BasicList<Accessor>{
-  static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DrillAccessorList.class);
+class DrillAccessorList extends BasicList<Accessor> {
+
+  @SuppressWarnings("unused")
+  private static final org.slf4j.Logger logger =
+      org.slf4j.LoggerFactory.getLogger(DrillAccessorList.class);
+
 
   private AvaticaDrillSqlAccessor[] accessors = new AvaticaDrillSqlAccessor[0];
-  // TODO  Rename to lastColumnAccessed and/or document.
+  
+  /** Zero-based offset of last column referenced in current row.
+   *  For {@link #wasNull()}. */
   // TODO  Why 1, rather than, say, -1?
-  private int lastColumn = 1;
+  private int rowLastColumnOffset = 1;
+
 
   void generateAccessors(DrillCursor cursor, RecordBatchLoader currentBatch) {
     int cnt = currentBatch.getSchema().getFieldCount();
@@ -49,14 +56,19 @@ class DrillAccessorList extends BasicList<Accessor>{
     }
   }
 
+  /**
+   * 
+   * @param  accessorOffset  0-based index of accessor array (not 1-based SQL
+   *           column index/ordinal value) 
+   */
   @Override
-  public AvaticaDrillSqlAccessor get(int index) {
-    lastColumn = index;
-    return accessors[index];
+  public AvaticaDrillSqlAccessor get(final int accessorOffset) {
+    rowLastColumnOffset = accessorOffset;
+    return accessors[accessorOffset];
   }
 
   boolean wasNull() throws SQLException{
-    return accessors[lastColumn].wasNull();
+    return accessors[lastColumnIndexedInRow].wasNull();
   }
 
   @Override
