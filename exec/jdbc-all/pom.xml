@@ -435,7 +435,7 @@
                 </relocation>
                 <relocation>
 		  <!-- for io.netty: -->
-                  <pattern>io.netty</pattern>
+                  <pattern>??DISABLE??io.netty</pattern>
                   <shadedPattern>oadj.io.netty</shadedPattern>
                 </relocation>
                 <relocation>
