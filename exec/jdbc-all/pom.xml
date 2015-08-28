@@ -408,12 +408,12 @@
                 <relocation>
 		  <!-- for ch.qos.logback: -->
                   <pattern>??DISABLE??ch.</pattern>
-                  <shadedPattern>sHaDeD.ch.</shadedPattern>
+                  <shadedPattern>oadj.ch.</shadedPattern>
                 </relocation>
                 <relocation>
 		  <!-- for codegen... (Calcite-related files?): -->
                   <pattern>??DISABLE??codegen.</pattern>
-                  <shadedPattern>sHaDeD.codegen.</shadedPattern>
+                  <shadedPattern>oadj.codegen.</shadedPattern>
                 </relocation>
                 <relocation>
 		  <!-- for com.carrotsearch...,
@@ -426,60 +426,60 @@
                            com.typesafe.config...,
                            com.univocity.parsers.common.processor.RowPlacement.class: -->
                   <pattern>??DISABLE??com.</pattern>
-                  <shadedPattern>sHaDeD.com.</shadedPattern>
+                  <shadedPattern>oadj.com.</shadedPattern>
                 </relocation>
                 <relocation>
 		  <!-- for de.huxhorn.lilith: -->
                   <pattern>??DISABLE??de.</pattern>
-                  <shadedPattern>sHaDeD.de.</shadedPattern>
+                  <shadedPattern>oadj.de.</shadedPattern>
                 </relocation>
                 <relocation>
 		  <!-- for io.netty...: -->
                   <pattern>??DISABLE??io.</pattern>
-                  <shadedPattern>sHaDeD.io.</shadedPattern>
+                  <shadedPattern>oadj.io.</shadedPattern>
                 </relocation>
                 <relocation>
 		  <!-- for javacc/Parser.jj: -->
                   <pattern>??DISABLE??javacc.</pattern>
-                  <shadedPattern>sHaDeD.javacc.</shadedPattern>
+                  <shadedPattern>oadj.javacc.</shadedPattern>
                 </relocation>
                 <relocation>
 		  <!-- for javassist...: -->
                   <pattern>??DISABLE??javassist.</pattern>
-                  <shadedPattern>sHaDeD.javassist.</shadedPattern>
+                  <shadedPattern>oadj.javassist.</shadedPattern>
                 </relocation>
 
                 <relocation>
 		  <!-- for javax.inject: -->
                   <pattern>??DISABLE??javax.inject</pattern>
-                  <shadedPattern>sHaDeD.javax.inject</shadedPattern>
+                  <shadedPattern>oadj.javax.inject</shadedPattern>
                 </relocation>
                 <relocation>
 		  <!-- for javax.validation...: -->
                   <pattern>??DISABLE??javax.validation</pattern>
-                  <shadedPattern>sHaDeD.javax.validation</shadedPattern>
+                  <shadedPattern>oadj.javax.validation</shadedPattern>
                 </relocation>
                 <relocation>
 		  <!-- for javax.xml.parsers: -->
                   <pattern>??DISABLE??javax.xml.parsers</pattern>
-                  <shadedPattern>sHaDeD.javax.xml.parsers</shadedPattern>
+                  <shadedPattern>oadj.javax.xml.parsers</shadedPattern>
                 </relocation>
                 <relocation>
 		  <!-- for jline...: -->
                   <pattern>??DISABLE??jline.</pattern>
-                  <shadedPattern>sHaDeD.jline.</shadedPattern>
+                  <shadedPattern>oadj.jline.</shadedPattern>
                 </relocation>
 
                 <relocation>
 		  <!-- for net.hydromatic.avatica,
                            net.hydromatic.linq4: -->
                   <pattern>??DISABLE??net.</pattern>
-                  <shadedPattern>sHaDeD.net.</shadedPattern>
+                  <shadedPattern>oadj.net.</shadedPattern>
                 </relocation>
 
                 <relocation>
                   <pattern>??DISABLE??org.</pattern>
-                  <shadedPattern>sHaDeD.org.</shadedPattern>
+                  <shadedPattern>oadj.org.</shadedPattern>
                   <excludes>
                     <exclude>org.apache.drill.**</exclude>
                     <exclude>org.ietf.**</exclude>
@@ -489,17 +489,17 @@
                 <relocation>
 		  <!-- for parquet...: -->
                   <pattern>??DISABLE??parquet.</pattern>
-                  <shadedPattern>sHaDeD.parquet.</shadedPattern>
+                  <shadedPattern>oadj.parquet.</shadedPattern>
                 </relocation>
                 <relocation>
 		  <!-- for rest...: -->
                   <pattern>??DISABLE??rest.</pattern>
-                  <shadedPattern>sHaDeD.rest.</shadedPattern>
+                  <shadedPattern>oadj.rest.</shadedPattern>
                 </relocation>
                 <relocation>
 		  <!-- for trax/trax.properties: -->
                   <pattern>??DISABLE??trax</pattern>
-                  <shadedPattern>sHaDeD.trax.</shadedPattern>
+                  <shadedPattern>oadj.trax.</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>
