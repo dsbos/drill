@@ -71,7 +71,7 @@
       <artifactId>jmockit</artifactId>
       <version>1.3</version>
     </dependency>
-    
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -89,15 +89,15 @@
       <artifactId>logback-classic</artifactId>
       <version>1.0.13</version>
     </dependency>
-    
+
     <dependency>
       <groupId>de.huxhorn.lilith</groupId>
       <artifactId>de.huxhorn.lilith.logback.appender.multiplex-classic</artifactId>
       <version>0.9.44</version>
     </dependency>
-        
+
     <!-- end parent dependencies -->
-            
+
     <dependency>
       <groupId>net.hydromatic</groupId>
       <artifactId>optiq-avatica</artifactId>
@@ -392,17 +392,17 @@
               <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
 	      -->
               <relocations>
-                <!-- 
-                  Notes:  
+                <!--
+                  Notes:
                   - <exclude> syntax is not (currently) documented.  Apparently,
                     p1.p2.** refers to everything in packages below p1.p2.  It's
-                    not clear if it also classes(etc.) immediately within p1.p2.  
+                    not clear if it also classes(etc.) immediately within p1.p2.
                   - <pattern></pattern> matches everything (including references
                     to classes that are not in the input, such as
                     java.lang.Object).
                   - Trying to match everything and then exclude external things
                     (starting with java.**) and Drill leads to non-obvious errors.
-                    (E.g., Avatica's detection of JDBC version using 
+                    (E.g., Avatica's detection of JDBC version using
                     Class.forName(...) gets wrong answer - even with ???.)
                 -->
                 <relocation>
