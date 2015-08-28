@@ -434,9 +434,9 @@
                   <shadedPattern>oadj.de.</shadedPattern>
                 </relocation>
                 <relocation>
-		  <!-- for io.netty...: -->
-                  <pattern>??DISABLE??io.</pattern>
-                  <shadedPattern>oadj.io.</shadedPattern>
+		  <!-- for io.netty: -->
+                  <pattern>io.netty</pattern>
+                  <shadedPattern>oadj.io.netty</shadedPattern>
                 </relocation>
                 <relocation>
 		  <!-- for javacc/Parser.jj: -->
