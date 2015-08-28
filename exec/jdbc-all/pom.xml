@@ -287,6 +287,8 @@
           <outputDirectory>${project.build.directory}</outputDirectory>
           <maxMemory>6g</maxMemory>
           <options>
+            <option>-dontwarn</option>
+            <option>-dontnote</option>
             <option>-dontobfuscate</option>
             <option>-dontoptimize</option>
             <option>-ignorewarnings</option>
@@ -305,14 +307,12 @@
             <!-- Dynamically accessed JDBC-module classes: -->
             <option>-keep class org.apache.drill.jdbc.impl.DrillJdbc40Factory { *; }</option>
             <option>-keep class org.apache.drill.jdbc.impl.DrillJdbc41Factory { *; }</option>
-
             <!-- Entry point: Drill JDBC tracing proxing JDBC driver main class: -->
             <option>-keep class org.apache.drill.jdbc.proxy.TracingProxyDriver { *; }</option>
             <option>-keep class org.apache.drill.common.config.CommonConstants { *; }</option>
             <option>-keep class org.apache.drill.common.config.ConfigProvider { *; }</option>
             <option>-keep class org.apache.drill.common.config.DrillConfig { *; }</option>
             <option>-keep class org.apache.drill.common.config.NestedConfig { *; }</option>
-
             <option>-keep class ch.qos.logback.** { *; }</option>
             <option>-keep class org.slf4j.** { *; }</option>
             <option>-keep class * implements com.fasterxml.jackson.databind.cfg.ConfigFeature { *; }</option>
