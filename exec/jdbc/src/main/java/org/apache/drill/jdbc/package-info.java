@@ -23,7 +23,7 @@
  *   {@link org.apache.drill.jdbc.Driver org.apache.drill.jdbc.Driver}.
  * </p>
  *
- * @see 
+ * @see
  * <a href="http://drill.apache.org/docs/using-the-jdbc-driver">Using the JDBC Driver</a>
  * in the on-line
  * <a href="http://drill.apache.org/docs">Apache Drill Documentation</a>
