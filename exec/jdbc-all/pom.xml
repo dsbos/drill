@@ -446,6 +446,66 @@
   </pluginRepositories>
 
   <profiles>
+    <profile>
+      <id>apache-release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>aggregate-jar</goal>
+                </goals>
+                <inherited>false</inherited>
+                <configuration>
+                  <includeDependencySources>true</includeDependencySources>
+                  <dependencySourceIncludes>
+                    <dependencySourceInclude>org.apache.drill.exec:drill-jdbc</dependencySourceInclude>
+                  </dependencySourceIncludes>
+                  <!-- Include only the published interface in the Javadoc-
+                       generated documentation.  Unfortunately, the plugin does
+                       not support inclusion patterns and hence we have to rely
+                       on an exclusion pattern. -->
+                  <excludePackageNames>org.apache.drill.jdbc.impl</excludePackageNames>
+
+                  <!-- windowtitle: common part of window titles (goes in
+                       parentheses at end of window title, after in-page title
+                       (e.g., package name)) -->
+                  <windowtitle>
+                    Apache Drill JDBC Driver v. ${project.version}
+                  </windowtitle>
+
+                  <!-- header, footer:  small text at right edge of
+                       top, bottom Overview/Package/etc. menu bars -->
+                  <header>Apache Drill JDBC Driver v. ${project.version}</header>
+                  <footer>Apache Drill JDBC Driver v. ${project.version}</footer>
+
+                  <!-- doctitle:  in-page title for overview page  -->
+                  <doctitle>
+                    Apache Drill JDBC Driver version ${project.version}
+                  </doctitle>
+                  <groups>
+                    <group>
+                      <title>Drill JDBC Driver</title>
+                      <packages>org.apache.drill.jdbc</packages>
+                    </group>
+                    <group>
+                      <title>Tracing Proxy JDBC Driver</title>
+                      <packages>org.apache.drill.jdbc.proxy</packages>
+                    </group>
+                  </groups>
+
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
     <!-- mondrian data includes 10s of MBs of JSON file
         if you want to include them run maven with -Pwith-mondrian-data -->
     <profile>
