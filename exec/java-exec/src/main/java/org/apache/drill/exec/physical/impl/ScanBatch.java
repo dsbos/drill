@@ -85,8 +85,11 @@ public class ScanBatch implements CloseableRecordBatch {
   private boolean done = false;
   private SchemaChangeCallBack callBack = new SchemaChangeCallBack();
   private boolean hasReadNonEmptyFile = false;
+
+
   public ScanBatch(PhysicalOperator subScanConfig, FragmentContext context, OperatorContext oContext,
-                   Iterator<RecordReader> readers, List<String[]> partitionColumns, List<Integer> selectedPartitionColumns) throws ExecutionSetupException {
+                   Iterator<RecordReader> readers, List<String[]> partitionColumns,
+                   List<Integer> selectedPartitionColumns) throws ExecutionSetupException {
     this.context = context;
     this.readers = readers;
     if (!readers.hasNext()) {
@@ -119,7 +122,8 @@ public class ScanBatch implements CloseableRecordBatch {
     addPartitionVectors();
   }
 
-  public ScanBatch(PhysicalOperator subScanConfig, FragmentContext context, Iterator<RecordReader> readers) throws ExecutionSetupException {
+  public ScanBatch(PhysicalOperator subScanConfig, FragmentContext context,
+                   Iterator<RecordReader> readers) throws ExecutionSetupException {
     this(subScanConfig, context,
         context.newOperatorContext(subScanConfig, false /* ScanBatch is not subject to fragment memory limit */),
         readers, Collections.<String[]> emptyList(), Collections.<Integer> emptyList());
@@ -177,18 +181,20 @@ public class ScanBatch implements CloseableRecordBatch {
       while ((recordCount = currentReader.next()) == 0) {
         try {
           if (!readers.hasNext()) {
+            // we're on last reader
             currentReader.cleanup();
             releaseAssets();
-            done = true;
+            done = true;  // so any future call to next() will return NONE
             if (mutator.isNewSchema()) {
               container.buildSchema(SelectionVectorMode.NONE);
               schema = container.getSchema();
+              return IterOutcome.OK_NEW_SCHEMA;
             }
             return IterOutcome.NONE;
           }
 
           // If all the files we have read so far are just empty, the schema is not useful
-          if(!hasReadNonEmptyFile) {
+          if (!hasReadNonEmptyFile) {
             container.clear();
             for (ValueVector v : fieldVectorMap.values()) {
               v.clear();
@@ -258,7 +264,9 @@ public class ScanBatch implements CloseableRecordBatch {
       }
       partitionVectors = Lists.newArrayList();
       for (int i : selectedPartitionColumns) {
-        MaterializedField field = MaterializedField.create(SchemaPath.getSimplePath(partitionColumnDesignator + i), Types.optional(MinorType.VARCHAR));
+        MaterializedField field =
+            MaterializedField.create(SchemaPath.getSimplePath(partitionColumnDesignator + i),
+                                     Types.optional(MinorType.VARCHAR));
         ValueVector v = mutator.addField(field, NullableVarCharVector.class);
         partitionVectors.add(v);
       }
@@ -310,30 +318,33 @@ public class ScanBatch implements CloseableRecordBatch {
 
   private class Mutator implements OutputMutator {
 
-    boolean schemaChange = true;
+    /** Whether schema has changed since last inquiry (via #isNewSchema}).  Is
+     * is true before first inquiry. */
+    boolean schemaChanged = true;
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends ValueVector> T addField(MaterializedField field, Class<T> clazz) throws SchemaChangeException {
-      // Check if the field exists
+    public <T extends ValueVector> T addField(MaterializedField field,
+                                              Class<T> clazz) throws SchemaChangeException {
+      // Check if the field exists.
       ValueVector v = fieldVectorMap.get(field.key());
 
       if (v == null || v.getClass() != clazz) {
-        // Field does not exist add it to the map and the output container
+        // Field does not exist--add it to the map and the output container.
         v = TypeHelper.getNewVector(field, oContext.getAllocator(), callBack);
         if (!clazz.isAssignableFrom(v.getClass())) {
           throw new SchemaChangeException(String.format("The class that was provided %s does not correspond to the expected vector type of %s.", clazz.getSimpleName(), v.getClass().getSimpleName()));
         }
 
         ValueVector old = fieldVectorMap.put(field.key(), v);
-        if(old != null){
+        if (old != null) {
           old.clear();
           container.remove(old);
         }
 
         container.add(v);
-        // Adding new vectors to the container mark that the schema has changed
-        schemaChange = true;
+        // Added new vectors to the container--mark that the schema has changed.
+        schemaChanged = true;
       }
 
       return (T) v;
@@ -346,11 +357,16 @@ public class ScanBatch implements CloseableRecordBatch {
       }
     }
 
+    /**
+     * Reports whether schema has changed (field was added or re-added) since
+     * last call to {@link #isNewSchema}.  returns true at first call.
+     */
     @Override
     public boolean isNewSchema() {
-      // Check if top level schema has changed, second condition checks if one of the deeper map schema has changed
-      if (schemaChange || callBack.getSchemaChange()) {
-        schemaChange = false;
+      // Check if top-level schema has changed.  (Second condition checks
+      // whether one of the deeper map schemas has changed.)
+      if (schemaChanged || callBack.getSchemaChange()) {
+        schemaChanged = false;
         return true;
       }
       return false;
@@ -389,7 +405,9 @@ public class ScanBatch implements CloseableRecordBatch {
 
   @Override
   public VectorContainer getOutgoingContainer() {
-    throw new UnsupportedOperationException(String.format(" You should not call getOutgoingContainer() for class %s", this.getClass().getCanonicalName()));
+    throw new UnsupportedOperationException(
+        String.format("You should not call getOutgoingContainer() for class %s",
+                      this.getClass().getCanonicalName()));
   }
 
 }
