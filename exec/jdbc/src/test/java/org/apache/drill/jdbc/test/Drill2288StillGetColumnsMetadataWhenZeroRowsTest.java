@@ -59,7 +59,8 @@ public class Drill2288StillGetColumnsMetadataWhenZeroRowsTest {
 
   /**
    * Tests that an empty JSON file (having zero records) no longer triggers
-   * breakage in schema propagation.  (Case failed before.)
+   * breakage in schema propagation.  (Case failed before; columns a, b and c
+   * didn't show up.)
    */
   @Test
   public void testEmptyJsonFileDoesntSuppressNetSchema() throws Exception {
