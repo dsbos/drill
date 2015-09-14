@@ -46,6 +46,15 @@
 <!--     <appender-ref ref="SOCKET" /> -->
 <!--   </logger> -->
 
+  <logger name="org.apache.drill.exec.physical.impl.validate" additivity="false">
+<!--
+    <level value="trace" />
+-->
+    <level value="debug" />
+    <appender-ref ref="SOCKET" />
+    <appender-ref ref="STDOUT" />
+  </logger>
+
   <root>
     <level value="error" />
     <appender-ref ref="STDOUT" />
