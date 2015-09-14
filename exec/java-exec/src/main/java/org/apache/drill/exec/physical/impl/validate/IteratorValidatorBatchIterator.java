@@ -55,10 +55,15 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
    */
   private final RecordBatch incoming;
 
-  /** For logging/debuggability only. */
+  /** Incoming batch's type (simple class name); for logging/debuggability
+   *  only. */
   private final String batchTypeName;
 
-  /** State of incoming batch; last value returned by its next() method. */
+  /** Exception state of incoming batch; last value thrown by its next()
+   *  method. */
+  private Throwable exceptionState = null;
+
+  /** Main state of incoming batch; last value returned by its next() method. */
   private IterOutcome batchState = null;
 
   /**
@@ -85,7 +90,7 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
     batchTypeName = incoming.getClass().getSimpleName();
 
     // (Log construction and close() at same level to bracket instance's activity.)
-    logger.trace( "[#{}, {}]: Being constructed.", instNum, batchTypeName);
+    logger.trace( "[#{}; on {}]: Being constructed.", instNum, batchTypeName);
   }
 
   private void validateReadState(String operation) {
@@ -155,102 +160,119 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
 
   @Override
   public IterOutcome next() {
-    logger.trace( "[#{}; {}]: next() called.", instNum, batchTypeName);
+    logger.trace( "[#{}; on {}]: next() called.", instNum, batchTypeName);
+    final IterOutcome prevBatchState = batchState;
+    try {
 
-    // Check whether next() should even have been called in current state.
-    // (Note:  This could use validationState.)
-    if (batchState == NONE || batchState == STOP) {
-      throw new IllegalStateException(
-          String.format(
-              "next() [on #%d, %s] called again after it returned %s."
-              + "  Caller should not have called next() again.",
-              instNum, batchTypeName, batchState));
-    }
-
-    // Now get result from upstream next().
-    final IterOutcome prevState = batchState;
-    batchState = incoming.next();
-
-    logger.trace("[#{}, {}]: incoming next() return: ({} ->) {}",
-                 instNum, batchTypeName, prevState, batchState );
-
-    // Check state transition and update high-level state.
-    switch (batchState) {
-      case OK_NEW_SCHEMA:
-        // OK_NEW_SCHEMA is allowed at any time, except if terminated (checked
-        // above).
-        // OK_NEW_SCHEMA moves to have-seen-schema state.
-        validationState = ValidationState.HAVE_SCHEMA;
-        break;
-      case OK :
-        // OK is allowed as long as OK_NEW_SCHEMA was seen, except if terminated
-        // (checked above).
-        if ( validationState != ValidationState.HAVE_SCHEMA ) {
-          throw new IllegalStateException(
-              String.format(
-                  "next() returned %s without first returning %s [#%d, %s]",
-                  batchState, OK_NEW_SCHEMA, instNum, batchTypeName));
-        }
-        // OK doesn't change high-level state.
-        break;
-      case NONE:
-        // NONE is allowed as long as OK_NEW_SCHEMA was seen, except if
-        // already terminated (checked above).
-        if ( validationState != ValidationState.HAVE_SCHEMA ) {
-          throw new IllegalStateException(
-              String.format(
-                  "next() returned %s without first returning %s [#%d, %s]",
-                  batchState, OK_NEW_SCHEMA, instNum, batchTypeName));
-        }
-        // NONE moves to terminal high-level state.
-        validationState = ValidationState.TERMINAL;
-        break;
-      case STOP:
-        // STOP is allowed at any time, except if already terminated (checked
-        // above).
-        // STOP moves to terminal high-level state.
-        validationState = ValidationState.TERMINAL;
-        break;
-      case NOT_YET:
-      case OUT_OF_MEMORY:
-        // NOT_YET and OUT_OF_MEMORY are allowed at any time, except if
-        // terminated (checked above).
-        // NOT_YET and OUT_OF_MEMORY OK don't change high-level state.
-        break;
-      default:
-        throw new AssertionError(
-            "Unhandled new " + IterOutcome.class.getSimpleName() + " value "
-            + batchState);
-        //break;
-    }
-
-    // Validate schema when available.
-    if (batchState == OK || batchState == OK_NEW_SCHEMA) {
-      BatchSchema schema = incoming.getSchema();
-      if (schema == null) {
-        return batchState;
-      }
-      if (schema.getFieldCount() == 0) {
+      // Check whether next() should even have been called in current state.
+      if ( null != exceptionState ) {
         throw new IllegalStateException(
             String.format(
-                "Incoming batch [#%d, %s] has an empty schema. This is not allowed.",
-                instNum, batchTypeName));
+                "next() [on #%d; %s] called again after it threw %s (after"
+                + " returning %s).  Caller should not have called next() again.",
+                instNum, batchTypeName, exceptionState, batchState));
       }
-      if (incoming.getRecordCount() > MAX_BATCH_SIZE) {
+      // (Note:  This could use validationState.)
+      if (batchState == NONE || batchState == STOP) {
         throw new IllegalStateException(
             String.format(
-                "Incoming batch [#%d, %s] has size %d, which is beyond the"
-                + " limit of %d",
-                instNum, batchTypeName, incoming.getRecordCount(), MAX_BATCH_SIZE
-                ));
+                "next() [on #%d, %s] called again after it returned %s."
+                + "  Caller should not have called next() again.",
+                instNum, batchTypeName, batchState));
       }
 
-      if (VALIDATE_VECTORS) {
-        VectorValidator.validate(incoming);
+      // Now get result from upstream next().
+      batchState = incoming.next();
+
+      logger.trace("[#{}; on {}]: incoming next() return: ({} ->) {}",
+                   instNum, batchTypeName, prevBatchState, batchState );
+
+      // Check state transition and update high-level state.
+      switch (batchState) {
+        case OK_NEW_SCHEMA:
+          // OK_NEW_SCHEMA is allowed at any time, except if terminated (checked
+          // above).
+          // OK_NEW_SCHEMA moves to have-seen-schema state.
+          validationState = ValidationState.HAVE_SCHEMA;
+          break;
+        case OK :
+          // OK is allowed as long as OK_NEW_SCHEMA was seen, except if terminated
+          // (checked above).
+          if ( validationState != ValidationState.HAVE_SCHEMA ) {
+            throw new IllegalStateException(
+                String.format(
+                    "next() returned %s without first returning %s [#%d, %s]",
+                    batchState, OK_NEW_SCHEMA, instNum, batchTypeName));
+          }
+          // OK doesn't change high-level state.
+          break;
+        case NONE:
+          // NONE is allowed as long as OK_NEW_SCHEMA was seen, except if
+          // already terminated (checked above).
+          if ( validationState != ValidationState.HAVE_SCHEMA ) {
+            throw new IllegalStateException(
+                String.format(
+                    "next() returned %s without first returning %s [#%d, %s]",
+                    batchState, OK_NEW_SCHEMA, instNum, batchTypeName));
+          }
+          // NONE moves to terminal high-level state.
+          validationState = ValidationState.TERMINAL;
+          break;
+        case STOP:
+          // STOP is allowed at any time, except if already terminated (checked
+          // above).
+          // STOP moves to terminal high-level state.
+          validationState = ValidationState.TERMINAL;
+          break;
+        case NOT_YET:
+        case OUT_OF_MEMORY:
+          // NOT_YET and OUT_OF_MEMORY are allowed at any time, except if
+          // terminated (checked above).
+          // NOT_YET and OUT_OF_MEMORY OK don't change high-level state.
+          break;
+        default:
+          throw new AssertionError(
+              "Unhandled new " + IterOutcome.class.getSimpleName() + " value "
+              + batchState);
+          //break;
       }
+
+      // Validate schema when available.
+      if (batchState == OK || batchState == OK_NEW_SCHEMA) {
+        BatchSchema schema = incoming.getSchema();
+        logger.trace("[#{}; on {}]: incoming next() return: #records = {}, schema = {}",
+            instNum, batchTypeName, incoming.getRecordCount(), schema );
+        if (schema == null) {
+          return batchState;
+        }
+        if (schema.getFieldCount() == 0) {
+          throw new IllegalStateException(
+              String.format(
+                  "Incoming batch [#%d, %s] has an empty schema. This is not allowed.",
+                  instNum, batchTypeName));
+        }
+        if (incoming.getRecordCount() > MAX_BATCH_SIZE) {
+          throw new IllegalStateException(
+              String.format(
+                  "Incoming batch [#%d, %s] has size %d, which is beyond the"
+                  + " limit of %d",
+                  instNum, batchTypeName, incoming.getRecordCount(), MAX_BATCH_SIZE
+                  ));
+        }
+
+        if (VALIDATE_VECTORS) {
+          VectorValidator.validate(incoming);
+        }
+      }
+
+      return batchState;
     }
-
-    return batchState;
+    catch ( RuntimeException | Error e ) {
+      exceptionState = e;
+      logger.trace("[#{}, on {}]: incoming next() exception: ({} ->) {}",
+          instNum, batchTypeName, prevBatchState, exceptionState );
+      throw e;
+    }
   }
 
   @Override
@@ -261,30 +283,39 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
 
   @Override
   public void close() {
-    // (Log construction and close() at same level to bracket instance's activity.)
-    logger.trace( "[#{}; {}]: close() called.", instNum, batchTypeName);
-    switch (batchState) {
-      case NONE:
-      case STOP:
-        // Expected state.
-        break;
-      case OK_NEW_SCHEMA:
-      case OK:
-      //??? case NOT_YET: // ?? NOT_YET: TEMP
-      case OUT_OF_MEMORY:
-        // Until hard requirements are clear, warn about this rather than
-        // throwing exception.
-        logger.warn(
-              "[#{}, {}]: Somewhat-unexpected batch state {} at close() call"
-              + " (expected {} or {}).  NOTE:  Checking code not validated yet. ",
-              instNum, batchTypeName, batchState, NONE, STOP);
-        System.err.println( "???[#" + instNum + ", " + batchTypeName + "]: WARNING close(): " + batchState );
-        break;
-      default:
-        throw new AssertionError(
-            "Unhandled new " + IterOutcome.class.getSimpleName() + " value "
-            + batchState);
-        //break;
+    // (Log construction and close() at same logging level to bracket instance's
+    // activity.)
+    logger.trace( "[#{}; on {}]: close() called.", instNum, batchTypeName);
+    if ( null != exceptionState ) {
+      // Expected state if aborted via exception.
+
+    }
+    else {
+      switch (batchState) {
+        case NONE:
+        case STOP:
+          // Expected state if completed normally (including cancelation/early
+          // termination).
+          break;
+        case OK_NEW_SCHEMA:
+        case OK:
+        //??? case NOT_YET: // ?? NOT_YET: TEMP
+        case OUT_OF_MEMORY:
+          // Until hard requirements are clear, warn about this rather than
+          // throwing exception.
+          logger.warn(
+                "[#{}, on {}]: Somewhat-unexpected batch state {} at close() call"
+                + " (expected {} or {}).  NOTE:  Checking code not validated yet. ",
+                instNum, batchTypeName, batchState, NONE, STOP);
+          System.err.println( "???[#" + instNum + ", " + batchTypeName
+                              + "]: WARNING close(): " + batchState );
+          break;
+        default:
+          throw new AssertionError(
+              "Unhandled new " + IterOutcome.class.getSimpleName() + " value "
+              + batchState);
+          //break;
+      }
     }
     // How does incoming get closed?
   }
