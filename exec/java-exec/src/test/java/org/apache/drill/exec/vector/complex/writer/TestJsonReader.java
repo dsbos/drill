@@ -258,6 +258,10 @@ public class TestJsonReader extends BaseTestQuery {
   @Test
   public void readComplexWithStar() throws Exception {
     List<QueryDataBatch> results = testSqlWithResults("select * from cp.`/store/json/test_complex_read_with_star.json`");
+    // ???? Why exactly was this expecting one batch rather than one batch with
+    // some rows plus one batch with identical schema but with zero rows?
+    // Should something have explicitly suppressed that zero-row batch with
+    // the same schema, or should this accept that two-batch combination?
     assertEquals(1, results.size());
 
     RecordBatchLoader batchLoader = new RecordBatchLoader(getAllocator());
@@ -311,6 +315,10 @@ public class TestJsonReader extends BaseTestQuery {
     runTestsOnFile(filename, UserBitShared.QueryType.PHYSICAL, queries, rowCounts);
 
     List<QueryDataBatch> results = testPhysicalWithResults(queries[0]);
+    // ???? Why exactly was this expecting one batch rather than one batch with
+    // some rows plus one batch with identical schema but with zero rows?
+    // Should something have explicitly suppressed that zero-row batch with
+    // the same schema, or should this accept that two-batch combination?
     assertEquals(1, results.size());
     // "`field_1`", "`field_3`.`inner_1`", "`field_3`.`inner_2`", "`field_4`.`inner_1`"
 
