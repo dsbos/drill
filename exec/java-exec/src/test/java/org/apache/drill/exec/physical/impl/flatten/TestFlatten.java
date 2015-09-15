@@ -64,6 +64,9 @@ public class TestFlatten extends BaseTestQuery {
         .setRecord(jsonRecords)
         .createFiles(1, numCopies, "json");
 
+    // Suppress "Type safety: A generic array of JsonStringHashMap<String,Object>
+    // is created for a varargs parameter." warning.
+    @SuppressWarnings("unchecked")
     List<JsonStringHashMap<String,Object>> data = Lists.newArrayList(
         mapOf("uid", 1l,
             "lst_lst_0", listOf(1l, 2l, 3l, 4l, 5l),
