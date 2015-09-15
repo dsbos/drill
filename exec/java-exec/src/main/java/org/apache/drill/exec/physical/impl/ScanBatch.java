@@ -215,10 +215,12 @@ public class ScanBatch implements CloseableRecordBatch {
                 // TODO(DRILL-xxxx):  Determine what this case should return.
                 // Even though there are no rows of data, we do have a new
                 // schema, but returning OK_NEW_SCHEMA here too caused
-                // additional tests (TestJsonReader, TestFlatten) to fail.
+                // additional tests (TestJsonReader?, TestFlatten?) to fail.
                 // ???? RECHECK:  Is that true?  I don't see it now.
+                // Not TestFlatten, which failed on OK_NEW_SCHEMA from here.
+                // Not TestJsonReader, which failed on OK_NEW_SCHEMA from here.
                 //
-                // (Are they buggy with respect to the IterOutcome protocol?
+                // (Are they buggy with respect to the IterOutcome protocol?)
                 return IterOutcome.NONE; //??? Pre-2288 value, POSSIBLE post-2288 value  //????
               }
             }
@@ -226,6 +228,8 @@ public class ScanBatch implements CloseableRecordBatch {
           }
 
           // If all the files we have read so far are just empty, the schema is not useful
+          //???? What if we have read a non-empty file, but the current file is
+          // an empty file?
           if (!hasReadNonEmptyFile) {
             container.clear();
             for (ValueVector v : fieldVectorMap.values()) {
