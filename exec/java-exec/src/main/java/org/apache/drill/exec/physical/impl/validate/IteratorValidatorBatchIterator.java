@@ -307,8 +307,6 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
                 "[#{}, on {}]: Somewhat-unexpected batch state {} at close() call"
                 + " (expected {} or {}).  NOTE:  Checking code not validated yet. ",
                 instNum, batchTypeName, batchState, NONE, STOP);
-          System.err.println( "???[#" + instNum + ", " + batchTypeName
-                              + "]: WARNING close(): " + batchState );
           break;
         default:
           throw new AssertionError(
