@@ -90,6 +90,7 @@ import org.slf4j.Logger;
 
 import com.google.common.base.Preconditions;
 
+@Ignore( "???? TEMPORARILY" )
 /**
  * Test how resilient drillbits are to throwing exceptions during various phases of query
  * execution by injecting exceptions at various points, and to cancellations in various phases.

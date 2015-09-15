@@ -30,7 +30,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 
-@Ignore( "???TEMPORARILY" )
+@Ignore( "???? TEMPORARILY" )
 public class TestExampleQueries extends BaseTestQuery {
 //  private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(TestExampleQueries.class);
 
