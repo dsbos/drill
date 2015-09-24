@@ -59,6 +59,10 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.ImmutableSet.Builder;
 
+
+// TODO:  Eventually, rename to ResultSetTest per intended JDBC pattern
+// (INTFTest for JDBC-specified INTF; DrillINTFTest for Drill-specific DrillINTF).
+
 public class DrillResultSetTest extends DrillTest {
 
   // TODO: Move Jetty status server disabling to DrillTest.
@@ -85,7 +89,8 @@ public class DrillResultSetTest extends DrillTest {
   public void test_next_blocksFurtherAccessAfterEnd()
       throws SQLException
   {
-    Connection connection = new Driver().connect( "jdbc:drill:zk=local", JdbcAssert.getDefaultProperties() );
+    Connection connection =
+        new Driver().connect( "jdbc:drill:zk=local", JdbcAssert.getDefaultProperties() );
     Statement statement = connection.createStatement();
     ResultSet resultSet =
         statement.executeQuery( "SELECT 1 AS x \n" +
@@ -125,7 +130,8 @@ public class DrillResultSetTest extends DrillTest {
   public void test_next_blocksFurtherAccessWhenNoRows()
     throws Exception
   {
-    Connection connection = new Driver().connect( "jdbc:drill:zk=local", JdbcAssert.getDefaultProperties() );
+    Connection connection =
+        new Driver().connect( "jdbc:drill:zk=local", JdbcAssert.getDefaultProperties() );
     Statement statement = connection.createStatement();
     ResultSet resultSet =
         statement.executeQuery( "SELECT 'Hi' AS x \n" +
@@ -155,6 +161,36 @@ public class DrillResultSetTest extends DrillTest {
     // TODO:  Ideally, test all other accessor methods.
   }
 
+  @Test
+  public void test_getRow_isOneBased()
+    throws Exception
+  {
+    Connection connection =
+        new Driver().connect( "jdbc:drill:zk=local", JdbcAssert.getDefaultProperties() );
+    Statement statement = connection.createStatement();
+    ResultSet resultSet =
+        statement.executeQuery( "VALUES (1), (2)" );
+
+    // Expect 0 when before first row:
+    assertThat( "getRow() before first next()", resultSet.getRow(), equalTo( 0 ) );
+
+    resultSet.next();
+
+    // Expect 1 at first row:
+    assertThat( "getRow() at first row", resultSet.getRow(), equalTo( 1 ) );
+
+    resultSet.next();
+
+    // Expect 2 at second row:
+    assertThat( "getRow() at second row", resultSet.getRow(), equalTo( 2 ) );
+
+    resultSet.next();
+
+    // Expect 0 again when after last row:
+    assertThat( "getRow() after last row", resultSet.getRow(), equalTo( 0 ) );
+    resultSet.next();
+    assertThat( "getRow() after last row", resultSet.getRow(), equalTo( 0 ) );
+  }
 
   // TODO:  Ideally, test other methods.
 
