@@ -86,12 +86,6 @@ public class ScanBatch implements CloseableRecordBatch {
   private SchemaChangeCallBack callBack = new SchemaChangeCallBack();
   private boolean hasReadNonEmptyFile = false;
 
-  /** Whether {@link #next()} has returned {@link IterOutcome#OK_NEW_SCHEMA}
-      yet.  Used to make sure that {@code next()} returns {@code OK_NEW_SCHEMA}
-      at least once before returning {@link IterOutcome#NONE} (e.g., when scan
-      has only empty files). */
-  private boolean haveReturnedAnySchema = false;
-
 
   public ScanBatch(PhysicalOperator subScanConfig, FragmentContext context, OperatorContext oContext,
                    Iterator<RecordReader> readers, List<String[]> partitionColumns,
@@ -193,80 +187,29 @@ public class ScanBatch implements CloseableRecordBatch {
       while ((recordCount = currentReader.next()) == 0) {
         try {
           if (!readers.hasNext()) {
-            // We're on the last reader.
+            // We're on the last reader, and it has no (more) rows.
+
+            done = true;  // have any future call to next() return NONE
             currentReader.close();
             releaseAssets();
-            done = true;  // have any future call to next() return NONE
+
             if (mutator.isNewSchema()) {
-              // This last reader has a new schema, but zero data rows of that
-              // schema.  Therefore, we seem to have a file, or other source,
-              // with zero rows.  However, the lack of rows does not necessarily
-              // mean there is a null schema (as for an empty JSON file).
+              // This last reader has a new schema (e.g., we have a zero-row
+              // source (file).  (Note that some sources have a schema even when
+              // they have no rows.)
 
               container.buildSchema(SelectionVectorMode.NONE);
               schema = container.getSchema();
 
-              System.err.println( "??? TEMP ScanBatch.next(): 2288 STATE:  (???)" );
+              System.err.println( "??? TEMP ScanBatch.next(): 2288 STATE: simplified, ENABLED" );
               System.err.println( "??? TEMP ScanBatch.next(): schema.getFieldCount() = " + schema.getFieldCount() );
-              final IterOutcome zeroRowReaderResult;
-              final boolean emptyJsonCasePURGE =
-                  1 == schema.getFieldCount()
-                  && "*".equals(schema.getColumn(0).getLastName());
-              if (! haveReturnedAnySchema) {
-                // We haven't returned OK_NEW_SCHEMA yet, so per the (current)
-                // IterOutcome/next() protocol (e.g., returning OK_NEW_SCHEMA
-                // before returning NONE), we should return OK_NEW_SCHEMA (to
-                // give the caller its expected OK_NEW_SCHEMA) before we return
-                // NONE for the end of this scan batch.
-                // However, ??? (RESOLVE).
-
-                if (0 != schema.getFieldCount()) {
-                  if (! emptyJsonCasePURGE) {
-                    // Regular static-schema case--MUST return OK_NEW_SCHEMA
-                    // so caller can get the schema.
-                    zeroRowReaderResult = IterOutcome.OK_NEW_SCHEMA;
-                  } else {
-                    // Empty-JSON file case (dummy schema with one column "*")--
-                    // ??? RESOLVE
-                    zeroRowReaderResult = IterOutcome.OK_NEW_SCHEMA;
-                  }
-                } else {
-                  // Empty-schema case (unknown whether can exist)--??? RESOLVE.
-                  zeroRowReaderResult = null; //????
-                }
-              } else {
-                // We have already returned OK_NEW_SCHEMA, so, for raw purposes
-                // of satisfying the (current) IterOutcome/next() protocol, we
-                // can ignore this new schema for which there are no rows and
-                // signal that we're finished.
-                // However, ???? RESOLVE.
-
-                if (0 != schema.getFieldCount()) {
-                  if (! emptyJsonCasePURGE) {
-                    // LOOKS LIKE regular static-schema case, except that we
-                    // get reports of schema change at the end of some JSON
-                    // files even though there is no schema change at the
-                    // record boundary indicated by the previously and currently
-                    // returned record counts--??? RESOLVE:  Is this ever a
-                    // valid schema change that we need to return to the caller? ??? FIXED?
-                    zeroRowReaderResult = IterOutcome.OK_NEW_SCHEMA; ///?????? TRY OK_NEW_SCHEMA
-                  } else {
-                    // Empty-JSON file case (dummy schema with one column "*")--
-                    // ??? RESOLVE
-                    zeroRowReaderResult = IterOutcome.OK_NEW_SCHEMA; //????
-                  }
-                } else {
-                  // Empty-schema case (unknown whether can exist)--??? RESOLVE.
-                  zeroRowReaderResult = null; //????
-                }
-              }
-              if (IterOutcome.OK_NEW_SCHEMA == zeroRowReaderResult) {
-                haveReturnedAnySchema = true;
-              }
-              return zeroRowReaderResult;
+    
+              return IterOutcome.OK_NEW_SCHEMA;
+            } else {
+              return IterOutcome.NONE;
             }
-            return IterOutcome.NONE;
           }
+          // At this point, the reader that hit its end it not the last reader.
 
           // If all the files we have read so far are just empty, the schema is not useful
           if (!hasReadNonEmptyFile) {
@@ -296,6 +239,7 @@ public class ScanBatch implements CloseableRecordBatch {
           return IterOutcome.STOP;
         }
       }
+      // At this point, the current reader has read 1 or more rows.
 
       hasReadNonEmptyFile = true;
       populatePartitionVectors();
@@ -312,7 +256,6 @@ public class ScanBatch implements CloseableRecordBatch {
       if (isNewSchema) {
         container.buildSchema(SelectionVectorMode.NONE);
         schema = container.getSchema();
-        haveReturnedAnySchema = true;
         return IterOutcome.OK_NEW_SCHEMA;
       } else {
         return IterOutcome.OK;
