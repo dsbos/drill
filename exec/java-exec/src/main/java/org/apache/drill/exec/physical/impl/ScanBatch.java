@@ -384,7 +384,7 @@ public class ScanBatch implements CloseableRecordBatch {
       // reset it and avoid false reports of schema changes in future.  (Be
       // careful with short-circuit OR (||) operator.)
 
-      boolean deeperSchemaChanged = callBack.getSchemaChange();
+      boolean deeperSchemaChanged = callBack.getSchemaChangedAndReset();
       if (schemaChanged || deeperSchemaChanged) {
         schemaChanged = false;
         return true;
