@@ -306,15 +306,9 @@ public class UnionAllRecordBatch extends AbstractRecordBatch<UnionAll> {
           case OUT_OF_MEMORY:
             return iterLeft;
 
-          // Although the first record batch from any input of Union should not be NONE,
-          // there are other Relational Operators which do not follow this protocol
-          // Thus, this case would not be removed until all those are fixed
-          // TODO: Remove this case after other relational operators follow IterOutcome's Protocol
-          case NONE:
-            throw new SchemaChangeException("The left input of Union-All should not come from an empty data source");
-
           default:
-            throw new IllegalStateException(String.format("Unknown state %s.", iterLeft));
+            throw new IllegalStateException(
+                String.format("Unexpected state %s.", iterLeft));
         }
 
         IterOutcome iterRight = rightSide.nextBatch();
@@ -344,21 +338,13 @@ public class UnionAllRecordBatch extends AbstractRecordBatch<UnionAll> {
             }
             break;
 
-          // TODO: Remove this case after other relational operators follow IterOutcome's protocol
-          case NONE:
-            // If the right input side comes from an empty data source,
-            // use the left input side's schema directly.
-            unionAllRecordBatch.setCurrentRecordBatch(leftSide.getRecordBatch());
-            inferOutputFieldsFromLeftSide();
-            rightIsFinish = true;
-            break;
-
           case STOP:
           case OUT_OF_MEMORY:
             return iterRight;
 
           default:
-            throw new IllegalStateException(String.format("Unknown state %s.", iterRight));
+            throw new IllegalStateException(
+                String.format("Unexpected state %s.", iterRight));
         }
 
         upstream = IterOutcome.OK_NEW_SCHEMA;
