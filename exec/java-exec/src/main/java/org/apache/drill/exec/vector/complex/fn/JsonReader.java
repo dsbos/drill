@@ -90,7 +90,8 @@ public class JsonReader extends BaseJsonProcessor {
 
   @Override
   public void ensureAtLeastOneField(ComplexWriter writer) {
-    if (!atLeastOneWrite) {
+    // ????trying DISABLING:
+    if (false &&     !atLeastOneWrite) {
       // if we had no columns, create one empty one so we can return some data for count purposes.
       SchemaPath sp = columns.get(0);
       PathSegment root = sp.getRootSegment();
