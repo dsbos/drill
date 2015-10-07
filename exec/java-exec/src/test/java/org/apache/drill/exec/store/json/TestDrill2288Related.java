@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.apache.drill.exec.physical.impl;
+package org.apache.drill.exec.store.json;
 
 import org.apache.drill.BaseTestQuery;
 import org.apache.drill.common.util.FileUtils;
