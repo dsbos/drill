@@ -288,7 +288,7 @@ abstract class VectorOutput {
     public MapVectorOutput(WorkingBuffer work) {
       super(work);
     }
-
+    /** ??? What does "running" a "map vector output" mean? */
     public boolean run(MapWriter writer, String fieldName) throws IOException{
       this.fieldName = fieldName;
       this.writer = writer;
