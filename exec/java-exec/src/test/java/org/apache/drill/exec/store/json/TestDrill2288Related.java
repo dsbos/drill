@@ -31,84 +31,95 @@ public class TestDrill2288Related extends BaseTestQuery {
 
   @BeforeClass
   public static void setUpClass() throws Exception {
-    test("alter session set `planner.slice_target` = 1");
+   // test( "alter session set `planner.slice_target` = 1" );
   }
 
   @AfterClass
   public static void tearDownClass() throws Exception {
-    test("alter session reset `planner.slice_target`");
+    // test( "alter session reset `planner.slice_target`" );
   }
 
   @Test
-  public void testNameThis1() throws Exception {
+  public void testNameThisA_SameEmptySame() throws Exception {
+    String dir =
+        FileUtils.getResourceAsFile("/store/json/drill2288SameEmptySame").toURI().toString();
 
+    test( "SELECT CAST(t.onecf.subColA AS varchar(30)) name, COUNT(*) unique_name "
+          + "FROM dfs_test.`" + dir + "` AS t "
+          + "GROUP BY t.onecf.subColA "
+          + "HAVING COUNT(*) > 3 "
+          + "ORDER BY t.onecf.subColA" );
+  }
+
+  @Test
+  public void testNameThisB_SimSimEmptySim() throws Exception {
+    String dir =
+        FileUtils.getResourceAsFile("/store/json/drill2288SimSimEmptySim").toURI().toString();
+
+    test( "SELECT CAST(t.onecf.subColA AS varchar(30)) name, COUNT(*) unique_name "
+          + "FROM dfs_test.`" + dir + "` AS t "
+          + "GROUP BY t.onecf.subColA "
+          + "HAVING COUNT(*) > 3 "
+          + "ORDER BY t.onecf.subColA" );
+  }
+
+  @Test
+  public void testNameThisB_SimSimEmptySim_Star() throws Exception {
+    String dir =
+        FileUtils.getResourceAsFile("/store/json/drill2288SimSimEmptySim").toURI().toString();
+
+    test( "SELECT * FROM dfs_test.`" + dir + "`" );
+  }
+
+  @Test
+  public void testNameThis11() throws Exception {
     try {
-      //test("alter session set `planner.slice_target` = 1");
-
+      test( "alter session set `planner.slice_target` = 1" );
       String dir =
-          FileUtils.getResourceAsFile("/sender/drill2288namethis").toURI().toString();
+          FileUtils.getResourceAsFile("/store/json/drill-2288_empty_between_same_schema")
+              .toURI().toString();
 
-
-      test( "SELECT CAST(voter.onecf.name AS varchar(30)) name, COUNT(*) unique_name "
-            + "FROM dfs_test.`" + dir + "` AS voter "
-            + "GROUP BY voter.onecf.name "
+      test( "SELECT CAST(t.onecf.subColA AS varchar(30)) subColA, COUNT(*) unique_name "
+            + "FROM dfs_test.`" + dir + "` AS t "
+            + "GROUP BY t.onecf.subColA "
             + "HAVING COUNT(*) > 3 "
-            + "ORDER BY voter.onecf.name");
-      /*
-      testBuilder()
-          .sqlQuery(
-                "SELECT CAST(voter.onecf.name AS varchar(30)) name, COUNT(*) unique_name "
-                + "FROM dfs_test.`" + dir + "` AS voter "
-                + "GROUP BY voter.onecf.name "
-                + "HAVING COUNT(*) > 3 "
-                + "ORDER BY voter.onecf.name")
-           .ordered()
-           .baselineColumns("fill_this_in")
-           .baselineValues("??? fill this in")
-           .go();
-      */
+            + "ORDER BY t.onecf.subColA" );
     } finally {
-      //test("alter session reset `planner.slice_target`");
+      test( "alter session reset `planner.slice_target`" );
     }
   }
 
   @Test
-  public void testNameThis2() throws Exception {
-
+  public void testNameThis13B() throws Exception {
     try {
-      //test("alter session set `planner.slice_target` = 1");
-
       String dir =
-          FileUtils.getResourceAsFile("/sender/drill2288namethis2").toURI().toString();
+          FileUtils.getResourceAsFile("/store/json/drill2288SimSimEmptySim").toURI().toString();
 
-
-      test( "SELECT CAST(voter.onecf.name AS varchar(30)) name, COUNT(*) unique_name "
-            + "FROM dfs_test.`" + dir + "` AS voter "
-            + "GROUP BY voter.onecf.name "
+      test( "SELECT CAST(t.onecf.subColA AS varchar(30)) name, COUNT(*) unique_name "
+            + "FROM dfs_test.`" + dir + "` AS t "
+            + "GROUP BY t.onecf.subColA "
             + "HAVING COUNT(*) > 3 "
-            + "ORDER BY voter.onecf.name");
+            + "ORDER BY t.onecf.subColA" );
     } finally {
-      //test("alter session reset `planner.slice_target`");
     }
   }
 
   @Test
-  public void testNameThis3() throws Exception {
+  public void testNameThis14() throws Exception {
 
     try {
-      //test("alter session set `planner.slice_target` = 1");
+      test( "alter session set `planner.slice_target` = 1" );
 
       String dir =
-          FileUtils.getResourceAsFile("/sender/drill2288namethis2/voter3.json").toURI().toString();
+          FileUtils.getResourceAsFile("/store/json/drill2288namethis2/voter3.json").toURI().toString();
 
-
-      test( "SELECT CAST(voter.onecf.name AS varchar(30)) name, COUNT(*) unique_name "
-            + "FROM dfs_test.`" + dir + "` AS voter "
-            + "GROUP BY voter.onecf.name "
+      test( "SELECT CAST(t.onecf.subColA AS varchar(30)) name, COUNT(*) unique_name "
+            + "FROM dfs_test.`" + dir + "` AS t "
+            + "GROUP BY t.onecf.subColA "
             + "HAVING COUNT(*) > 3 "
-            + "ORDER BY voter.onecf.name");
+            + "ORDER BY t.onecf.subColA" );
     } finally {
-      //test("alter session reset `planner.slice_target`");
+      test( "alter session reset `planner.slice_target`" );
     }
   }
 
