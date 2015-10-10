@@ -26,6 +26,7 @@ import java.util.Map;
 
 import org.apache.drill.common.exceptions.ExecutionSetupException;
 import org.apache.drill.common.exceptions.UserException;
+import org.apache.drill.common.expression.PathSegment;
 import org.apache.drill.common.expression.SchemaPath;
 import org.apache.drill.common.types.TypeProtos.MinorType;
 import org.apache.drill.common.types.Types;
@@ -56,6 +57,8 @@ import org.apache.drill.exec.vector.AllocationHelper;
 import org.apache.drill.exec.vector.NullableVarCharVector;
 import org.apache.drill.exec.vector.SchemaChangeCallBack;
 import org.apache.drill.exec.vector.ValueVector;
+import org.apache.drill.exec.vector.complex.writer.BaseWriter;
+import org.apache.drill.exec.vector.complex.writer.BaseWriter.ComplexWriter;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -169,6 +172,29 @@ public class ScanBatch implements CloseableRecordBatch {
     }
   }
 
+
+//  private void ensureAtLeastOneFieldMOVED(ComplexWriter writer) {
+//    if (schema.getFieldCount() == 0) {
+//      SchemaPath sp = columns.get(0); //???? What's special about first columns item?
+//      PathSegment root = sp.getRootSegment(); //???? ROOT OF WHAT?
+//      BaseWriter.MapWriter fieldWriter = writer.rootAsMap();
+//      while (root.getChild() != null && !root.getChild().isArray()) {
+//        fieldWriter = fieldWriter.map(root.getNameSegment().getPath());
+//        root = root.getChild();  //??? NOW ROOT OF WHAT?
+//      }
+//      // ???? NOTE:  Disabling only this fieldWriter call seemed to work for all
+//      // dev. unit tests except org.apache.drill.hbase.TestHBaseQueries, which
+//      // had a memory leak ("Attempted to close accountor with 1 buffer(s) still
+//      // allocated.") from printResult, which seems to skip some clear/close/clean
+//      // something calls inappropriately.
+//      if ( true /*????HIDDEN ! fieldWriter.hasAnyFields()*/ ) {
+//        fieldWriter.integer(root.getNameSegment().getPath());
+//      }
+//      throw null; //?????
+//    }
+//  }
+
+
   @Override
   public IterOutcome next() {
     if (done) {
@@ -199,15 +225,15 @@ public class ScanBatch implements CloseableRecordBatch {
               // file or other source).  (Note that some sources have a non-
               // null/non-trivial schema even when there are no no rows.)
 
+              //??????ensureAtLeastOneField();
               container.buildSchema(SelectionVectorMode.NONE);
               schema = container.getSchema();
-
               return IterOutcome.OK_NEW_SCHEMA;
             }
             return IterOutcome.NONE;
           }
           // At this point, the reader that hit its end it not the last reader.
-
+          //???? Why exactly was the hasReadNonEmptyFile irregularity needed?  Is it still needed?
           // If all the files we have read so far are just empty, the schema is not useful
           if (! hasReadNonEmptyFile) {
             container.clear();
@@ -251,6 +277,7 @@ public class ScanBatch implements CloseableRecordBatch {
       oContext.getStats().batchReceived(0, getRecordCount(), isNewSchema);
 
       if (isNewSchema) {
+      //??????ensureAtLeastOneField();
         container.buildSchema(SelectionVectorMode.NONE);
         schema = container.getSchema();
         return IterOutcome.OK_NEW_SCHEMA;
@@ -374,7 +401,7 @@ public class ScanBatch implements CloseableRecordBatch {
 
     /**
      * Reports whether schema has changed (field was added or re-added) since
-     * last call to {@link #isNewSchema}.  returns true at first call.
+     * last call to {@link #isNewSchema}.  Returns true at first call.
      */
     @Override
     public boolean isNewSchema() {
