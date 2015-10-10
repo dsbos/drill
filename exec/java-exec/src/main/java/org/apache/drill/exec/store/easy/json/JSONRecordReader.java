@@ -197,8 +197,6 @@ public class JSONRecordReader extends AbstractRecordReader {
         }
 
       }
-
-      }
       //????? Why is this ensureAtLeastOneField in JsonProcessor/... instead
       // of being handled in ScanBatch ()?
       jsonReader.ensureAtLeastOneField(writer);
