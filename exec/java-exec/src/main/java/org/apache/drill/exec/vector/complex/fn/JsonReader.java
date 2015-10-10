@@ -90,17 +90,40 @@ public class JsonReader extends BaseJsonProcessor {
 
   @Override
   public void ensureAtLeastOneField(ComplexWriter writer) {
-    // ????trying DISABLING:
-    if (false &&     !atLeastOneWrite) {
+    //???? PROBABLY should check if schema exists from previous reader
+    // ?? How?  (things here seem write-only)
+    //writer.rootAsMap().
+    if (! atLeastOneWrite) {
       // if we had no columns, create one empty one so we can return some data for count purposes.
-      SchemaPath sp = columns.get(0);
-      PathSegment root = sp.getRootSegment();
+      System.err.println( "xxx: columns.size() = " + columns.size() );
+      System.err.println( "xxx: columns = " + columns );
+      SchemaPath sp = columns.get(0); //???? What's special about first columns item?
+      System.err.println( "xxx: sp = " + sp );
+      PathSegment root = sp.getRootSegment(); //???? ROOT OF WHAT?
+      System.err.println( "xxx: root.1 := " + root );
       BaseWriter.MapWriter fieldWriter = writer.rootAsMap();
+      System.err.println( "xxx: fieldWriter.1 := " + fieldWriter );
+      int tempChildDepth = 0;
       while (root.getChild() != null && !root.getChild().isArray()) {
+        tempChildDepth++;
         fieldWriter = fieldWriter.map(root.getNameSegment().getPath());
-        root = root.getChild();
+        System.err.println( "xxx: fieldWriter.2 := " + fieldWriter );
+        root = root.getChild();  //??? NOW ROOT OF WHAT?
+        System.err.println( "xxx: root.2 := " + root );
       }
-      fieldWriter.integer(root.getNameSegment().getPath());
+      System.err.println( "xxx: tempChildDepth = " + tempChildDepth );
+      if (1 != tempChildDepth) {
+        System.err.println( "xxx: (tempChildDepth != 1)" );
+      }
+      // ???? NOTE:  Disabling only this fieldWriter call seemed to work for all
+      // dev. unit tests except org.apache.drill.hbase.TestHBaseQueries, which
+      // had a memory leak ("Attempted to close accountor with 1 buffer(s) still
+      // allocated.") from printResult, which seems to skip some clear/close/clean
+      // something calls inappropriately.
+      if ( true /*????HIDDEN ! fieldWriter.hasAnyFields()*/ ) {
+        System.err.println( "xxx: calling  fieldWriter.integer(" + root.getNameSegment().getPath() + ")" );
+        fieldWriter.integer(root.getNameSegment().getPath());
+      }
     }
   }
 
