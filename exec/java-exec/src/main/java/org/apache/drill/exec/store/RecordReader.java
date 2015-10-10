@@ -31,7 +31,7 @@ public interface RecordReader extends AutoCloseable {
   public static final long ALLOCATOR_MAX_RESERVATION = 20L*1000*1000*1000;
 
   /**
-   * Configure the RecordReader with the provided schema and the record batch that should be written to.
+   * Configures the RecordReader with the provided schema and the record batch that should be written to.
    *
    * @param context operator context for the reader
    * @param output
@@ -44,9 +44,9 @@ public interface RecordReader extends AutoCloseable {
   void allocate(Map<Key, ValueVector> vectorMap) throws OutOfMemoryException;
 
   /**
-   * Increment record reader forward, writing into the provided output batch.
+   * Increments this record reader forward, writing to the provided output mutator.
    *
-   * @return The number of additional records added to the output.
+   * @return The number of records added to the output.
    */
   int next();
 }
