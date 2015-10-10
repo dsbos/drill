@@ -36,7 +36,7 @@ import java.util.List;
  * Base class for MapVectors. Currently used by RepeatedMapVector and MapVector
  */
 public abstract class AbstractMapVector extends AbstractContainerVector {
-  // ???? Re "the vector":  Which vector(s)?  The only antecedent for "vector" so far is the one vector is AbstractMapVector. 
+  // ???? Re "the vector":  Which vector(s)?  The only antecedent for "vector" so far is the one vector is AbstractMapVector.
   // Maintains a map with key as field name and value is the vector itself
   private final MapWithOrdinal<String, ValueVector> vectors =  new MapWithOrdinal<>();
 
