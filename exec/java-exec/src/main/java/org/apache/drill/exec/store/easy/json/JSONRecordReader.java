@@ -89,7 +89,7 @@ public class JSONRecordReader extends AbstractRecordReader {
   private JSONRecordReader(final FragmentContext fragmentContext, final String inputPath,
       final JsonNode embeddedContent, final DrillFileSystem fileSystem,
       final List<SchemaPath> columns) {
-
+    System.err.println( "???: JSONRecordReader(...): inputPath + " + inputPath );
     Preconditions.checkArgument(
         (inputPath == null && embeddedContent != null) ||
         (inputPath != null && embeddedContent == null),
@@ -197,6 +197,9 @@ public class JSONRecordReader extends AbstractRecordReader {
 
       }
 
+      }
+      //????? Why is this ensureAtLeastOneField in JsonProcessor/... instead
+      // of being handled in ScanBatch ()?
       jsonReader.ensureAtLeastOneField(writer);
 
       writer.setValueCount(recordCount);
