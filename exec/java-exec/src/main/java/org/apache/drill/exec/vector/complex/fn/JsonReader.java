@@ -120,7 +120,7 @@ public class JsonReader extends BaseJsonProcessor {
       // had a memory leak ("Attempted to close accountor with 1 buffer(s) still
       // allocated.") from printResult, which seems to skip some clear/close/clean
       // something calls inappropriately.
-      if ( true /*????HIDDEN ! fieldWriter.hasAnyFields()*/ ) {
+      if (fieldWriter.isEmptyMap()) {
         System.err.println( "xxx: calling  fieldWriter.integer(" + root.getNameSegment().getPath() + ")" );
         fieldWriter.integer(root.getNameSegment().getPath());
       }
