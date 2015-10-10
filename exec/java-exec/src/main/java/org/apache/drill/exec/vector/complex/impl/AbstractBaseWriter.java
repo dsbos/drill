@@ -31,6 +31,10 @@ abstract class AbstractBaseWriter implements FieldWriter {
   }
 
   @Override
+  public String toString() {
+    return super.toString() + "[index = " + index + ", parent = " + parent + "]";
+  }
+
   public FieldWriter getParent() {
     return parent;
   }
