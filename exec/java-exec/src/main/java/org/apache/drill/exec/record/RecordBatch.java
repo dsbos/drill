@@ -24,7 +24,7 @@ import org.apache.drill.exec.record.selection.SelectionVector4;
 
 /**
  * A record batch contains a set of field values for a particular range of
- * records.
+ * records.  ???? Say something about really providing _stream_ of actual _batches_ of data (doesn't contain a static set of values)
  * <p>
  *   In the case of a record batch composed of ValueVectors, ideally a batch
  *   fits within L2 cache (~256kB per core).  The set of value vectors does

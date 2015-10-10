@@ -22,6 +22,7 @@ import org.apache.drill.exec.vector.complex.writer.BaseWriter.MapWriter;
 import org.apache.drill.exec.vector.complex.writer.BaseWriter.ScalarWriter;
 
 public interface FieldWriter extends MapWriter, ListWriter, ScalarWriter {
+  /** ??? allocate what for what? */
   void allocate();
   void clear();
 }

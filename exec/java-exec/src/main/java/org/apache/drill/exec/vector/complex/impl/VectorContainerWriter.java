@@ -90,7 +90,7 @@ public class VectorContainerWriter extends AbstractFieldWriter implements Comple
   public void allocate() {
     mapRoot.allocate();
   }
-
+  /** ???? What's special about it? */
   private class SpecialMapVector extends MapVector {
 
     public SpecialMapVector(CallBack callback) {

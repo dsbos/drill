@@ -32,7 +32,7 @@ public interface JsonProcessor {
     END_OF_STREAM,
     WRITE_SUCCEED
   }
-
+  /** ??? Write what from what? (To writer, right?) */
   ReadState write(BaseWriter.ComplexWriter writer) throws IOException;
 
   void setSource(InputStream is) throws IOException;

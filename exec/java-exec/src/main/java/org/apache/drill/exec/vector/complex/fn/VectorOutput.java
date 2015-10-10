@@ -49,7 +49,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-
+/** ??? What is a vector output? */
 abstract class VectorOutput {
 
   private static final Logger LOG = LoggerFactory.getLogger(VectorOutput.class);

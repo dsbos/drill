@@ -56,13 +56,13 @@ import org.apache.drill.exec.vector.complex.reader.FieldReader;
  * </blockquote>
  */
 public interface ValueVector extends Closeable, Iterable<ValueVector> {
-  /**
+  /** ???? What's the difference between allocateNew and allocateNewSafe?
    * Allocate new buffers. ValueVector implements logic to determine how much to allocate.
    * @throws OutOfMemoryRuntimeException Thrown if no memory can be allocated.
    */
   void allocateNew() throws OutOfMemoryRuntimeException;
 
-  /**
+  /** ???? What's the difference between allocateNew and allocateNewSafe?
    * Allocates new buffers. ValueVector implements logic to determine how much to allocate.
    * @return Returns true if allocation was succesful.
    */

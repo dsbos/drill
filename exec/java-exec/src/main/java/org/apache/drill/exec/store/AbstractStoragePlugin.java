@@ -56,6 +56,7 @@ public abstract class AbstractStoragePlugin implements StoragePlugin{
   @Override
   public AbstractGroupScan getPhysicalScan(String userName, JSONOptions selection) throws IOException {
     return getPhysicalScan(userName, selection, AbstractGroupScan.ALL_COLUMNS);
+    //???? Why redundancy between use of ALL_COLUMNS here and also in EasyGroupScan constructor?
   }
 
   @Override
