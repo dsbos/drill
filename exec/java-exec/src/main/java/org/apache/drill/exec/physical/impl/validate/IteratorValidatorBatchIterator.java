@@ -246,7 +246,7 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
         if (schema == null) {
           return batchState;
         }
-        if ( /*?????*/false &&     schema.getFieldCount() == 0) {
+        if (schema.getFieldCount() == 0) {
           throw new IllegalStateException(
               String.format(
                   "Incoming batch [#%d, %s] has an empty schema. This is not allowed.",
