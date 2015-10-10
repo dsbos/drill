@@ -38,6 +38,9 @@ package org.apache.drill.exec.vector.complex.writer;
 
     MaterializedField getField();
 
+    //???? Does this belong on MapWriter or up on BaseWriter?
+    //????HIDDEN boolean hasAnyFields();
+
     <#list vv.types as type><#list type.minor as minor>
     <#assign lowerName = minor.class?uncap_first />
     <#if lowerName == "int" ><#assign lowerName = "integer" /></#if>
