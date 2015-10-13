@@ -181,7 +181,7 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
     try {
 
       // Check whether next() should even have been called in current state.
-      if ( null != exceptionState ) {
+      if (null != exceptionState) {
         throw new IllegalStateException(
             String.format(
                 "next() [on #%d; %s] called again after it threw %s (after"
@@ -263,8 +263,11 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
           lastNewSchema = lastSchema;
         }
 
-        logger.trace("[#{}; on {}]: incoming next() return: #records = {},"
-                     + " schema = {}, prev. new schema = {}",
+        logger.trace("[#{}; on {}]: incoming next() return: #records = {}, "
+                     + "\n  schema:"
+                     + "\n    {}, "
+                     + "\n  prev. new:"
+                     + "\n    {}",
                      instNum, batchTypeName, incoming.getRecordCount(), 
                      lastSchema, prevLastNewSchema );
 
@@ -299,7 +302,8 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
     catch ( RuntimeException | Error e ) {
       exceptionState = e;
       logger.trace("[#{}, on {}]: incoming next() exception: ({} ->) {}",
-          instNum, batchTypeName, prevBatchState, exceptionState );
+                   instNum, batchTypeName, prevBatchState, exceptionState, 
+                   exceptionState);
       throw e;
     }
   }
