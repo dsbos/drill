@@ -202,10 +202,6 @@ public interface RecordBatch extends VectorAccessible {
     OUT_OF_MEMORY
   }
 
-  public static enum SetupOutcome {
-    OK, OK_NEW_SCHEMA, FAILED
-  }
-
   /**
    * Gets the FragmentContext of the current query fragment.  Useful for
    * reporting failure information or other query-level information.
