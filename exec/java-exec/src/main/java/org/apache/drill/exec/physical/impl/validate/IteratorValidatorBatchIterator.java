@@ -66,6 +66,14 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
 
   /** Main state of incoming batch; last value returned by its next() method. */
   private IterOutcome batchState = null;
+  
+  /** Last schema retrieved after OK_NEW_SCHEMA or OK from next().  Null if none
+   *  yet. Currently for logging/debuggability only. */
+  private BatchSchema lastSchema = null;
+
+  /** Last schema retrieved after OK_NEW_SCHEMA from next().  Null if none yet.
+   *  Currently for logging/debuggability only. */
+  private BatchSchema lastNewSchema = null;
 
   /**
    * {@link IterOutcome} return value sequence validation state.
@@ -95,6 +103,13 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
   }
 
   private void validateReadState(String operation) {
+    if (batchState == null) {
+      throw new IllegalStateException(
+          String.format(
+              "Batch data read operation (%s) attempted before first next() call"
+              + " on batch [#%d, %s].",
+              operation, instNum, batchTypeName));
+    }
     switch (batchState) {
     case OK:
     case OK_NEW_SCHEMA:
@@ -240,13 +255,26 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
 
       // Validate schema when available.
       if (batchState == OK || batchState == OK_NEW_SCHEMA) {
-        BatchSchema schema = incoming.getSchema();
-        logger.trace("[#{}; on {}]: incoming next() return: #records = {}, schema = {}",
-            instNum, batchTypeName, incoming.getRecordCount(), schema );
-        if (schema == null) {
-          return batchState;
+        final BatchSchema prevLastSchema = lastSchema; 
+        final BatchSchema prevLastNewSchema = lastNewSchema; 
+        
+        lastSchema = incoming.getSchema();
+        if (batchState == OK_NEW_SCHEMA) {
+          lastNewSchema = lastSchema;
         }
-        if (schema.getFieldCount() == 0) {
+
+        logger.trace("[#{}; on {}]: incoming next() return: #records = {},"
+                     + " schema = {}, prev. new schema = {}",
+                     instNum, batchTypeName, incoming.getRecordCount(), 
+                     lastSchema, prevLastNewSchema );
+
+        if (lastSchema == null) {
+          throw new IllegalStateException(
+              String.format(
+                  "Incoming batch [#%d, %s] has a null schema. This is not allowed.",
+                  instNum, batchTypeName));
+        }
+        if (lastSchema.getFieldCount() == 0) {
           throw new IllegalStateException(
               String.format(
                   "Incoming batch [#%d, %s] has an empty schema. This is not allowed.",
