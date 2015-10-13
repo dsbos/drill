@@ -72,7 +72,7 @@ public class TestDrill2288Related extends BaseTestQuery {
   }
 
   @Test
-  public void testNameThis11() throws Exception {
+  public void testNameThis11A() throws Exception {
     try {
       test( "alter session set `planner.slice_target` = 1" );
       String dir =
@@ -86,6 +86,22 @@ public class TestDrill2288Related extends BaseTestQuery {
             + "ORDER BY t.onecf.subColA" );
     } finally {
       test( "alter session reset `planner.slice_target`" );
+    }
+  }
+
+  @Test
+  public void testNameThis11B() throws Exception {
+    try {
+      String dir =
+          FileUtils.getResourceAsFile("/store/json/drill-2288_empty_between_same_schema")
+              .toURI().toString();
+
+      test( "SELECT CAST(t.onecf.subColA AS varchar(30)) subColA, COUNT(*) unique_name "
+            + "FROM dfs_test.`" + dir + "` AS t "
+            + "GROUP BY t.onecf.subColA "
+            + "HAVING COUNT(*) > 3 "
+            + "ORDER BY t.onecf.subColA" );
+    } finally {
     }
   }
 
@@ -105,7 +121,7 @@ public class TestDrill2288Related extends BaseTestQuery {
   }
 
   @Test
-  public void testNameThis14() throws Exception {
+  public void testNameThis14A() throws Exception {
 
     try {
       test( "alter session set `planner.slice_target` = 1" );
@@ -120,6 +136,22 @@ public class TestDrill2288Related extends BaseTestQuery {
             + "ORDER BY t.onecf.subColA" );
     } finally {
       test( "alter session reset `planner.slice_target`" );
+    }
+  }
+
+  @Test
+  public void testNameThis14B() throws Exception {
+
+    try {
+      String dir =
+          FileUtils.getResourceAsFile("/store/json/drill2288namethis2/voter3.json").toURI().toString();
+
+      test( "SELECT CAST(t.onecf.subColA AS varchar(30)) name, COUNT(*) unique_name "
+            + "FROM dfs_test.`" + dir + "` AS t "
+            + "GROUP BY t.onecf.subColA "
+            + "HAVING COUNT(*) > 3 "
+            + "ORDER BY t.onecf.subColA" );
+    } finally {
     }
   }
 
