@@ -66,7 +66,7 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
 
   /** Main state of incoming batch; last value returned by its next() method. */
   private IterOutcome batchState = null;
-  
+
   /** Last schema retrieved after OK_NEW_SCHEMA or OK from next().  Null if none
    *  yet. Currently for logging/debuggability only. */
   private BatchSchema lastSchema = null;
@@ -255,9 +255,9 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
 
       // Validate schema when available.
       if (batchState == OK || batchState == OK_NEW_SCHEMA) {
-        final BatchSchema prevLastSchema = lastSchema; 
-        final BatchSchema prevLastNewSchema = lastNewSchema; 
-        
+        final BatchSchema prevLastSchema = lastSchema;
+        final BatchSchema prevLastNewSchema = lastNewSchema;
+
         lastSchema = incoming.getSchema();
         if (batchState == OK_NEW_SCHEMA) {
           lastNewSchema = lastSchema;
@@ -268,7 +268,7 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
                      + "\n    {}, "
                      + "\n  prev. new:"
                      + "\n    {}",
-                     instNum, batchTypeName, incoming.getRecordCount(), 
+                     instNum, batchTypeName, incoming.getRecordCount(),
                      lastSchema, prevLastNewSchema );
 
         if (lastSchema == null) {
@@ -302,7 +302,7 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
     catch ( RuntimeException | Error e ) {
       exceptionState = e;
       logger.trace("[#{}, on {}]: incoming next() exception: ({} ->) {}",
-                   instNum, batchTypeName, prevBatchState, exceptionState, 
+                   instNum, batchTypeName, prevBatchState, exceptionState,
                    exceptionState);
       throw e;
     }
