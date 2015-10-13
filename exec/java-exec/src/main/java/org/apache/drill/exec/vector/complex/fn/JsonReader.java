@@ -99,17 +99,17 @@ public class JsonReader extends BaseJsonProcessor {
       System.err.println( "xxx: columns = " + columns );
       SchemaPath sp = columns.get(0); //???? What's special about first columns item?
       System.err.println( "xxx: sp = " + sp );
-      PathSegment root = sp.getRootSegment(); //???? ROOT OF WHAT?
-      System.err.println( "xxx: root.1 := " + root );
+      PathSegment fieldPath = sp.getRootSegment(); //???? ROOT OF WHAT?
+      System.err.println( "xxx: fieldPath.1 := " + fieldPath );
       BaseWriter.MapWriter fieldWriter = writer.rootAsMap();
       System.err.println( "xxx: fieldWriter.1 := " + fieldWriter );
       int tempChildDepth = 0;
-      while (root.getChild() != null && !root.getChild().isArray()) {
+      while (fieldPath.getChild() != null && ! fieldPath.getChild().isArray()) {
         tempChildDepth++;
-        fieldWriter = fieldWriter.map(root.getNameSegment().getPath());
+        fieldWriter = fieldWriter.map(fieldPath.getNameSegment().getPath());
         System.err.println( "xxx: fieldWriter.2 := " + fieldWriter );
-        root = root.getChild();  //??? NOW ROOT OF WHAT?
-        System.err.println( "xxx: root.2 := " + root );
+        fieldPath = fieldPath.getChild();  //??? NOW ROOT OF WHAT?
+        System.err.println( "xxx: fieldPath.2 := " + fieldPath );
       }
       System.err.println( "xxx: tempChildDepth = " + tempChildDepth );
       if (1 != tempChildDepth) {
@@ -121,8 +121,8 @@ public class JsonReader extends BaseJsonProcessor {
       // allocated.") from printResult, which seems to skip some clear/close/clean
       // something calls inappropriately.
       if (fieldWriter.isEmptyMap()) {
-        System.err.println( "xxx: calling  fieldWriter.integer(" + root.getNameSegment().getPath() + ")" );
-        fieldWriter.integer(root.getNameSegment().getPath());
+        System.err.println( "xxx: calling  fieldWriter.integer(" + fieldPath.getNameSegment().getPath() + ")" );
+        fieldWriter.integer(fieldPath.getNameSegment().getPath());
       }
     }
   }
