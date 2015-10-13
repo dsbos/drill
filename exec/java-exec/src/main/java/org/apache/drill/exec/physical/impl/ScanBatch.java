@@ -211,8 +211,10 @@ public class ScanBatch implements CloseableRecordBatch {
             }
             return IterOutcome.NONE;
           }
-          // At this point, the reader that hit its end it not the last reader.
-          //???? Why exactly was the hasReadNonEmptyFile irregularity needed?  Is it still needed?
+          // At this point, the reader that hit its end is not the last reader.
+          // ???? Note:  This hasReadNonEmptyFile irregularity probably could be
+          // removed if ensureAtLeastOnField logic were moved from the JSON
+          // readers into here.
           // If all the files we have read so far are just empty, the schema is not useful
           if (! hasReadNonEmptyFile) {
             container.clear();
