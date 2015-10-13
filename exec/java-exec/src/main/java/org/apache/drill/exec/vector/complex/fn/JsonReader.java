@@ -90,38 +90,16 @@ public class JsonReader extends BaseJsonProcessor {
 
   @Override
   public void ensureAtLeastOneField(ComplexWriter writer) {
-    //???? PROBABLY should check if schema exists from previous reader
-    // ?? How?  (things here seem write-only)
-    //writer.rootAsMap().
     if (! atLeastOneWrite) {
       // if we had no columns, create one empty one so we can return some data for count purposes.
-      System.err.println( "xxx: columns.size() = " + columns.size() );
-      System.err.println( "xxx: columns = " + columns );
       SchemaPath sp = columns.get(0); //???? What's special about first columns item?
-      System.err.println( "xxx: sp = " + sp );
-      PathSegment fieldPath = sp.getRootSegment(); //???? ROOT OF WHAT?
-      System.err.println( "xxx: fieldPath.1 := " + fieldPath );
+      PathSegment fieldPath = sp.getRootSegment();
       BaseWriter.MapWriter fieldWriter = writer.rootAsMap();
-      System.err.println( "xxx: fieldWriter.1 := " + fieldWriter );
-      int tempChildDepth = 0;
       while (fieldPath.getChild() != null && ! fieldPath.getChild().isArray()) {
-        tempChildDepth++;
         fieldWriter = fieldWriter.map(fieldPath.getNameSegment().getPath());
-        System.err.println( "xxx: fieldWriter.2 := " + fieldWriter );
-        fieldPath = fieldPath.getChild();  //??? NOW ROOT OF WHAT?
-        System.err.println( "xxx: fieldPath.2 := " + fieldPath );
+        fieldPath = fieldPath.getChild();
       }
-      System.err.println( "xxx: tempChildDepth = " + tempChildDepth );
-      if (1 != tempChildDepth) {
-        System.err.println( "xxx: (tempChildDepth != 1)" );
-      }
-      // ???? NOTE:  Disabling only this fieldWriter call seemed to work for all
-      // dev. unit tests except org.apache.drill.hbase.TestHBaseQueries, which
-      // had a memory leak ("Attempted to close accountor with 1 buffer(s) still
-      // allocated.") from printResult, which seems to skip some clear/close/clean
-      // something calls inappropriately.
       if (fieldWriter.isEmptyMap()) {
-        System.err.println( "xxx: calling  fieldWriter.integer(" + fieldPath.getNameSegment().getPath() + ")" );
         fieldWriter.integer(fieldPath.getNameSegment().getPath());
       }
     }
