@@ -203,7 +203,7 @@ public class ScanBatch implements CloseableRecordBatch {
             if (mutator.isNewSchema()) {
               // This last reader has a new schema (e.g., we have a zero-row
               // file or other source).  (Note that some sources have a non-
-              // null/non-trivial schema even when there are no no rows.)
+              // null/non-trivial schema even when there are no rows.)
 
               container.buildSchema(SelectionVectorMode.NONE);
               schema = container.getSchema();
