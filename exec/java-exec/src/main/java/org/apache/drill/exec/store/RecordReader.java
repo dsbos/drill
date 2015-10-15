@@ -44,9 +44,10 @@ public interface RecordReader extends AutoCloseable {
   void allocate(Map<Key, ValueVector> vectorMap) throws OutOfMemoryException;
 
   /**
-   * Increment record reader forward, writing into the provided output batch.
+   * Increments this record reader forward, writing via the provided output
+   * mutator.
    *
-   * @return The number of additional records added to the output.
+   * @return The number of records added to the output by the increment.
    */
   int next();
 }
