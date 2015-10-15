@@ -76,7 +76,7 @@ public class JsonReader extends BaseJsonProcessor {
 
   public JsonReader(DrillBuf managedBuf, List<SchemaPath> columns, boolean allTextMode, boolean skipOuterList, boolean readNumbersAsDouble) {
     super(managedBuf);
-    assert Preconditions.checkNotNull(columns).size() > 0 : "json record reader requires at least a column";
+    assert Preconditions.checkNotNull(columns).size() > 0 : "JSON record reader requires at least one column";
     this.selection = FieldSelection.getFieldSelection(columns);
     this.workingBuffer = new WorkingBuffer(managedBuf);
     this.skipOuterList = skipOuterList;
