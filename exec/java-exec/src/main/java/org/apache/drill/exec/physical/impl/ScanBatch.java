@@ -197,7 +197,7 @@ public class ScanBatch implements CloseableRecordBatch {
             if (mutator.isNewSchema()) {
               // This last reader has a new schema (e.g., we have a zero-row
               // file or other source).  (Note that some sources have a non-
-              // null/non-trivial schema even when there are no no rows.)
+              // null/non-trivial schema even when there are no rows.)
 
               container.buildSchema(SelectionVectorMode.NONE);
               schema = container.getSchema();
@@ -206,7 +206,7 @@ public class ScanBatch implements CloseableRecordBatch {
             }
             return IterOutcome.NONE;
           }
-          // At this point, the reader that hit its end it not the last reader.
+          // At this point, the reader that hit its end is not the last reader.
 
           // If all the files we have read so far are just empty, the schema is not useful
           if (! hasReadNonEmptyFile) {
@@ -374,7 +374,7 @@ public class ScanBatch implements CloseableRecordBatch {
 
     /**
      * Reports whether schema has changed (field was added or re-added) since
-     * last call to {@link #isNewSchema}.  returns true at first call.
+     * last call to {@link #isNewSchema}.  Returns true at first call.
      */
     @Override
     public boolean isNewSchema() {
