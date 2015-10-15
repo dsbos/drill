@@ -68,7 +68,7 @@ public class TestNewMathFunctions {
       if  (v instanceof VarCharVector) {
         res[i++] = new String( ((VarCharVector) v).getAccessor().get(0));
       } else {
-        // ???? This assumes there's at least one value.  Is that valid? 
+        // ???? This assumes there's at least one value.  Is that valid?
         res[i++] =  v.getAccessor().getObject(0);
       }
     }
