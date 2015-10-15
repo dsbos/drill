@@ -296,7 +296,11 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
           VectorValidator.validate(incoming);
         }
       }
-
+      //?????   
+      if (OK == batchState) {
+        System.err.println( "????  IteratorValidatorBatchIterator OK case returning OK_NEW_SCHEMA" );
+        return OK_NEW_SCHEMA;
+      }
       return batchState;
     }
     catch ( RuntimeException | Error e ) {
