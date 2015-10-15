@@ -21,6 +21,7 @@ import javax.inject.Named;
 
 import org.apache.drill.exec.exception.SchemaChangeException;
 import org.apache.drill.exec.ops.FragmentContext;
+import org.apache.drill.exec.record.BatchSchema;
 import org.apache.drill.exec.record.RecordBatch;
 import org.apache.drill.exec.record.RecordBatch.IterOutcome;
 import org.apache.drill.exec.record.VectorWrapper;
@@ -32,7 +33,8 @@ public abstract class StreamingAggTemplate implements StreamingAggregator {
 
   private IterOutcome lastOutcome = null;
   private boolean first = true;
-  private boolean newSchema = false;
+  private BatchSchema currentSchema;
+  private boolean isNewSchema = false;
   private int previousIndex = -1;
   private int underlyingIndex = 0;
   private int currentIndex;
@@ -115,7 +117,7 @@ public abstract class StreamingAggTemplate implements StreamingAggregator {
       }
 
 
-      if (newSchema) {
+      if (isNewSchema) {
         return AggOutcome.UPDATE_AGGREGATOR;
       }
 
@@ -202,17 +204,22 @@ public abstract class StreamingAggTemplate implements StreamingAggregator {
               if (EXTRA_DEBUG) {
                 logger.debug("Received new schema.  Batch has {} records.", incoming.getRecordCount());
               }
-              if (addedRecordCount > 0) {
-                outputToBatchPrev(previous, previousIndex, outputCount); // No need to check the return value
-                // (output container full or not) as we are not going to insert anymore records.
-                if (EXTRA_DEBUG) {
-                  logger.debug("Wrote out end of previous batch, returning.");
+              BatchSchema newSchema = incoming.getSchema();
+              if ((! newSchema.equals(currentSchema)) && currentSchema != null) {
+                if (addedRecordCount > 0) {
+                  outputToBatchPrev(previous, previousIndex, outputCount); // No need to check the return value
+                  // (output container full or not) as we are not going to insert anymore records.
+                  if (EXTRA_DEBUG) {
+                    logger.debug("Wrote out end of previous batch, returning.");
+                  }
+                  isNewSchema = true;
+                  return setOkAndReturn();
                 }
-                newSchema = true;
-                return setOkAndReturn();
+                cleanup();
+                return AggOutcome.UPDATE_AGGREGATOR;
               }
-              cleanup();
-              return AggOutcome.UPDATE_AGGREGATOR;
+              currentSchema = newSchema;
+              // fall through
             case OK:
               resetIndex();
               if (incoming.getRecordCount() == 0) {
