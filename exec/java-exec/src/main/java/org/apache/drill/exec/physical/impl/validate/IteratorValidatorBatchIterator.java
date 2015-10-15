@@ -211,7 +211,7 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
           // OK_NEW_SCHEMA moves to have-seen-schema state.
           validationState = ValidationState.HAVE_SCHEMA;
           break;
-        case OK :
+        case OK:
           // OK is allowed as long as OK_NEW_SCHEMA was seen, except if terminated
           // (checked above).
           if ( validationState != ValidationState.HAVE_SCHEMA ) {
