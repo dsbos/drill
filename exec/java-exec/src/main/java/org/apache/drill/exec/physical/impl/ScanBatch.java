@@ -177,6 +177,7 @@ public class ScanBatch implements CloseableRecordBatch {
 
   @Override
   public IterOutcome next() {
+    System.err.println( "????: ScanBatch OK case set to return OK_NEW_SCHEMA instead" );
     if (done) {
       return IterOutcome.NONE;
     }
@@ -262,7 +263,8 @@ public class ScanBatch implements CloseableRecordBatch {
         schema = container.getSchema();
         return IterOutcome.OK_NEW_SCHEMA;
       } else {
-        return IterOutcome.OK;
+        System.err.println( "????: OK case returning OK_NEW_SCHEMA instead" );
+        return IterOutcome.OK_NEW_SCHEMA; // ?????? TEMPORARY; WAS:     IterOutcome.OK;
       }
     } catch (OutOfMemoryRuntimeException ex) {
       context.fail(UserException.memoryError(ex).build(logger));
