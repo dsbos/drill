@@ -69,6 +69,7 @@ public class TestNewMathFunctions {
       if  (v instanceof VarCharVector) {
         res[i++] = new String( ((VarCharVector) v).getAccessor().get(0));
       } else {
+        // ???? This assumes there's at least one value.  Is that valid?
         res[i++] =  v.getAccessor().getObject(0);
       }
     }
@@ -98,8 +99,9 @@ public class TestNewMathFunctions {
     final PhysicalPlan plan = reader.readPhysicalPlan(planString);
     final SimpleRootExec exec = new SimpleRootExec(ImplCreator.getExec(context, (FragmentRoot) plan.getSortedOperators(false).iterator().next()));
 
-    exec.next(); // skip schema batch
+    exec.next(); // skip schema batch //???? What about the data in that batch?
     while (exec.next()) {
+      // ???? This loop has not been executing on data in FIRST batch.
       final Object [] res = getRunResult(exec);
       assertEquals("return count does not match", expectedResults.length, res.length);
 
