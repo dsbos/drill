@@ -486,6 +486,8 @@ public class BaseTestQuery extends ExecTest {
       // SchemaChangeException, so check/clean throw clause above.
       if (loader.getRecordCount() <= 0) {
         continue;
+        // ????? Why skipping .clear and .release?  (With DRILL-2288 partial change,
+        // allocation in .load above is caught undeallocated at end.)
       }
       VectorUtil.showVectorAccessibleContent(loader, columnWidths);
       loader.clear();
