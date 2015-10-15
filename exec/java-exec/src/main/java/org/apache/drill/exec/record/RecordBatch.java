@@ -213,8 +213,15 @@ public interface RecordBatch extends VectorAccessible {
   public FragmentContext getContext();
 
   /**
-   * Gets the schema of the current RecordBatch.  The schema changes if and only
-   * if {@link #next} returns {@link #OK_NEW_SCHEMA}.
+   * Gets the current schema of this record batch.
+   * <p>
+   *   May be called only when the most recent call to {@link #next}, if any
+   *   returned {@link #OK_NEW_SCHEMA} or {@link #OK}.
+   * </p>
+   * <p>
+   *   The schema changes when and only when {@link #next} returns
+   *   {@link #OK_NEW_SCHEMA}.
+   * </p>
    */
   public BatchSchema getSchema();
 
