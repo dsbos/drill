@@ -68,7 +68,7 @@ public abstract class HashAggTemplate implements HashAggregator {
   private static final boolean EXTRA_DEBUG_2 = false;
   private static final String TOO_BIG_ERROR =
       "Couldn't add value to an empty batch.  This likely means that a single value is too long for a varlen field.";
-  private boolean newSchema = false;
+  private boolean isNewSchema = false;
   private int underlyingIndex = 0;
   private int currentIndex = 0;
   private IterOutcome outcome;
@@ -325,10 +325,13 @@ public abstract class HashAggTemplate implements HashAggregator {
                 if (EXTRA_DEBUG_1) {
                   logger.debug("Received new schema.  Batch has {} records.", incoming.getRecordCount());
                 }
-                newSchema = true;
-                this.cleanup();
-                // TODO: new schema case needs to be handled appropriately
-                return AggOutcome.UPDATE_AGGREGATOR;
+                final BatchSchema newSchema = incoming.getSchema();
+                if ((! newSchema.equals(schema)) && schema != null) {
+                  isNewSchema = true;
+                  this.cleanup();
+                  // TODO: new schema case needs to be handled appropriately
+                  return AggOutcome.UPDATE_AGGREGATOR;
+                }
 
               case OK:
                 resetIndex();
