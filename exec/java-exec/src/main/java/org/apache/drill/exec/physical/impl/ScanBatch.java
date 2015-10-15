@@ -67,9 +67,13 @@ public class ScanBatch implements CloseableRecordBatch {
   private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ScanBatch.class);
   private static final ControlsInjector injector = ControlsInjectorFactory.getInjector(ScanBatch.class);
 
-  private final Map<MaterializedField.Key, ValueVector> fieldVectorMap = Maps.newHashMap();
-
+  /** Main collection of fields' value vectors. */
   private final VectorContainer container = new VectorContainer();
+
+  /** Fields' value vectors indexed by fields' keys. */
+  private final Map<MaterializedField.Key, ValueVector> fieldVectorMap =
+      Maps.newHashMap();
+
   private int recordCount;
   private final FragmentContext context;
   private final OperatorContext oContext;
