@@ -214,9 +214,10 @@ public abstract class StreamingAggTemplate implements StreamingAggregator {
                   }
                   isNewSchema = true;
                   return setOkAndReturn();
+                }
+                cleanup();
+                return AggOutcome.UPDATE_AGGREGATOR;
               }
-              cleanup();
-              return AggOutcome.UPDATE_AGGREGATOR;
               currentSchema = newSchema;
               // fall through
             case OK:
