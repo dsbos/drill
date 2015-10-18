@@ -48,6 +48,7 @@ public class HBaseTestsSuite {
 
   private static final boolean IS_DEBUG = ManagementFactory.getRuntimeMXBean().getInputArguments().toString().indexOf("-agentlib:jdwp") > 0;
 
+  protected static final String TEST_TABLE_NO_ROWS = "TestTableNoRows";
   protected static final String TEST_TABLE_1 = "TestTable1";
   protected static final String TEST_TABLE_3 = "TestTable3";
   protected static final String TEST_TABLE_COMPOSITE_DATE = "TestTableCompositeDate";
@@ -146,7 +147,8 @@ public class HBaseTestsSuite {
   }
 
   private static boolean tablesExist() throws IOException {
-    return admin.tableExists(TEST_TABLE_1) && admin.tableExists(TEST_TABLE_3)
+    return admin.tableExists(TEST_TABLE_NO_ROWS)
+           && admin.tableExists(TEST_TABLE_1) && admin.tableExists(TEST_TABLE_3)
            && admin.tableExists(TEST_TABLE_COMPOSITE_DATE)
            && admin.tableExists(TEST_TABLE_COMPOSITE_TIME)
            && admin.tableExists(TEST_TABLE_COMPOSITE_INT)
@@ -166,6 +168,7 @@ public class HBaseTestsSuite {
      * multiple fragments. Hence the number of regions in the HBase table is set to 1.
      * Will revert to multiple region once the issue is resolved.
      */
+    TestTableGenerator.generateHBaseDatasetNoRows(admin, TEST_TABLE_NO_ROWS, 1);
     TestTableGenerator.generateHBaseDataset1(admin, TEST_TABLE_1, 1);
     TestTableGenerator.generateHBaseDataset3(admin, TEST_TABLE_3, 1);
     TestTableGenerator.generateHBaseDatasetCompositeKeyDate(admin, TEST_TABLE_COMPOSITE_DATE, 1);
@@ -182,6 +185,8 @@ public class HBaseTestsSuite {
   }
 
   private static void cleanupTestTables() throws IOException {
+    admin.disableTable(TEST_TABLE_NO_ROWS);
+    admin.deleteTable(TEST_TABLE_NO_ROWS);
     admin.disableTable(TEST_TABLE_1);
     admin.deleteTable(TEST_TABLE_1);
     admin.disableTable(TEST_TABLE_3);
