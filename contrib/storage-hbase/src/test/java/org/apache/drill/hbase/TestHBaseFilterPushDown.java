@@ -755,5 +755,84 @@ public class TestHBaseFilterPushDown extends BaseHBaseTest {
 
   }
 
+
+  @Test
+  public void testTEMP1() throws Exception {
+    setColumnWidths(new int[] {8, 38, 38});
+    final String sql = "SELECT\n"
+        + "  *\n"
+        + "FROM\n"
+        + "  hbase.`[TABLE_NAME]` tableName\n"
+        + "WHERE\n"
+        + "  row_key = 'a2' or row_key between 'b5' and 'b6'";
+
+    runHBaseSQLVerifyCount(sql, 3);
+  }
+
+  @Test
+  public void testTEMP2A() throws Exception {
+    setColumnWidths(new int[] {8, 38, 38});
+    final String sql = "SELECT\n"
+        + "  *\n"
+        + "FROM\n"
+        + "  hbase.`[TABLE_NAME]` tableName\n"
+        + "WHERE\n"
+        + "  row_key = 'a2' or row_key between 'b5' and 'b5'";
+
+    runHBaseSQLVerifyCount(sql, 2);
+  }
+
+  @Test
+  public void testTEMP2B() throws Exception {
+    setColumnWidths(new int[] {8, 38, 38});
+    final String sql = "SELECT\n"
+        + "  *\n"
+        + "FROM\n"
+        + "  hbase.`[TABLE_NAME]` tableName\n"
+        + "WHERE\n"
+        + "  row_key = 'a2' or row_key between 'b6' and 'b6'";
+
+    runHBaseSQLVerifyCount(sql, 2);
+  }
+
+  @Test
+  public void testTEMP5() throws Exception {
+    setColumnWidths(new int[] {8, 38, 38});
+    final String sql = "SELECT\n"
+        + "  *\n"
+        + "FROM\n"
+        + "  hbase.`[TABLE_NAME]` tableName\n"
+        + "WHERE\n"
+        + "  row_key = 'a2' or row_key = 'b5'";
+
+    runHBaseSQLVerifyCount(sql, 2);
+  }
+
+  @Test
+  public void testTEMP3() throws Exception {
+    setColumnWidths(new int[] {8, 38, 38});
+    final String sql = "SELECT\n"
+        + "  *\n"
+        + "FROM\n"
+        + "  hbase.`[TABLE_NAME]` tableName\n"
+        + "WHERE\n"
+        + "  row_key = 'a2'";
+
+    runHBaseSQLVerifyCount(sql, 1);
+  }
+
+  @Test
+  public void testTEMP4() throws Exception {
+    setColumnWidths(new int[] {8, 38, 38});
+    final String sql = "SELECT\n"
+        + "  *\n"
+        + "FROM\n"
+        + "  hbase.`[TABLE_NAME]` tableName\n"
+        + "WHERE\n"
+        + "  row_key between 'b5' and 'b5'";
+
+    runHBaseSQLVerifyCount(sql, 1);
+  }
+
 }
 
