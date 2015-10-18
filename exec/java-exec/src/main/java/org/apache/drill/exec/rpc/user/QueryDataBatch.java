@@ -48,6 +48,8 @@ public class QueryDataBatch {
     return data != null;
   }
 
+  // ??? What is the contract for calling this?  (E.g., what earlier call(s)
+  // requires calling this and when?
   public void release() {
     if (data != null) {
       data.release(1);
