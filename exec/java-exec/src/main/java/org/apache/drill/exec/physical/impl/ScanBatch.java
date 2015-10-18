@@ -189,6 +189,7 @@ public class ScanBatch implements CloseableRecordBatch {
             if (mutator.isNewSchema()) {
               container.buildSchema(SelectionVectorMode.NONE);
               schema = container.getSchema();
+              return IterOutcome.OK_NEW_SCHEMA;
             }
             return IterOutcome.NONE;
           }
