@@ -24,6 +24,7 @@ import org.apache.drill.common.util.DrillStringUtils;
 import org.apache.drill.exec.record.MaterializedField;
 import org.apache.drill.exec.record.VectorAccessible;
 import org.apache.drill.exec.record.VectorWrapper;
+import org.apache.drill.exec.vector.ValueVector;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
@@ -164,12 +165,19 @@ public class VectorUtil {
       columnIndex = 0;
       for (VectorWrapper<?> vw : va) {
         int columnWidth = getColumnWidth(columnWidths, columnIndex);
-        Object o = vw.getValueVector().getAccessor().getObject(row);
-        String cellString;
-        if (o instanceof byte[]) {
-          cellString = DrillStringUtils.toBinaryString((byte[]) o);
-        } else {
-          cellString = DrillStringUtils.escapeNewLines(String.valueOf(o));
+        //Object o = vw.getValueVector().getAccessor().getObject(row);
+        ValueVector.Accessor acc = vw.getValueVector().getAccessor();
+        final String cellString;
+        /*???????if (acc.isNull(row)) {
+          cellString = "NULL";
+        }
+        else*/ {
+          Object o = acc.getObject(row);
+          if (o instanceof byte[]) {
+            cellString = DrillStringUtils.toBinaryString((byte[]) o);
+          } else {
+            cellString = DrillStringUtils.escapeNewLines(String.valueOf(o));
+          }
         }
         System.out.printf(formats.get(columnIndex), cellString.length() <= columnWidth ? cellString : cellString.substring(0, columnWidth - 1));
         columnIndex++;
