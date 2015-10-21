@@ -796,6 +796,19 @@ public class TestHBaseFilterPushDown extends BaseHBaseTest {
   }
 
   @Test
+  public void testTEMP2C() throws Exception {
+    setColumnWidths(new int[] {8, 38, 38});
+    final String sql = "SELECT\n"
+        + "  *\n"
+        + "FROM\n"
+        + "  hbase.`[TABLE_NAME]` tableName\n"
+        + "WHERE\n"
+        + "  row_key = 'a0' or row_key between 'b5' and 'b5'";
+
+    runHBaseSQLVerifyCount(sql, 2);
+  }
+
+  @Test
   public void testTEMP5() throws Exception {
     setColumnWidths(new int[] {8, 38, 38});
     final String sql = "SELECT\n"
