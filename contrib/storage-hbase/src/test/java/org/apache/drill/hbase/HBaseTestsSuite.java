@@ -169,7 +169,7 @@ public class HBaseTestsSuite {
      * Will revert to multiple region once the issue is resolved.
      */
     TestTableGenerator.generateHBaseDatasetNoRows(admin, TEST_TABLE_NO_ROWS, 1);
-    TestTableGenerator.generateHBaseDataset1(admin, TEST_TABLE_1, 1);
+    TestTableGenerator.generateHBaseDataset1(admin, TEST_TABLE_1, 3/*????WAS: 1*/);
     TestTableGenerator.generateHBaseDataset3(admin, TEST_TABLE_3, 1);
     TestTableGenerator.generateHBaseDatasetCompositeKeyDate(admin, TEST_TABLE_COMPOSITE_DATE, 1);
     TestTableGenerator.generateHBaseDatasetCompositeKeyTime(admin, TEST_TABLE_COMPOSITE_TIME, 1);
