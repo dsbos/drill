@@ -148,10 +148,12 @@ public class HBaseRecordReader extends AbstractRecordReader implements DrillHBas
           getOrCreateFamilyVector(column.getRootSegment().getPath(), false);
         }
       }
+      if ( false ) {//???? DISABLED
       // Add any column families not already added so that ...????
       for (HColumnDescriptor columnFamily :
           hTable.getTableDescriptor().getColumnFamilies()) {
         getOrCreateFamilyVector(columnFamily.getNameAsString(), false);
+      }
       }
       resultScanner = hTable.getScanner(hbaseScan);
     } catch (SchemaChangeException | IOException e) {
