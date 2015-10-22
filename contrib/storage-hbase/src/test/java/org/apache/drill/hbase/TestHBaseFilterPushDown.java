@@ -791,7 +791,7 @@ public class TestHBaseFilterPushDown extends BaseHBaseTest {
         + "WHERE\n"
         + "  row_key = 'a2'";
 
-    runHBaseSQLVerifyCount(sql, 3);
+    runHBaseSQLVerifyCount(sql, 1);
   }
 
   @Test
@@ -803,7 +803,7 @@ public class TestHBaseFilterPushDown extends BaseHBaseTest {
         + "WHERE\n"
         + "  row_key between 'b5' and 'b6'";
 
-    runHBaseSQLVerifyCount(sql, 3);
+    runHBaseSQLVerifyCount(sql, 2);
   }
 
   @Test
@@ -813,7 +813,7 @@ public class TestHBaseFilterPushDown extends BaseHBaseTest {
         + "FROM\n"
         + "  hbase.`[TABLE_NAME]` tableName";
 
-    runHBaseSQLVerifyCount(sql, 3);
+    runHBaseSQLVerifyCount(sql, 7);
   }
 
   @Test
