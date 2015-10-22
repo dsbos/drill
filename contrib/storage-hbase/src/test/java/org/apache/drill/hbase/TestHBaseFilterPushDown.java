@@ -18,6 +18,7 @@
 package org.apache.drill.hbase;
 
 import org.apache.drill.PlanTestBase;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class TestHBaseFilterPushDown extends BaseHBaseTest {
@@ -770,6 +771,88 @@ public class TestHBaseFilterPushDown extends BaseHBaseTest {
   }
 
   @Test
+  public void testTEMP1DebugProject0A() throws Exception {
+    final String sql = "SELECT\n"
+        + "  LENGTH(row_key) \n"
+        + "FROM\n"
+        + "  hbase.`[TABLE_NAME]` tableName\n"
+        + "WHERE\n"
+        + "  row_key = 'a2' or row_key between 'b5' and 'b6'";
+
+    runHBaseSQLVerifyCount(sql, 3);
+  }
+
+  @Test
+  public void testTEMP1DebugProject0B() throws Exception {
+    final String sql = "SELECT\n"
+        + "  LENGTH(row_key) \n"
+        + "FROM\n"
+        + "  hbase.`[TABLE_NAME]` tableName\n"
+        + "WHERE\n"
+        + "  row_key = 'a2'";
+
+    runHBaseSQLVerifyCount(sql, 3);
+  }
+
+  @Test
+  public void testTEMP1DebugProject0C() throws Exception {
+    final String sql = "SELECT\n"
+        + "  LENGTH(row_key) \n"
+        + "FROM\n"
+        + "  hbase.`[TABLE_NAME]` tableName\n"
+        + "WHERE\n"
+        + "  row_key between 'b5' and 'b6'";
+
+    runHBaseSQLVerifyCount(sql, 3);
+  }
+
+  @Test
+  public void testTEMP1DebugProject0D() throws Exception {
+    final String sql = "SELECT\n"
+        + "  LENGTH(row_key) \n"
+        + "FROM\n"
+        + "  hbase.`[TABLE_NAME]` tableName";
+
+    runHBaseSQLVerifyCount(sql, 3);
+  }
+
+  @Test
+  public void testTEMP1DebugProject1() throws Exception {
+    final String sql = "SELECT\n"
+        + "  row_key, tableName.f, tableName.f2 \n"
+        + "FROM\n"
+        + "  hbase.`[TABLE_NAME]` tableName\n"
+        + "WHERE\n"
+        + "  row_key = 'a2' or row_key between 'b5' and 'b6'";
+
+    runHBaseSQLVerifyCount(sql, 3);
+  }
+
+  @Test
+  public void testTEMP1DebugProject2() throws Exception {
+    final String sql = "SELECT\n"
+        + "  row_key, tableName.f.c1, tableName.f2.c1 \n"
+        + "FROM\n"
+        + "  hbase.`[TABLE_NAME]` tableName\n"
+        + "WHERE\n"
+        + "  row_key = 'a2' or row_key between 'b5' and 'b6'";
+
+    runHBaseSQLVerifyCount(sql, 3);
+  }
+
+  @Test
+  public void testTEMP1DebugProject3() throws Exception {
+    final String sql = "SELECT\n"
+        + "  row_key, LENGTH(tableName.f.c1), LENGTH(tableName.f2.c1) \n"
+        + "FROM\n"
+        + "  hbase.`[TABLE_NAME]` tableName\n"
+        + "WHERE\n"
+        + "  row_key = 'a2' or row_key between 'b5' and 'b6'";
+
+    runHBaseSQLVerifyCount(sql, 3);
+  }
+
+  @Test
   public void testTEMP2A() throws Exception {
     setColumnWidths(new int[] {8, 38, 38});
     final String sql = "SELECT\n"
@@ -805,7 +888,7 @@ public class TestHBaseFilterPushDown extends BaseHBaseTest {
         + "WHERE\n"
         + "  row_key = 'a0' or row_key between 'b5' and 'b5'";
 
-    runHBaseSQLVerifyCount(sql, 2);
+    runHBaseSQLVerifyCount(sql, 1);
   }
 
   @Test
