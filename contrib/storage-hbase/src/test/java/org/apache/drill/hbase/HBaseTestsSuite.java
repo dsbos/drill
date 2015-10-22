@@ -97,7 +97,7 @@ public class HBaseTestsSuite {
             UTIL.startMiniZKCluster();
             String old_home = System.getProperty("user.home");
             System.setProperty("user.home", UTIL.getDataTestDir().toString());
-            UTIL.startMiniHBaseCluster(1, 3/*?? WAS: 1*/);
+            UTIL.startMiniHBaseCluster(1, 1/*?????????3*//*?? WAS: 1*/);
             System.setProperty("user.home", old_home);
             hbaseClusterCreated = true;
             logger.info("HBase mini cluster started. Zookeeper port: '{}'", getZookeeperPort());
@@ -168,6 +168,20 @@ public class HBaseTestsSuite {
      * multiple fragments. Hence the number of regions in the HBase table is set to 1.
      * Will revert to multiple region once the issue is resolved.
      */
+    TestTableGenerator.generateHBaseDatasetNoRows(admin, TEST_TABLE_NO_ROWS, 2);
+    TestTableGenerator.generateHBaseDataset1(admin, TEST_TABLE_1, 2/*???WAS: 1*/);
+    TestTableGenerator.generateHBaseDataset3(admin, TEST_TABLE_3, 1);
+    TestTableGenerator.generateHBaseDatasetCompositeKeyDate(admin, TEST_TABLE_COMPOSITE_DATE, 1);
+    TestTableGenerator.generateHBaseDatasetCompositeKeyTime(admin, TEST_TABLE_COMPOSITE_TIME, 1);
+    TestTableGenerator.generateHBaseDatasetCompositeKeyInt(admin, TEST_TABLE_COMPOSITE_INT, 1);
+    TestTableGenerator.generateHBaseDatasetDoubleOB(admin, TEST_TABLE_DOUBLE_OB, 1);
+    TestTableGenerator.generateHBaseDatasetFloatOB(admin, TEST_TABLE_FLOAT_OB, 1);
+    TestTableGenerator.generateHBaseDatasetBigIntOB(admin, TEST_TABLE_BIGINT_OB, 1);
+    TestTableGenerator.generateHBaseDatasetIntOB(admin, TEST_TABLE_INT_OB, 1);
+    TestTableGenerator.generateHBaseDatasetDoubleOBDesc(admin, TEST_TABLE_DOUBLE_OB_DESC, 1);
+    TestTableGenerator.generateHBaseDatasetFloatOBDesc(admin, TEST_TABLE_FLOAT_OB_DESC, 1);
+    TestTableGenerator.generateHBaseDatasetBigIntOBDesc(admin, TEST_TABLE_BIGINT_OB_DESC, 1);
+    TestTableGenerator.generateHBaseDatasetIntOBDesc(admin, TEST_TABLE_INT_OB_DESC, 1);
   }
 
   private static void cleanupTestTables() throws IOException {
