@@ -97,7 +97,7 @@ public class HBaseTestsSuite {
             UTIL.startMiniZKCluster();
             String old_home = System.getProperty("user.home");
             System.setProperty("user.home", UTIL.getDataTestDir().toString());
-            UTIL.startMiniHBaseCluster(1, 1);
+            UTIL.startMiniHBaseCluster(1, 3/*????WAS: 1*/);
             System.setProperty("user.home", old_home);
             hbaseClusterCreated = true;
             logger.info("HBase mini cluster started. Zookeeper port: '{}'", getZookeeperPort());
