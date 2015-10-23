@@ -203,7 +203,7 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
       batchState = incoming.next();
 
       logger.trace("[#{}; on {}]: incoming next() return: ({} ->) {}",
-                   instNum, batchTypeName, prevBatchState, batchState );
+                   instNum, batchTypeName, prevBatchState, batchState);
 
       System.err.println( "????: [" + instNum + "; on " + batchTypeName + "]: incoming:" );
       try {
@@ -224,7 +224,7 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
         case OK:
           // OK is allowed as long as OK_NEW_SCHEMA was seen, except if terminated
           // (checked above).
-          if ( validationState != ValidationState.HAVE_SCHEMA ) {
+          if (validationState != ValidationState.HAVE_SCHEMA) {
             throw new IllegalStateException(
                 String.format(
                     "next() returned %s without first returning %s [#%d, %s]",
@@ -235,7 +235,7 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
         case NONE:
           // NONE is allowed as long as OK_NEW_SCHEMA was seen, except if
           // already terminated (checked above).
-          if ( validationState != ValidationState.HAVE_SCHEMA ) {
+          if (validationState != ValidationState.HAVE_SCHEMA) {
             throw new IllegalStateException(
                 String.format(
                     "next() returned %s without first returning %s [#%d, %s]",
@@ -309,7 +309,7 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
 
       return batchState;
     }
-    catch ( RuntimeException | Error e ) {
+    catch (RuntimeException | Error e) {
       exceptionState = e;
       logger.trace("[#{}, on {}]: incoming next() exception: ({} ->) {}",
                    instNum, batchTypeName, prevBatchState, exceptionState,
