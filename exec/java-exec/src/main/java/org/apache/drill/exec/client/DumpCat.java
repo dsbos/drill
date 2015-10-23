@@ -32,6 +32,7 @@ import org.apache.drill.exec.record.VectorAccessible;
 import org.apache.drill.exec.record.VectorContainer;
 import org.apache.drill.exec.record.VectorWrapper;
 import org.apache.drill.exec.util.VectorUtil;
+import org.apache.drill.exec.util.VectorUtil.Consumption;
 
 import com.beust.jcommander.IParameterValidator;
 import com.beust.jcommander.JCommander;
@@ -261,7 +262,7 @@ public class DumpCat {
     }
 
     /* show the contents in the batch */
-    VectorUtil.showVectorAccessibleContent(vectorContainer);
+    VectorUtil.showVectorAccessibleContent(vectorContainer, Consumption.CONSUME);
   }
 
   /* Get batch meta info : rows, selectedRows, dataSize */
