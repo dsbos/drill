@@ -51,6 +51,7 @@ import org.apache.drill.exec.server.RemoteServiceSet;
 import org.apache.drill.exec.store.StoragePluginRegistry;
 import org.apache.drill.exec.util.TestUtilities;
 import org.apache.drill.exec.util.VectorUtil;
+import org.apache.drill.exec.util.VectorUtil.Consumption;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.rules.TestRule;
@@ -484,7 +485,7 @@ public class BaseTestQuery extends ExecTest {
         // ????? Why skipping .clear and .release?  (With DRILL-2288 partial change,
         // allocation in .load above is caught undeallocated at end.)
       }
-      VectorUtil.showVectorAccessibleContent(loader, columnWidths);
+      VectorUtil.showVectorAccessibleContent(loader, columnWidths, Consumption.CONSUME);
       loader.clear();
       result.release();
     }
