@@ -42,6 +42,7 @@ public class VectorUtil {
   public static void showVectorAccessibleContent(VectorAccessible va, final String delimiter, Consumption consumeOrNot) {
 
     int rows = va.getRecordCount();
+    System.out.println(rows + " row(s):");
     List<String> columns = Lists.newArrayList();
     for (VectorWrapper<?> vw : va) {
       columns.add(vw.getValueVector().getField().getPath().getAsUnescapedPath());
@@ -145,6 +146,7 @@ public class VectorUtil {
     }
 
     int rows = va.getRecordCount();
+    System.out.println(rows + " row(s):");
     for (int row = 0; row < rows; row++) {
       // header, every 50 rows.
       if (row%50 == 0) {
