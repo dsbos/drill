@@ -39,6 +39,7 @@ import org.apache.drill.exec.rpc.user.ConnectionThrottle;
 import org.apache.drill.exec.rpc.user.QueryDataBatch;
 import org.apache.drill.exec.rpc.user.UserResultsListener;
 import org.apache.drill.exec.util.VectorUtil;
+import org.apache.drill.exec.util.VectorUtil.Consumption;
 
 import com.google.common.base.Stopwatch;
 
@@ -94,13 +95,13 @@ public class PrintingResultsListener implements UserResultsListener {
 
       switch(format) {
         case TABLE:
-          VectorUtil.showVectorAccessibleContent(loader, columnWidth);
+          VectorUtil.showVectorAccessibleContent(loader, columnWidth, Consumption.CONSUME);
           break;
         case TSV:
-          VectorUtil.showVectorAccessibleContent(loader, "\t");
+          VectorUtil.showVectorAccessibleContent(loader, "\t", Consumption.CONSUME);
           break;
         case CSV:
-          VectorUtil.showVectorAccessibleContent(loader, ",");
+          VectorUtil.showVectorAccessibleContent(loader, ",", Consumption.CONSUME);
           break;
       }
       loader.clear();
