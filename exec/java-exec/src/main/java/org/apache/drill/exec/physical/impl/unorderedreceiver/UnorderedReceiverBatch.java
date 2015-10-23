@@ -150,6 +150,7 @@ public class UnorderedReceiverBatch implements CloseableRecordBatch {
 
   @Override
   public IterOutcome next() {
+    batchLoader.clear();
     stats.startProcessing();
     try{
       RawFragmentBatch batch;
