@@ -57,7 +57,7 @@ import com.google.common.collect.Sets;
 public class HBaseRecordReader extends AbstractRecordReader implements DrillHBaseConstants {
   private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(HBaseRecordReader.class);
 
-  private static final int TARGET_RECORD_COUNT = 4000;
+  private static final int TARGET_RECORD_COUNT = 1;//????4000;
 
   private OutputMutator outputMutator;
 
