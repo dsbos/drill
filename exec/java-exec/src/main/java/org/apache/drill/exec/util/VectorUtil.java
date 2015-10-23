@@ -34,7 +34,12 @@ public class VectorUtil {
 
   public static final int DEFAULT_COLUMN_WIDTH = 15;
 
-  public static void showVectorAccessibleContent(VectorAccessible va, final String delimiter) {
+  public enum Consumption {
+    CONSUME,
+    DONT_CONSUME 
+  }
+
+  public static void showVectorAccessibleContent(VectorAccessible va, final String delimiter, Consumption consumeOrNot) {
 
     int rows = va.getRecordCount();
     List<String> columns = Lists.newArrayList();
@@ -72,8 +77,10 @@ public class VectorUtil {
       }
     }
 
-    for (VectorWrapper<?> vw : va) {
-      vw.clear();
+    if (Consumption.CONSUME == consumeOrNot) {
+      for (VectorWrapper<?> vw : va) {
+        vw.clear();
+      }
     }
   }
 
@@ -115,15 +122,15 @@ public class VectorUtil {
     }
   }
 
-  public static void showVectorAccessibleContent(VectorAccessible va) {
-    showVectorAccessibleContent(va, DEFAULT_COLUMN_WIDTH);
+  public static void showVectorAccessibleContent(VectorAccessible va, Consumption consumeOrNot) {
+    showVectorAccessibleContent(va, DEFAULT_COLUMN_WIDTH, consumeOrNot);
   }
 
-  public static void showVectorAccessibleContent(VectorAccessible va, int columnWidth) {
-    showVectorAccessibleContent(va, new int[]{ columnWidth });
+  public static void showVectorAccessibleContent(VectorAccessible va, int columnWidth, Consumption consumeOrNot) {
+    showVectorAccessibleContent(va, new int[]{ columnWidth }, consumeOrNot);
   }
 
-  public static void showVectorAccessibleContent(VectorAccessible va, int[] columnWidths) {
+  public static void showVectorAccessibleContent(VectorAccessible va, int[] columnWidths, Consumption consumeOrNot) {
     int width = 0;
     int columnIndex = 0;
     List<String> columns = Lists.newArrayList();
@@ -170,9 +177,10 @@ public class VectorUtil {
     if (rows > 0) {
       System.out.println(StringUtils.repeat("-", width + 1));
     }
-
-    for (VectorWrapper<?> vw : va) {
-      vw.clear();
+    if (Consumption.CONSUME == consumeOrNot) {
+      for (VectorWrapper<?> vw : va) {
+        vw.clear();
+      }
     }
   }
 
