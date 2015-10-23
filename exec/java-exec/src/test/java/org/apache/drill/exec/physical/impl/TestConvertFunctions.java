@@ -47,6 +47,7 @@ import org.apache.drill.exec.server.options.OptionManager;
 import org.apache.drill.exec.server.options.OptionValue;
 import org.apache.drill.exec.server.options.OptionValue.OptionType;
 import org.apache.drill.exec.util.ByteBufUtil.HadoopWritables;
+import org.apache.drill.exec.util.VectorUtil.Consumption;
 import org.apache.drill.exec.util.VectorUtil;
 import org.apache.drill.exec.vector.ValueVector;
 import org.apache.drill.exec.vector.VarCharVector;
@@ -395,7 +396,7 @@ public class TestConvertFunctions extends BaseTestQuery {
       count += result.getHeader().getRowCount();
       loader.load(result.getHeader().getDef(), result.getData());
       if (loader.getRecordCount() > 0) {
-        VectorUtil.showVectorAccessibleContent(loader);
+        VectorUtil.showVectorAccessibleContent(loader, Consumption.CONSUME);
       }
       loader.clear();
       result.release();
