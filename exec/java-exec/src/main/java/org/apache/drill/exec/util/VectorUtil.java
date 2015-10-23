@@ -37,7 +37,7 @@ public class VectorUtil {
 
   public enum Consumption {
     CONSUME,
-    DONT_CONSUME 
+    DONT_CONSUME
   }
 
   public static void showVectorAccessibleContent(VectorAccessible va, final String delimiter, Consumption consumeOrNot) {
