@@ -183,6 +183,7 @@ public class RecordBatchLoader implements VectorAccessible, Iterable<VectorWrapp
   // requires calling this and when?
   public void clear() {
     container.clear();
+    valueCount = 0;
   }
 
   public void canonicalize() {
