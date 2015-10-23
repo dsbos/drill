@@ -213,10 +213,6 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
         e.printStackTrace( System.err );
       }
 
-      System.err.println( "????: [" + instNum + "; on " + batchTypeName + "]: incoming:" );
-      VectorUtil.showVectorAccessibleContent(incoming, 40);
-
-
       // Check state transition and update high-level state.
       switch (batchState) {
         case OK_NEW_SCHEMA:
