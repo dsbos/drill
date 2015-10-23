@@ -31,6 +31,7 @@ import org.apache.drill.exec.record.WritableBatch;
 import org.apache.drill.exec.record.selection.SelectionVector2;
 import org.apache.drill.exec.record.selection.SelectionVector4;
 import org.apache.drill.exec.util.VectorUtil;
+import org.apache.drill.exec.util.VectorUtil.Consumption;
 import org.apache.drill.exec.vector.VectorValidator;
 
 import static org.apache.drill.exec.record.RecordBatch.IterOutcome.*;
@@ -205,7 +206,12 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
                    instNum, batchTypeName, prevBatchState, batchState);
 
       System.err.println( "????: [" + instNum + "; on " + batchTypeName + "]: incoming:" );
-      VectorUtil.showVectorAccessibleContent(incoming, 40);
+      try {
+        VectorUtil.showVectorAccessibleContent(incoming, 60, Consumption.DONT_CONSUME);
+      }
+      catch ( Exception e ) {
+        e.printStackTrace( System.err );
+      }
 
       // Check state transition and update high-level state.
       switch (batchState) {
