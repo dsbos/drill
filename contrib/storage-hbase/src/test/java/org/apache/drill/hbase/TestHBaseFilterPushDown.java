@@ -795,6 +795,18 @@ public class TestHBaseFilterPushDown extends BaseHBaseTest {
   }
 
   @Test
+  public void testTEMP1DebugProject0B2() throws Exception {
+    final String sql = "SELECT\n"
+        + "  LENGTH(row_key) \n"
+        + "FROM\n"
+        + "  hbase.`[TABLE_NAME]` tableName\n"
+        + "WHERE\n"
+        + "  row_key = 'xx'";
+
+    runHBaseSQLVerifyCount(sql, 0);
+  }
+
+  @Test
   public void testTEMP1DebugProject0C() throws Exception {
     final String sql = "SELECT\n"
         + "  LENGTH(row_key) \n"
