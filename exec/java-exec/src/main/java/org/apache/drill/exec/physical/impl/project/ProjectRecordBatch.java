@@ -388,7 +388,7 @@ public class ProjectRecordBatch extends AbstractSingleRecordBatch<Project> {
       }
 
       // add value vector to transfer if direct reference and this is allowed, otherwise, add to evaluation stack.
-      if (expr instanceof ValueVectorReadExpression && incoming.getSchema().getSelectionVectorMode() == SelectionVectorMode.NONE
+      if (false&& /*?????DISABLED:*/ expr instanceof ValueVectorReadExpression && incoming.getSchema().getSelectionVectorMode() == SelectionVectorMode.NONE
           && !((ValueVectorReadExpression) expr).hasReadPath()
           && !isAnyWildcard
           && !transferFieldIds.contains(((ValueVectorReadExpression) expr).getFieldId().getFieldIds()[0])) {
