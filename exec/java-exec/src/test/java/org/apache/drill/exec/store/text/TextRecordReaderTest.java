@@ -29,6 +29,7 @@ import org.apache.drill.exec.rpc.user.QueryDataBatch;
 import org.apache.drill.exec.server.Drillbit;
 import org.apache.drill.exec.server.RemoteServiceSet;
 import org.apache.drill.exec.util.VectorUtil;
+import org.apache.drill.exec.util.VectorUtil.Consumption;
 import org.junit.Test;
 
 import com.google.common.base.Charsets;
@@ -56,7 +57,7 @@ public class TextRecordReaderTest extends PopUnitTestBase {
           count += b.getHeader().getRowCount();
         }
         loader.load(b.getHeader().getDef(), b.getData());
-        VectorUtil.showVectorAccessibleContent(loader);
+        VectorUtil.showVectorAccessibleContent(loader, Consumption.CONSUME);
         loader.clear();
         b.release();
       }
