@@ -195,7 +195,7 @@ public class ScanBatch implements CloseableRecordBatch {
         try {
           if (!readers.hasNext()) {
             // We're on the last reader, and it has no (more) rows.
-
+/*
             System.err.println( "????: ScanBatch(2):" );
             try {
               VectorUtil.showVectorAccessibleContent(this, 60, Consumption.DONT_CONSUME);
@@ -203,7 +203,7 @@ public class ScanBatch implements CloseableRecordBatch {
             catch ( Exception e ) {
               e.printStackTrace( System.out );
             }
-
+*/
             currentReader.close();
             releaseAssets();
             done = true;  // have any future call to next() return NONE
@@ -267,7 +267,7 @@ public class ScanBatch implements CloseableRecordBatch {
       if (isNewSchema) {
         container.buildSchema(SelectionVectorMode.NONE);
         schema = container.getSchema();
-
+/*
         System.err.println( "????: ScanBatch(1):" );
         try {
           VectorUtil.showVectorAccessibleContent(this, 60, Consumption.DONT_CONSUME);
@@ -275,7 +275,7 @@ public class ScanBatch implements CloseableRecordBatch {
         catch ( Exception e ) {
           e.printStackTrace( System.out );
         }
-
+*/
         return IterOutcome.OK_NEW_SCHEMA;
       } else {
         return IterOutcome.OK;
