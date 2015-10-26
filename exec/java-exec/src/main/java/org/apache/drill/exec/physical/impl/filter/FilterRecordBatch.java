@@ -60,7 +60,10 @@ public class FilterRecordBatch extends AbstractSingleRecordBatch<Filter>{
 
   @Override
   public int getRecordCount() {
-    return sv2 != null ? sv2.getCount() : sv4.getCount();
+    final int TEMP;
+    TEMP=/*????return*/ sv2 != null ? sv2.getCount() : sv4.getCount();
+    System.err.println( "???: FilterRecordBatch.getRecordCount() returning (sv2 or sv4): " + TEMP );
+    return TEMP;
   }
 
   @Override
