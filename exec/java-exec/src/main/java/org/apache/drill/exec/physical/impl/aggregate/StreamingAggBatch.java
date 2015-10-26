@@ -44,6 +44,7 @@ import org.apache.drill.exec.physical.config.StreamingAggregate;
 import org.apache.drill.exec.physical.impl.aggregate.StreamingAggregator.AggOutcome;
 import org.apache.drill.exec.record.AbstractRecordBatch;
 import org.apache.drill.exec.record.BatchSchema.SelectionVectorMode;
+import org.apache.drill.exec.record.BatchSchema;
 import org.apache.drill.exec.record.MaterializedField;
 import org.apache.drill.exec.record.RecordBatch;
 import org.apache.drill.exec.record.TypedFieldId;
@@ -67,6 +68,7 @@ public class StreamingAggBatch extends AbstractRecordBatch<StreamingAggregate> {
   private boolean done = false;
   private boolean first = true;
   private int recordCount = 0;
+  private BatchSchema currentIncomingSchema;
 
   /*
    * DRILL-2277, DRILL-2411: For straight aggregates without a group by clause we need to perform special handling when
@@ -128,7 +130,7 @@ public class StreamingAggBatch extends AbstractRecordBatch<StreamingAggregate> {
         state = BatchState.STOP;
         return;
     }
-
+    //???? Does this OK_NEW_SCHEMA case need a schema comparison?  
     if (!createAggregator()) {
       state = BatchState.DONE;
     }
@@ -185,10 +187,26 @@ public class StreamingAggBatch extends AbstractRecordBatch<StreamingAggregate> {
       case STOP:
         return outcome;
       case OK_NEW_SCHEMA:
-        if (!createAggregator()) {
-          done = true;
-          return IterOutcome.STOP;
+        final BatchSchema newIncomingSchema = incoming.getSchema();
+        System.err.println( "???: StreamingAggBatch: OK_NEW_SCHEMA" );
+        System.err.println( "???: StreamingAggBatch: newSchema = " + newIncomingSchema );
+        System.err.println( "???: StreamingAggBatch: currentIncomingSchema = " + currentIncomingSchema );
+        System.err.println( "???: StreamingAggBatch: "
+            + "newIncomingSchema.equals( currentIncomingSchema ) = "
+            +  newIncomingSchema.equals( currentIncomingSchema ) );
+        System.err.println( "???: StreamingAggBatch: "
+            + "newIncomingSchema.toString().equals( null == currentIncomingSchema ? \"\" : currentIncomingSchema.toString() ) = "
+            +  newIncomingSchema.toString().equals( null == currentIncomingSchema ? "" : currentIncomingSchema.toString() ) );
+
+        //???if ((! newSchema.equals(currentSchemaxx)) /*???purge?: && currentSchema != null*/) {
+        if ((! newIncomingSchema.toString().equals( null == currentIncomingSchema ? "" : currentIncomingSchema.toString() ) ) ) {
+          System.err.println( "???: StreamingAggBatch: calling createAggregator()" );
+          if (!createAggregator()) {
+            done = true;
+            return IterOutcome.STOP;
+          }
         }
+        currentIncomingSchema = newIncomingSchema;
         break;
       case OK:
         break;
