@@ -219,11 +219,13 @@ public interface RecordBatch extends VectorAccessible {
    *   {@link #OK_NEW_SCHEMA}.
    * </p>
    */
+  @Override
   public BatchSchema getSchema();
 
   /**
    * Gets the number of records that are within this record.
    */
+  @Override
   public int getRecordCount();
 
   /**
@@ -250,6 +252,7 @@ public interface RecordBatch extends VectorAccessible {
    * @return The local field id associated with this vector. If no field matches this path, this will return a null
    *         TypedFieldId
    */
+  @Override
   public abstract TypedFieldId getValueVectorId(SchemaPath path);
 
   @Override
