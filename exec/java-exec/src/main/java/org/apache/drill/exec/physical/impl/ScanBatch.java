@@ -153,6 +153,7 @@ public class ScanBatch implements CloseableRecordBatch {
 
   @Override
   public int getRecordCount() {
+    System.err.println( "???: ScanBatch.getRecordCount() returning (recordCount): " + recordCount );
     return recordCount;
   }
 
