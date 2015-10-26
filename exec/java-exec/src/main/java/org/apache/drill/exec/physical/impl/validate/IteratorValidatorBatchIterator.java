@@ -104,6 +104,20 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
     logger.trace( "[#{}; on {}]: Being constructed.", instNum, batchTypeName);
   }
 
+  @Override
+  public String toString() {
+    return
+        super.toString()
+        + "["
+        + "instNum = " + instNum
+        + ", validationState = " + validationState
+        + ", batchState = " + batchState
+        + ", ... "
+        + "; incoming = " + incoming
+        + "]"
+        ;
+  }
+
   private void validateReadState(String operation) {
     if (batchState == null) {
       throw new IllegalStateException(
