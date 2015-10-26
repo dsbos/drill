@@ -293,6 +293,23 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
                      instNum, batchTypeName, incoming.getRecordCount(),
                      lastSchema, prevLastNewSchema);
 
+        if ( true ) {
+          try {
+            Thread.sleep( 100 );
+            System.err.println( "????: [#" + instNum + "; on " + batchTypeName + "]: incoming:" );
+            Thread.sleep( 100 );
+            try {
+              VectorUtil.showVectorAccessibleContent(incoming, 60, Consumption.DONT_CONSUME);
+            }
+            catch ( Exception e ) {
+              e.printStackTrace( System.err );
+            }
+            Thread.sleep( 100 );
+          }
+          catch ( InterruptedException e ) {
+          }
+        }
+
         if (lastSchema == null) {
           throw new IllegalStateException(
               String.format(
