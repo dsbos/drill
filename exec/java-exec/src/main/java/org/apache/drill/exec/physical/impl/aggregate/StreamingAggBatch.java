@@ -50,6 +50,8 @@ import org.apache.drill.exec.record.TypedFieldId;
 import org.apache.drill.exec.record.VectorWrapper;
 import org.apache.drill.exec.record.selection.SelectionVector2;
 import org.apache.drill.exec.record.selection.SelectionVector4;
+import org.apache.drill.exec.util.VectorUtil;
+import org.apache.drill.exec.util.VectorUtil.Consumption;
 import org.apache.drill.exec.vector.AllocationHelper;
 import org.apache.drill.exec.vector.FixedWidthVector;
 import org.apache.drill.exec.vector.ValueVector;
@@ -88,15 +90,32 @@ public class StreamingAggBatch extends AbstractRecordBatch<StreamingAggregate> {
 
   @Override
   public int getRecordCount() {
+    final int TEMP;
     if (done || aggregator == null) {
-      return 0;
+      TEMP=/*????return*/ 0;
     }
-    return recordCount;
+    else {TEMP=/*????return*/ recordCount;}
+    System.err.println( "???: StreamingAggBatch.getRecordCount() returning (from recordCount or flags): " + TEMP );
+    return TEMP;
   }
 
   @Override
   public void buildSchema() throws SchemaChangeException {
     IterOutcome outcome = next(incoming);
+    try {
+      Thread.sleep( 100 );
+      System.err.println( "????: StreamingAggBatch.buildSchema(): incoming:" );
+      Thread.sleep( 100 );
+      try {
+        VectorUtil.showVectorAccessibleContent(incoming, 60, Consumption.DONT_CONSUME);
+      }
+      catch ( Exception e ) {
+        e.printStackTrace( System.err );
+      }
+      Thread.sleep( 100 );
+    }
+    catch ( InterruptedException e ) {
+    }
     switch (outcome) {
       case NONE:
         state = BatchState.DONE;
@@ -136,6 +155,21 @@ public class StreamingAggBatch extends AbstractRecordBatch<StreamingAggregate> {
         outcome = next(incoming);
       }
       logger.debug("Next outcome of {}", outcome);
+      if ( IterOutcome.NONE != outcome ) {
+      try {
+        Thread.sleep( 100 );
+        System.err.println( "????: StreamingAggBatch.innerNext().2: incoming:" );
+        Thread.sleep( 100 );
+        try {
+          VectorUtil.showVectorAccessibleContent(incoming, 60, Consumption.DONT_CONSUME);
+        }
+        catch ( Exception e ) {
+          e.printStackTrace( System.err );
+        }
+        Thread.sleep( 100 );
+      }
+      catch ( InterruptedException e ) {
+    }  }
       switch (outcome) {
       case NONE:
         if (first && popConfig.getKeys().length == 0) {
@@ -240,6 +274,7 @@ public class StreamingAggBatch extends AbstractRecordBatch<StreamingAggregate> {
    * @return true if the aggregator was setup successfully. false if there was a failure.
    */
   private boolean createAggregator() {
+    System.err.println(" ???: StreamingAggBatch.createAggregator().");
     logger.debug("Creating new aggregator.");
     try {
       stats.startSetup();
