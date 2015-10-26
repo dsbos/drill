@@ -99,6 +99,7 @@ public class UnorderedReceiverBatch implements CloseableRecordBatch {
 
   @Override
   public int getRecordCount() {
+    System.err.println( "???: UnorderedReceiverBatch.getRecordCount() returning (from batchLoader): " + batchLoader.getRecordCount() );
     return batchLoader.getRecordCount();
   }
 
