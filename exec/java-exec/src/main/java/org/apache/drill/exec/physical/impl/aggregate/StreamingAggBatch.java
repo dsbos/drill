@@ -130,7 +130,7 @@ public class StreamingAggBatch extends AbstractRecordBatch<StreamingAggregate> {
         state = BatchState.STOP;
         return;
     }
-    //???? Does this OK_NEW_SCHEMA case need a schema comparison?  
+    //???? Does this OK_NEW_SCHEMA case need a schema comparison?
     if (!createAggregator()) {
       state = BatchState.DONE;
     }
