@@ -67,21 +67,23 @@
 <!--     <appender-ref ref="SOCKET" /> -->
 <!--   </logger> -->
 
-<!--
-  <logger name="org.apache.drill.exec.compile.JaninoClassCompiler" additivity="false">
+  <logger name="org.apache.drill.exec.compile" additivity="false">
     <level value="debug" />
     <appender-ref ref="SOCKET" />
     <appender-ref ref="STDOUT" />
   </logger>
--->
 
-<!--
   <logger name="org.apache.drill.exec.physical.impl.aggregate" additivity="false">
     <level value="debug" />
     <appender-ref ref="SOCKET" />
     <appender-ref ref="STDOUT" />
   </logger>
--->
+  <logger name="org.apache.drill.exec.test.generated" additivity="false">
+    <level value="debug" />
+    <appender-ref ref="SOCKET" />
+    <appender-ref ref="STDOUT" />
+  </logger>
+
 
 
   <logger name="org.apache.drill.exec.physical.impl.validate" additivity="false">
