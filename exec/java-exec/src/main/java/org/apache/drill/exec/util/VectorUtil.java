@@ -149,6 +149,10 @@ public class VectorUtil {
     int rows = va.getRecordCount();
     System.out.println(rows + " row(s):");
     for (int row = 0; row < rows; row++) {
+      if ( row > 5 ) {
+        System.out.println( "TRUNCATED (" + row + ")..." );
+        break;
+      }
       // header, every 50 rows.
       if (row%50 == 0) {
         System.out.println(StringUtils.repeat("-", width + 1));
