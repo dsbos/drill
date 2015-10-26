@@ -158,6 +158,7 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
   @Override
   public int getRecordCount() {
     validateReadState("getRecordCount()");
+    System.err.println( "???: IteratorValidatorBatchIterator.getRecordCount() [on #" + instNum+ "; " + batchTypeName +"] returning: " + incoming.getRecordCount() );
     return incoming.getRecordCount();
   }
 
@@ -187,7 +188,12 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
   @Override
   public VectorWrapper<?> getValueAccessorById(Class<?> clazz, int... ids) {
 //    validateReadState(); TODO fix this
-    return incoming.getValueAccessorById(clazz, ids);
+    final VectorWrapper<?> TEMP =
+    /*?????return*/ incoming.getValueAccessorById(clazz, ids);
+    System.err.println( "???: validator: getValueAccessorById("  + clazz + ", " + ids + " ): " + TEMP );
+    System.err.println( "- TEMP.getValueVector().getAccessor().getValueCount() = " + TEMP.getValueVector().getAccessor().getValueCount() );
+
+    return TEMP;
   }
 
   @Override
@@ -320,7 +326,7 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
           VectorValidator.validate(incoming);
         }
       }
-
+      else { System.err.println( "???: validator ... NONE" ); }
       return batchState;
     }
     catch (RuntimeException | Error e) {
