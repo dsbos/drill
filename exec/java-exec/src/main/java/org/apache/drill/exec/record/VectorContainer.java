@@ -154,7 +154,7 @@ public class VectorContainer implements Iterable<VectorWrapper<?>>, VectorAccess
   }
 
   /**
-   * Sorts vectors into canonical order (by field name) in new VectorContainer. 
+   * Sorts vectors into canonical order (by field name) in new VectorContainer.
    */
   public static VectorContainer canonicalize(VectorContainer original) {
     VectorContainer vc = new VectorContainer();
