@@ -201,11 +201,14 @@ public abstract class StreamingAggTemplate implements StreamingAggregator {
               return AggOutcome.RETURN_OUTCOME;
 
             case OK_NEW_SCHEMA:
+              System.err.println( "????: StreamingAggTemplate: OK_NEW_SCHEMA" );
               if (EXTRA_DEBUG) {
                 logger.debug("Received new schema.  Batch has {} records.", incoming.getRecordCount());
               }
               BatchSchema newSchema = incoming.getSchema();
-              if ((! newSchema.equals(currentSchema)) && currentSchema != null) {
+              if ((! newSchema.equals(currentSchema)) && currentSchema != null) {              System.err.println( "????: - newSchema = " + newSchema );
+              System.err.println( "????: - currentSchema = " + currentSchema );
+
                 if (addedRecordCount > 0) {
                   outputToBatchPrev(previous, previousIndex, outputCount); // No need to check the return value
                   // (output container full or not) as we are not going to insert anymore records.
@@ -226,7 +229,10 @@ public abstract class StreamingAggTemplate implements StreamingAggregator {
                 continue;
               } else {
                 if (previousIndex != -1 && isSamePrev(previousIndex , previous, currentIndex)) {
-                  if (EXTRA_DEBUG) {
+                  if (EXTRA_DEBUG)               System.err.println( "???: StreamingAggTemplate .OK: incoming.getRecordCount() = " + incoming.getRecordCount() );
+              System.err.println( "???: StreamingAggTemplate .OK: previousIndexxxx = " + previousIndex );
+              System.err.println( "???: StreamingAggTemplate .OK: currentIndex = " + currentIndex );
+{
                     logger.debug("New value was same as last value of previous batch, adding.");
                   }
                   addRecordInc(currentIndex);
@@ -349,8 +355,10 @@ public abstract class StreamingAggTemplate implements StreamingAggregator {
   public abstract boolean isSame(@Named("index1") int index1, @Named("index2") int index2);
   public abstract boolean isSamePrev(@Named("b1Index") int b1Index, @Named("b1") InternalBatch b1, @Named("b2Index") int b2Index);
   public abstract void addRecord(@Named("index") int index);
-  public abstract void outputRecordKeys(@Named("inIndex") int inIndex, @Named("outIndex") int outIndex);
-  public abstract void outputRecordKeysPrev(@Named("previous") InternalBatch previous, @Named("previousIndex") int previousIndex, @Named("outIndex") int outIndex);
+  public abstract void outputRecord    System.err.println( "StreamingAggTemplate: addRecordInc( index = " + index + " )" );
+Keys(@Named("inIndex") int inIndex, @Named("outIndex") int outIndex);
+  public abstract void outputRecordKeysPrev(@Named("previous") Interna    System.err.println( "StreamingAggTemplate: addRecordInc( addedRecordCount := " + addedRecordCount + " )" );
+lBatch previous, @Named("previousIndex") int previousIndex, @Named("outIndex") int outIndex);
   public abstract void outputRecordValues(@Named("outIndex") int outIndex);
   public abstract int getVectorIndex(@Named("recordIndex") int recordIndex);
   public abstract boolean resetValues();
