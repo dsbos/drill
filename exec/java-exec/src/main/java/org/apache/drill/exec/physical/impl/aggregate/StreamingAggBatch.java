@@ -199,13 +199,13 @@ public class StreamingAggBatch extends AbstractRecordBatch<StreamingAggregate> {
             +  newIncomingSchema.toString().equals( null == currentIncomingSchema ? "" : currentIncomingSchema.toString() ) );
 
         //???if ((! newSchema.equals(currentSchemaxx)) /*???purge?: && currentSchema != null*/) {
-        if ((! newIncomingSchema.toString().equals( null == currentIncomingSchema ? "" : currentIncomingSchema.toString() ) ) ) {
+        //??if ((! newIncomingSchema.toString().equals( null == currentIncomingSchema ? "" : currentIncomingSchema.toString() ) ) ) {
           System.err.println( "???: StreamingAggBatch: calling createAggregator()" );
           if (!createAggregator()) {
             done = true;
             return IterOutcome.STOP;
           }
-        }
+        //???}
         currentIncomingSchema = newIncomingSchema;
         break;
       case OK:
