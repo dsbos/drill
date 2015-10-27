@@ -171,18 +171,18 @@ public class ProjectRecordBatch extends AbstractSingleRecordBatch<Project> {
       return IterOutcome.OUT_OF_MEMORY;
     }
 
-    final int outputRecords = projector.projectRecords(0, incomingRecordCount, 0);
-    if (outputRecords < incomingRecordCount) {
-      setValueCount(outputRecords);
+    final int outputRecordCount = projector.projectRecords(0, incomingRecordCount, 0);
+    if (outputRecordCount < incomingRecordCount) {
+      setValueCount(outputRecordCount);
       hasRemainder = true;
-      remainderIndex = outputRecords;
+      remainderIndex = outputRecordCount;
       this.recordCount = remainderIndex;
     } else {
       setValueCount(incomingRecordCount);
       for(final VectorWrapper<?> v: incoming) {
         v.clear();
       }
-      this.recordCount = outputRecords;
+      this.recordCount = outputRecordCount;
     }
     // In case of complex writer expression, vectors would be added to batch run-time.
     // We have to re-build the schema.
@@ -199,11 +199,11 @@ public class ProjectRecordBatch extends AbstractSingleRecordBatch<Project> {
       outOfMemory = true;
       return;
     }
-    final int projRecords = projector.projectRecords(remainderIndex, remainingRecordCount, 0);
-    if (projRecords < remainingRecordCount) {
-      setValueCount(projRecords);
-      this.recordCount = projRecords;
-      remainderIndex += projRecords;
+    final int projRecordCount = projector.projectRecords(remainderIndex, remainingRecordCount, 0);
+    if (projRecordCount < remainingRecordCount) {
+      setValueCount(projRecordCount);
+      this.recordCount = projRecordCount;
+      remainderIndex += projRecordCount;
     } else {
       setValueCount(remainingRecordCount);
       hasRemainder = false;
