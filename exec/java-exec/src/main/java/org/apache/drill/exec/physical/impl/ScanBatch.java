@@ -329,8 +329,12 @@ public class ScanBatch implements CloseableRecordBatch {
   }
 
   private class Mutator implements OutputMutator {
-    private boolean schemaChange = true;
+    /** Whether schema has changed since last inquiry (via #isNewSchema}).  Is
+     *  true before first inquiry. */
+    private boolean schemaChanged = true;
 
+
+    @SuppressWarnings("unchecked")
     @Override
     public <T extends ValueVector> T addField(MaterializedField field, Class<T> clazz) throws SchemaChangeException {
       // Check if the field exists
