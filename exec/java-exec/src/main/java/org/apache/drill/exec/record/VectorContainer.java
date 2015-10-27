@@ -323,10 +323,15 @@ public class VectorContainer implements Iterable<VectorWrapper<?>>, VectorAccess
     return recordCount;
   }
 
+  /**
+   * Clears the contained vectors.  (See {@link ValueVector#clear}).
+   * ??? Why isn't this named clearVectors, or why isn't clear() named zero()?
+   */
   public void zeroVectors() {
     for (VectorWrapper<?> w : wrappers) {
       w.clear();
     }
+    // ??? Should this zero out recordCount?
     System.err.println( "???: VectorContainer.zeroVectors(): recordCount = " + recordCount + " wrappers = " + wrappers );
   }
 
