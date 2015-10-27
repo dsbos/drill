@@ -28,7 +28,9 @@ import org.apache.drill.exec.vector.complex.MapVector;
 
 import com.google.common.base.Preconditions;
 
-
+/**
+ * ??? What is a hypervector?  (What's a hypervector vs. a regular vector?)
+ */
 public class HyperVectorWrapper<T extends ValueVector> implements VectorWrapper<T>{
   static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(HyperVectorWrapper.class);
 
