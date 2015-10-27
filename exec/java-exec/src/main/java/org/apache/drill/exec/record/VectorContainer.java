@@ -327,7 +327,7 @@ public class VectorContainer implements Iterable<VectorWrapper<?>>, VectorAccess
     for (VectorWrapper<?> w : wrappers) {
       w.clear();
     }
-    System.err.println( "???: VectorContainer.zeroVectors(): recordCount = " + recordCount );
+    System.err.println( "???: VectorContainer.zeroVectors(): recordCount = " + recordCount + " wrappers = " + wrappers );
   }
 
   public int getNumberOfColumns() {
