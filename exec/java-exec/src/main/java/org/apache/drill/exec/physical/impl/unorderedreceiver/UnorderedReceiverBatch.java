@@ -152,7 +152,7 @@ public class UnorderedReceiverBatch implements CloseableRecordBatch {
   @Override
   public IterOutcome next() {
     batchLoader.resetRecordCount(); //???? review placement
-
+    //??? Do we need to zero the batch loader's vectors?
     stats.startProcessing();
     try{
       RawFragmentBatch batch;
