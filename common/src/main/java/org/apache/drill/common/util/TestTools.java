@@ -35,7 +35,10 @@ public class TestTools {
   }
 
   public static TestRule getTimeoutRule(int timeout) {
-    return IS_DEBUG ? new TestName() : new Timeout(timeout);
+    final int factor = 10;
+    final int netTimeout = factor * timeout;
+    System.err.println( "Expanding timeout by " + factor + " from " + timeout + " to " + netTimeout );
+    return IS_DEBUG ? new TestName() : new Timeout(netTimeout/*???timeout*/);
   }
 
   /**
