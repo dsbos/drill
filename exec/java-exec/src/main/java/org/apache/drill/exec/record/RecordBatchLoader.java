@@ -191,7 +191,7 @@ public class RecordBatchLoader implements VectorAccessible, Iterable<VectorWrapp
   // requires calling this and when?
   public void clear() {
     container.clear();
-    valueCount = 0;
+    resetRecordCount();
     System.err.println( "???: RecordBatchLoader.clear(...) valueCount := " + valueCount );
   }
 
