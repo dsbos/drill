@@ -191,7 +191,11 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
     final VectorWrapper<?> TEMP =
     /*?????return*/ incoming.getValueAccessorById(clazz, ids);
     System.err.println( "???: validator: getValueAccessorById("  + clazz + ", " + ids + " ): " + TEMP );
-    System.err.println( "- TEMP.getValueVector().getAccessor().getValueCount() = " + TEMP.getValueVector().getAccessor().getValueCount() );
+    try {
+      System.err.println( "- TEMP.getValueVector().getAccessor().getValueCount() = " + TEMP.getValueVector().getAccessor().getValueCount() );
+    }
+    catch ( UnsupportedOperationException e ) {
+    }
 
     return TEMP;
   }
