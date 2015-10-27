@@ -172,16 +172,11 @@ public class VectorUtil {
         //Object o = vw.getValueVector().getAccessor().getObject(row);
         ValueVector.Accessor acc = vw.getValueVector().getAccessor();
         final String cellString;
-        /*???????if (acc.isNull(row)) {
-          cellString = "NULL";
-        }
-        else*/ {
-          Object o = acc.getObject(row);
-          if (o instanceof byte[]) {
-            cellString = DrillStringUtils.toBinaryString((byte[]) o);
-          } else {
-            cellString = DrillStringUtils.escapeNewLines(String.valueOf(o));
-          }
+        Object o = acc.getObject(row);
+        if (o instanceof byte[]) {
+          cellString = DrillStringUtils.toBinaryString((byte[]) o);
+        } else {
+          cellString = DrillStringUtils.escapeNewLines(String.valueOf(o));
         }
         System.out.printf(formats.get(columnIndex), cellString.length() <= columnWidth ? cellString : cellString.substring(0, columnWidth - 1));
         columnIndex++;
