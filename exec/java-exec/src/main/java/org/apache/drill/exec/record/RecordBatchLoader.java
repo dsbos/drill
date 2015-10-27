@@ -39,7 +39,9 @@ import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+/**
+ * Loads record batch from record batch message.  (??)
+ */
 public class RecordBatchLoader implements VectorAccessible, Iterable<VectorWrapper<?>>{
   private final static Logger logger = LoggerFactory.getLogger(RecordBatchLoader.class);
 
@@ -191,6 +193,9 @@ public class RecordBatchLoader implements VectorAccessible, Iterable<VectorWrapp
     System.err.println( "???: RecordBatchLoader[#" + instanceNum + "].clear(...) valueCount := " + valueCount );
   }
 
+  /**
+   * Sorts vectors into canonical order (by field name).
+   */
   public void canonicalize() {
     //logger.debug( "RecordBatchLoader : before schema " + schema);
     container = VectorContainer.canonicalize(container);
