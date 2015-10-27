@@ -185,6 +185,10 @@ public class RecordBatchLoader implements VectorAccessible, Iterable<VectorWrapp
     return schema;
   }
 
+  public void resetRecordCount() {
+    valueCount = 0;
+  }
+
   // ??? What is the basic contract for calling this?  (E.g., what earlier call(s)
   // requires calling this and when?
   public void clear() {
