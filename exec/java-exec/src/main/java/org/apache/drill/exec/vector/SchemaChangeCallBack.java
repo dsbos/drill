@@ -27,7 +27,7 @@ public class SchemaChangeCallBack implements CallBack {
     schemaChange = true;
   }
 
-  public boolean getSchemaChange() {
+  public boolean getSchemaChangedAndReset() {
     final boolean current = schemaChange;
     schemaChange = false;
     return current;
