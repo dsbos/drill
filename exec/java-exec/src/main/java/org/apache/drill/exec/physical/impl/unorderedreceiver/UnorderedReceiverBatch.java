@@ -151,7 +151,8 @@ public class UnorderedReceiverBatch implements CloseableRecordBatch {
 
   @Override
   public IterOutcome next() {
-    batchLoader.clear();
+    batchLoader.resetRecordCount(); //???? review placement
+
     stats.startProcessing();
     try{
       RawFragmentBatch batch;
