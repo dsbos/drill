@@ -183,6 +183,7 @@ public class ScanBatch implements CloseableRecordBatch {
       while ((recordCount = currentReader.next()) == 0) {
         try {
           if (!readers.hasNext()) {
+            // We're on the last reader, and it has no (more) rows.
             currentReader.close();
             releaseAssets();
             done = true;
