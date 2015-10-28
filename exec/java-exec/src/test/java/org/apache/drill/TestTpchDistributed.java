@@ -105,6 +105,11 @@ public class TestTpchDistributed extends BaseTestQuery {
   }
 
   @Test
+  public void tpch15Debugging() throws Exception{ //??? RENAME this
+    testDistributed("queries/tpch/15Trimmed.sql"); //??? RENAME file
+  }
+
+  @Test
   public void tpch16() throws Exception{
     testDistributed("queries/tpch/16.sql");
   }
