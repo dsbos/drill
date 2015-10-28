@@ -30,6 +30,8 @@ import org.apache.drill.exec.record.VectorWrapper;
 import org.apache.drill.exec.record.WritableBatch;
 import org.apache.drill.exec.record.selection.SelectionVector2;
 import org.apache.drill.exec.record.selection.SelectionVector4;
+import org.apache.drill.exec.util.VectorUtil;
+import org.apache.drill.exec.util.VectorUtil.Consumption;
 import org.apache.drill.exec.vector.VectorValidator;
 
 import static org.apache.drill.exec.record.RecordBatch.IterOutcome.*;
@@ -293,6 +295,23 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
                      + "\n    {}",
                      instNum, batchTypeName, incoming.getRecordCount(),
                      lastSchema, prevLastNewSchema);
+
+        if ( true ) {
+          try {
+            Thread.sleep( 100 );
+            System.err.println( "????: [#" + instNum + "; on " + batchTypeName + "]: incoming:" );
+            Thread.sleep( 100 );
+            try {
+              VectorUtil.showVectorAccessibleContent(incoming, 60, Consumption.DONT_CONSUME);
+            }
+            catch ( Exception e ) {
+              e.printStackTrace( System.err );
+            }
+            Thread.sleep( 100 );
+          }
+          catch ( InterruptedException e ) {
+          }
+        }
 
         if (lastSchema == null) {
           throw new IllegalStateException(
