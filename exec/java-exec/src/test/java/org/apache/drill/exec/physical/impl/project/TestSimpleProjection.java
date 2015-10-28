@@ -41,6 +41,7 @@ import org.apache.drill.exec.proto.BitControl.PlanFragment;
 import org.apache.drill.exec.rpc.user.UserServer.UserClientConnection;
 import org.apache.drill.exec.server.DrillbitContext;
 import org.apache.drill.exec.util.VectorUtil;
+import org.apache.drill.exec.util.VectorUtil.Consumption;
 import org.apache.drill.exec.vector.NullableBigIntVector;
 import org.junit.Test;
 
@@ -72,7 +73,7 @@ public class TestSimpleProjection extends ExecTest {
     final SimpleRootExec exec = new SimpleRootExec(ImplCreator.getExec(context, (FragmentRoot) plan.getSortedOperators(false).iterator().next()));
 
     while (exec.next()) {
-      VectorUtil.showVectorAccessibleContent(exec.getIncoming(), "\t");
+      VectorUtil.showVectorAccessibleContent(exec.getIncoming(), "\t", Consumption.CONSUME);
       final NullableBigIntVector c1 = exec.getValueVectorById(new SchemaPath("col1", ExpressionPosition.UNKNOWN), NullableBigIntVector.class);
       final NullableBigIntVector c2 = exec.getValueVectorById(new SchemaPath("col2", ExpressionPosition.UNKNOWN), NullableBigIntVector.class);
       int x = 0;

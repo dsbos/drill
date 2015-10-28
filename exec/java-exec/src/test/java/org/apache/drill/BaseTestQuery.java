@@ -53,6 +53,7 @@ import org.apache.drill.exec.server.RemoteServiceSet;
 import org.apache.drill.exec.store.StoragePluginRegistry;
 import org.apache.drill.exec.util.TestUtilities;
 import org.apache.drill.exec.util.VectorUtil;
+import org.apache.drill.exec.util.VectorUtil.Consumption;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.rules.TestRule;
@@ -487,7 +488,7 @@ public class BaseTestQuery extends ExecTest {
       if (loader.getRecordCount() <= 0) {
         continue;
       }
-      VectorUtil.showVectorAccessibleContent(loader, columnWidths);
+      VectorUtil.showVectorAccessibleContent(loader, columnWidths, Consumption.CONSUME);
       loader.clear();
       result.release();
     }
