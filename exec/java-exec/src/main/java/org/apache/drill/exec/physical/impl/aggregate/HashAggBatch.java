@@ -85,10 +85,17 @@ public class HashAggBatch extends AbstractRecordBatch<HashAggregate> {
 
   @Override
   public int getRecordCount() {
+    final int TEMP;
     if (state == BatchState.DONE) {
-      return 0;
+      TEMP=/*????return*/ 0;
     }
-    return aggregator.getOutputCount();
+    else{TEMP=/*????return*/ aggregator.getOutputCount();}
+    System.err.println( "???: HashAggBatch.getRecordCount() returning (from aggregator or zero): " + TEMP );
+    return TEMP;
+    //if (state == BatchState.DONE) {
+    //  return 0;
+    //}
+    //return aggregator.getOutputCount();
   }
 
   @Override

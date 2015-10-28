@@ -88,10 +88,17 @@ public class StreamingAggBatch extends AbstractRecordBatch<StreamingAggregate> {
 
   @Override
   public int getRecordCount() {
+    final int TEMP;
     if (done || aggregator == null) {
-      return 0;
+      TEMP=/*????return*/ 0;
     }
-    return recordCount;
+    else {TEMP=/*????return*/ recordCount;}
+    System.err.println( "???: StreamingAggBatch.getRecordCount() returning (from recordCount or flags): " + TEMP );
+    return TEMP;
+    //if (done || aggregator == null) {
+    //  return 0;
+    //}
+    //return recordCount;
   }
 
   @Override
@@ -240,6 +247,7 @@ public class StreamingAggBatch extends AbstractRecordBatch<StreamingAggregate> {
    * @return true if the aggregator was setup successfully. false if there was a failure.
    */
   private boolean createAggregator() {
+    System.err.println(" ???: StreamingAggBatch.createAggregator().");
     logger.debug("Creating new aggregator.");
     try {
       stats.startSetup();

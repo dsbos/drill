@@ -330,8 +330,10 @@ public abstract class StreamingAggTemplate implements StreamingAggregator {
   }
 
   private void addRecordInc(int index) {
+    System.err.println( "StreamingAggTemplate: addRecordInc( index = " + index + " )" );
     addRecord(index);
     this.addedRecordCount++;
+    System.err.println( "StreamingAggTemplate: addRecordInc( addedRecordCount := " + addedRecordCount + " )" );
   }
 
   @Override
