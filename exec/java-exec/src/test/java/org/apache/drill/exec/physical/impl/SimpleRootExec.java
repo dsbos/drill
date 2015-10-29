@@ -127,7 +127,7 @@ public class SimpleRootExec implements RootExec, Iterable<ValueVector> {
   }
 
   public int getRecordCount() {
-    System.err.println( "???: SimpleRootExec[" + getClass().getSimpleName() + "].getRecordCount() returning: " + incoming.getRecordCount() );
+    //??????System.err.println( "???: SimpleRootExec[" + getClass().getSimpleName() + "].getRecordCount() returning: " + incoming.getRecordCount() );
     return incoming.getRecordCount();
   }
 
