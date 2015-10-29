@@ -68,7 +68,10 @@
 <!--   </logger> -->
 
   <logger name="org.apache.drill.exec.compile" additivity="false">
+<!--
     <level value="debug" />
+-->
+    <level value="info" />
     <appender-ref ref="SOCKET" />
     <appender-ref ref="STDOUT" />
   </logger>
@@ -90,7 +93,7 @@
 <!--
     <level value="trace" />
 -->
-    <level value="trace" />
+    <level value="debug" />
     <appender-ref ref="SOCKET" />
     <appender-ref ref="STDOUT" />
   </logger>
