@@ -95,7 +95,7 @@ public class StreamingAggBatch extends AbstractRecordBatch<StreamingAggregate> {
       TEMP=/*????return*/ 0;
     }
     else {TEMP=/*????return*/ recordCount;}
-    System.err.println( "???: StreamingAggBatch.getRecordCount() returning (from recordCount or flags): " + TEMP );
+    //??????System.err.println( "???: StreamingAggBatch.getRecordCount() returning (from recordCount or flags): " + TEMP );
     return TEMP;
     //if (done || aggregator == null) {
     //  return 0;
@@ -108,10 +108,10 @@ public class StreamingAggBatch extends AbstractRecordBatch<StreamingAggregate> {
     IterOutcome outcome = next(incoming);
     try {
       Thread.sleep( 100 );
-      System.err.println( "????: StreamingAggBatch.buildSchema(): incoming:" );
+      //??????System.err.println( "????: StreamingAggBatch.buildSchema(): incoming:" );
       Thread.sleep( 100 );
       try {
-        VectorUtil.showVectorAccessibleContent(incoming, 60, Consumption.DONT_CONSUME);
+        //??????VectorUtil.showVectorAccessibleContent(incoming, 60, Consumption.DONT_CONSUME);
       }
       catch ( Exception e ) {
         e.printStackTrace( System.err );
@@ -162,10 +162,10 @@ public class StreamingAggBatch extends AbstractRecordBatch<StreamingAggregate> {
       if ( IterOutcome.NONE != outcome ) {
       try {
         Thread.sleep( 100 );
-        System.err.println( "????: StreamingAggBatch.innerNext().2: incoming:" );
+        //??????System.err.println( "????: StreamingAggBatch.innerNext().2: incoming:" );
         Thread.sleep( 100 );
         try {
-          VectorUtil.showVectorAccessibleContent(incoming, 60, Consumption.DONT_CONSUME);
+          //??????VectorUtil.showVectorAccessibleContent(incoming, 60, Consumption.DONT_CONSUME);
         }
         catch ( Exception e ) {
           e.printStackTrace( System.err );
@@ -278,7 +278,7 @@ public class StreamingAggBatch extends AbstractRecordBatch<StreamingAggregate> {
    * @return true if the aggregator was setup successfully. false if there was a failure.
    */
   private boolean createAggregator() {
-    System.err.println(" ???: StreamingAggBatch.createAggregator().");
+    //???????System.err.println("???: StreamingAggBatch.createAggregator().");
     logger.debug("Creating new aggregator.");
     try {
       stats.startSetup();
