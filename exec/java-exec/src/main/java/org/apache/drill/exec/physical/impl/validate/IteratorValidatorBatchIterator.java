@@ -157,7 +157,7 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
   @Override
   public int getRecordCount() {
     validateReadState("getRecordCount()");
-    System.err.println( "???: IteratorValidatorBatchIterator.getRecordCount() [on #" + instNum+ "; " + batchTypeName +"] returning: " + incoming.getRecordCount() );
+    //??????System.err.println( "???: IteratorValidatorBatchIterator.getRecordCount() [on #" + instNum+ "; " + batchTypeName +"] returning: " + incoming.getRecordCount() );
     return incoming.getRecordCount();
   }
 
@@ -189,9 +189,9 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
 //    validateReadState(); TODO fix this
     final VectorWrapper<?> TEMP =
     /*?????return*/ incoming.getValueAccessorById(clazz, ids);
-    System.err.println( "???: validator: getValueAccessorById("  + clazz + ", " + ids + " ): " + TEMP );
+    //??????System.err.println( "???: validator: getValueAccessorById("  + clazz + ", " + ids + " ): " + TEMP );
     try {
-      System.err.println( "- TEMP.getValueVector().getAccessor().getValueCount() = " + TEMP.getValueVector().getAccessor().getValueCount() );
+      //??????System.err.println( "- TEMP.getValueVector().getAccessor().getValueCount() = " + TEMP.getValueVector().getAccessor().getValueCount() );
     }
     catch ( UnsupportedOperationException e ) {
     }
@@ -299,10 +299,10 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
         if ( true ) {
           try {
             Thread.sleep( 100 );
-            System.err.println( "????: [#" + instNum + "; on " + batchTypeName + "]: incoming:" );
+            //??????System.err.println( "????: [#" + instNum + "; on " + batchTypeName + "]: incoming:" );
             Thread.sleep( 100 );
             try {
-              VectorUtil.showVectorAccessibleContent(incoming, 60, Consumption.DONT_CONSUME);
+              //??????VectorUtil.showVectorAccessibleContent(incoming, 60, Consumption.DONT_CONSUME);
             }
             catch ( Exception e ) {
               e.printStackTrace( System.err );
@@ -338,7 +338,7 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
           VectorValidator.validate(incoming);
         }
       }
-      else { System.err.println( "???: validator ... NONE" ); }
+      //??????else { System.err.println( "???: validator ... NONE" ); }
 
       return batchState;
     }
