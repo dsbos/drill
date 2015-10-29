@@ -70,7 +70,7 @@ public class RecordBatchLoader implements VectorAccessible, Iterable<VectorWrapp
     }
     container.zeroVectors();
     valueCount = def.getRecordCount();
-    System.err.println( "???: RecordBatchLoader.load(...) valueCount := " + valueCount );
+    //??????System.err.println( "???: RecordBatchLoader.load(...) valueCount := " + valueCount );
     boolean schemaChanged = schema == null;
 
     final Map<MaterializedField, ValueVector> oldFields = Maps.newHashMap();
@@ -157,7 +157,7 @@ public class RecordBatchLoader implements VectorAccessible, Iterable<VectorWrapp
 
   @Override
   public int getRecordCount() {
-    System.err.println( "???: RecordBatchLoader.getRecordCount() returning (valueCount): " + valueCount );
+    //??????System.err.println( "???: RecordBatchLoader.getRecordCount() returning (valueCount): " + valueCount );
     return valueCount;
   }
 
@@ -188,7 +188,7 @@ public class RecordBatchLoader implements VectorAccessible, Iterable<VectorWrapp
   public void clear() {
     container.clear();
     resetRecordCount();
-    System.err.println( "???: RecordBatchLoader.clear(...) valueCount := " + valueCount );
+    //??????System.err.println( "???: RecordBatchLoader.clear(...) valueCount := " + valueCount );
   }
 
   public void canonicalize() {
