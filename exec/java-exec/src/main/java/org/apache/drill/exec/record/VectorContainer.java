@@ -308,18 +308,18 @@ public class VectorContainer implements Iterable<VectorWrapper<?>>, VectorAccess
     schema = null;
     zeroVectors();
     wrappers.clear();
-    System.err.println( "???: VectorContainer.clear(): recordCount = " + recordCount );
+    //??????System.err.println( "???: VectorContainer.clear(): recordCount = " + recordCount );
   }
 
   public void setRecordCount(int recordCount) {
     this.recordCount = recordCount;
-    System.err.println( "???: VectorContainer.setRecordCount(...): recordCount := " + recordCount );
+    //??????System.err.println( "???: VectorContainer.setRecordCount(...): recordCount := " + recordCount );
   }
 
   @Override
   public int getRecordCount() {
     Preconditions.checkState(recordCount != -1, "Record count not set for this vector container");
-    System.err.println( "???: VectorContainer.getRecordCount() returning (recordCount): " + recordCount );
+    //??????System.err.println( "???: VectorContainer.getRecordCount() returning (recordCount): " + recordCount );
     return recordCount;
   }
 
@@ -330,7 +330,7 @@ public class VectorContainer implements Iterable<VectorWrapper<?>>, VectorAccess
     for (VectorWrapper<?> w : wrappers) {
       w.clear();
     }
-    System.err.println( "???: VectorContainer.zeroVectors(): recordCount = " + recordCount + " wrappers = " + wrappers );
+    //??????System.err.println( "???: VectorContainer.zeroVectors(): recordCount = " + recordCount + " wrappers = " + wrappers );
   }
 
   public int getNumberOfColumns() {
