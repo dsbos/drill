@@ -57,7 +57,7 @@ public class RemovingRecordBatch extends AbstractSingleRecordBatch<SelectionVect
 
   @Override
   public int getRecordCount() {
-    System.err.println( "???: RemovingRecordBatch.getRecordCount() returning (recordCount): " + recordCount );
+    //??????System.err.println( "???: RemovingRecordBatch.getRecordCount() returning (recordCount): " + recordCount );
     return recordCount;
   }
 
