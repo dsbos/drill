@@ -90,7 +90,7 @@
 <!--
     <level value="trace" />
 -->
-    <level value="debug" />
+    <level value="trace" />
     <appender-ref ref="SOCKET" />
     <appender-ref ref="STDOUT" />
   </logger>
@@ -101,7 +101,7 @@
     <appender-ref ref="STDOUT" />
   </logger>
 
-  <logger name="org.apache.drill.exec.recrd" additivity="false">
+  <logger name="org.apache.drill.exec.record" additivity="false">
     <level value="trace" />
     <appender-ref ref="SOCKET" />
     <appender-ref ref="STDOUT" />
