@@ -113,7 +113,7 @@ public class HashAggBatch extends AbstractRecordBatch<HashAggregate> {
         state = BatchState.STOP;
         return;
     }
-
+    // ???? Should this OK_NEW_SCHEMA case have a schema comparison?
     if (!createAggregator()) {
       state = BatchState.DONE;
     }
@@ -146,7 +146,7 @@ public class HashAggBatch extends AbstractRecordBatch<HashAggregate> {
       // fall through
     case RETURN_OUTCOME:
       return aggregator.getOutcome();
-    case UPDATE_AGGREGATOR:
+    case UPDATE_AGGREGATOR: //??? can we do schema comparison here are determine whether we can update?
       context.fail(UserException.unsupportedError()
         .message("Hash aggregate does not support schema changes").build(logger));
       close();
