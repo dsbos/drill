@@ -309,7 +309,14 @@ public class MapVector extends AbstractMapVector {
       Map<String, Object> vv = new JsonStringHashMap<>();
       for (String child:getChildFieldNames()) {
         ValueVector v = getChild(child);
-        if (v != null) {
+        // TODO(DRILL-xxxx):  Resolve this hack:
+        // This index/value count check is a hack to work around the current
+        // fact that RecorBatchLoader.load and MapVector.load leave child vectors
+        // with a length of zero (as opposed to matching the lengths of siblings
+        // and the parent map vector) because they don't remove (or set the
+        // lengths of) vectors from previous batches that aren't in the current
+        // batch.
+        if (v != null && index < v.getAccessor().getValueCount()) { //?????TRYING
           Object value = v.getAccessor().getObject(index);
           if (value != null) {
             vv.put(child, value);
