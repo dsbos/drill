@@ -148,6 +148,7 @@ public class HBaseRecordReader extends AbstractRecordReader implements DrillHBas
           getOrCreateFamilyVector(column.getRootSegment().getPath(), false);
         }
       }
+      // TODO(DRILL-4010):  Address similar problem for child columns.
       // Add vector for any column families not mentioned yet (in order to avoid
       // creation of dummy NullableIntVectors for them).
       for (HColumnDescriptor columnFamily :
