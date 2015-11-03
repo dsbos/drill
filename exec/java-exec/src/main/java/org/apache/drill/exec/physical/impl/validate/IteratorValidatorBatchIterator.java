@@ -288,6 +288,15 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
                        prevLastNewSchema);
           }
 
+        if (batchState == OK_NEW_SCHEMA && prevBatchState == OK_NEW_SCHEMA) {
+          logger.warn( "??? NOTE:  OK_NEW_SCHEMA -> OK_NEW_SCHEMA" );
+        }
+        if (batchState == OK_NEW_SCHEMA) {
+          if (lastSchema.equals(prevLastNewSchema)) {
+            logger.warn( "??? NOTE:  new schema is equal to previous; check" );
+          }
+        }
+
         if (lastSchema == null) {
           throw new IllegalStateException(
               String.format(
