@@ -518,7 +518,7 @@ public class TestHBaseFilterPushDown extends BaseHBaseTest {
         + "WHERE\n"
         + "  row_key > 'b4'";
 
-    runHBaseSQLVerifyCount(sql, 5);
+    runHBaseSQLVerifyCount(sql, 4);
 
     final String[] expectedPlan = {".*startRow=b4\\\\x00.*stopRow=,.*"};
     final String[] excludedPlan ={};
