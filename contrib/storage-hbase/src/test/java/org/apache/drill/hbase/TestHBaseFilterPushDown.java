@@ -774,7 +774,7 @@ public class TestHBaseFilterPushDown extends BaseHBaseTest {
         + "  row_key = 'a3' OR row_key = 'b7' \n"
         + "ORDER BY row_key";
 
-    runHBaseSQLVerifyCount(sql, 2);
+    runHBaseSQLVerifyCount(sql, 3);
   }
 
   @Test
