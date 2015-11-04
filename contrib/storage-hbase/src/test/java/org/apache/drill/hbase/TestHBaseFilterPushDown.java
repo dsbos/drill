@@ -845,7 +845,7 @@ public class TestHBaseFilterPushDown extends BaseHBaseTest {
         + "FROM\n"
         + "  hbase.`[TABLE_NAME]` tableName";
 
-    runHBaseSQLVerifyCount(sql, 7);
+    runHBaseSQLVerifyCount(sql, 8);
   }
 
   @Test
