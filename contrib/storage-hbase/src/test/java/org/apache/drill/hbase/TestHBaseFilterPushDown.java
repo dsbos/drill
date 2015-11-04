@@ -757,7 +757,6 @@ public class TestHBaseFilterPushDown extends BaseHBaseTest {
   }
 
   @Test
-  @Ignore("until DRILL-4010 is fixed (HBase reader preempts dummy NullableIntVectors)")
   public void testDummyColumnsAreAvoided() throws Exception {
     setColumnWidth(10);
     // Key aspects:
