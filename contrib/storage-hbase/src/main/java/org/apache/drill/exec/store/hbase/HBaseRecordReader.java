@@ -18,10 +18,12 @@
 package org.apache.drill.exec.store.hbase;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -148,12 +150,20 @@ public class HBaseRecordReader extends AbstractRecordReader implements DrillHBas
           getOrCreateFamilyVector(column.getRootSegment().getPath(), false);
         }
       }
-      // TODO(DRILL-4010):  Address similar problem for child columns.
-      // Add vector for any column families not mentioned yet (in order to avoid
-      // creation of dummy NullableIntVectors for them).
-      for (HColumnDescriptor columnFamily :
-          hTable.getTableDescriptor().getColumnFamilies()) {
-        getOrCreateFamilyVector(columnFamily.getNameAsString(), false);
+
+      // Add map and child vectors for any HBase column families and/or HBase
+      // columns that are requested (in order to avoid later creation of dummy
+      // NullableIntVectors for them).
+      Collection<Map.Entry<byte[], NavigableSet<byte []>>> familiesEntries =
+          hbaseScan.getFamilyMap().entrySet();
+      for (Map.Entry<byte[], NavigableSet<byte []>> familyEntry : familiesEntries) {
+        final String familyName = new String(familyEntry.getKey(),
+                                             StandardCharsets.UTF_8);
+        final MapVector familyVector = getOrCreateFamilyVector(familyName, false);
+        for (byte[] childNameBytes : familyEntry.getValue()) {
+          String childName = new String(childNameBytes, StandardCharsets.UTF_8);
+          getOrCreateColumnVector(familyVector, childName);
+        }
       }
       resultScanner = hTable.getScanner(hbaseScan);
     } catch (SchemaChangeException | IOException e) {
